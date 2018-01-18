@@ -1,0 +1,17 @@
+{
+  "name": "uic-918-3-reader",
+  "version": "1.0.0",
+  "description": "Package for reading barcodes used on public transport online tickets.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Francis Doege",
+  "license": "MIT",
+  "dependencies": {
+    "enum": "^2.5.0",
+    "iconv-lite": "^0.4.19",
+    "node-zxing": "^0.1.4",
+    "zebra-crossing": "^0.1.1"
+  }
+}
