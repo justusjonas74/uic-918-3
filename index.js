@@ -1,5 +1,7 @@
 const readBarcode = require('./lib/barcode-reader.js');
-exports.readBarcodePNG(file_path, onFulfilled, onRejected);
+exports.readBarcodePNG =  (file_path, onFulfilled, onRejected) =>{
+  readBarcode(file_path, onFulfilled, onRejected);
+};
 
 
 
