@@ -1,7 +1,7 @@
 {
-  "name": "uic-918-3-reader",
-  "version": "1.0.0",
-  "description": "Package for reading barcodes used on public transport online tickets.",
+  "name": "uic-918-3",
+  "version": "0.1.0",
+  "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,25 @@
   "dependencies": {
     "enum": "^2.5.0",
     "iconv-lite": "^0.4.19",
-    "node-zxing": "^0.1.4",
     "zebra-crossing": "^0.1.1"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justusjonas74/uic-918-3.git"
+  },
+  "keywords": [
+    "uic-918-3",
+    "online-ticket",
+    "deutsche-bahn",
+    "barcode",
+    "aztec"
+  ],
+  "bugs": {
+    "url": "https://github.com/justusjonas74/uic-918-3/issues"
+  },
+  "homepage": "https://github.com/justusjonas74/uic-918-3#readme"
 }
