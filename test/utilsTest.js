@@ -6,7 +6,7 @@ var randomstring = require("randomstring");
 
 
 
-describe('fixingZXing', function (){
+describe('utils.fixingZXing', function (){
     it('should return a buffer', () => {
         const str = randomstring.generate({
             length: 12,
@@ -26,12 +26,18 @@ describe('fixingZXing', function (){
     });
 });
 
-describe('stringifyBufferObj',()=>{
+describe('utils.stringifyBufferObj',()=>{
     const str = "Hello World!" ;
-    const obj = {a: Buffer.from(str), b: 123};
+    const str2 = "Hello World!!!!!" ;
+    const obj = {   a: Buffer.from(str),
+                    b: 123,
+                    c: Buffer.from(str2)};
     const result = utils.stringifyBufferObj(obj);
     it('should return an object where all buffer values would be converted to string values', ()=>{
         result.a.should.be.equal(str);
+        result.c.should.be.equal(str2);
+        result.a.should.be.a('string');
+        result.c.should.be.a('string');
     });
     it('should return an object', ()=>{
         result.should.be.a('object');
