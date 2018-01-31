@@ -46,4 +46,32 @@ describe('utils.stringifyBufferObj',()=>{
        result.b.should.be.equal(123); 
     });
     
-})
+});
+
+describe('utils.interpretField', () => {
+    it('should return an object', ()=>{
+        const data = Buffer.from('Test');
+        const fields = [];
+        const result = utils.interpretField(data, fields);
+        result.should.be.an('object');
+    });
+    it('should return an empty object if fields is an empty arry', () => {
+        const data = Buffer.from('Test');
+        const fields = [];
+        const result = utils.interpretField(data, fields);
+        result.should.be.empty;
+    });
+    it('should parse a buffer using a given data field specification',()=>{
+        const data = Buffer.from([0x14,0x14,0x06,0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21]);
+        const fields = [
+            ['TAG', 2, (x) => x.toString('hex')],
+            ['LENGTH', 1],
+            ['TEXT', null, (x) => x.toString()]
+        ];
+        const result = utils.interpretField(data, fields);
+        result.TAG.should.be.equal('1414');
+        result.LENGTH.should.be.deep.equal(Buffer.from('06', 'hex'));
+        result.TEXT.should.be.equal('Hello!');
+    });
+    
+});
