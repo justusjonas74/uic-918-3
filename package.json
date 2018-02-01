@@ -4,7 +4,7 @@
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha"
+    "test": "NODE_ENV=test nyc mocha"
   },
   "author": "Francis Doege",
   "license": "MIT",
