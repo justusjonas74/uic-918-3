@@ -112,8 +112,7 @@ describe('utils.js', ()=>{
     describe('utils.fileExists', () => {
         
         var file_path = {};
-        console.log(process.argv)
-        
+
         beforeEach((done)=>{
             const file = 'index.js';
             file_path.relative_true = file;
