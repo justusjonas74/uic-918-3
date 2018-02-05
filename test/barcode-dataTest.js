@@ -38,6 +38,29 @@ describe('barcode-data', ()=>{
                 results[0].container_data.should.be.deep.equal(Buffer.from('Test'));
             })
         })
+       describe('on unknown data fieds versions but known id', ()=>{
+          var results;
+          beforeEach((done)=>{
+            const ticket_header = Buffer.from('2355543031303038303030303036302c021402a7689c8181e5c32b839b21f603972512d26504021441b789b47ea70c02ae1b8106d3362ad1cd34de5b00000000','hex');
+            const sensless_container = Buffer.from('U_HEAD'+'03'+'0016'+'Test');
+            const compressed_ticket = zlib.deflateSync(sensless_container);
+            const sensless_container_length = Buffer.from('00'+compressed_ticket.length);
+            const ticket_arr =[ticket_header, sensless_container_length, compressed_ticket];
+            const totalLength = ticket_arr.reduce((result, item) => result + item.length,0);
+            const ticket = Buffer.concat(ticket_arr,totalLength);
+            results = bcd.interpret(ticket).ticketContainers;
+            done()
+          })
+            it('should ignore unkown versions of data fields', ()=>{
+             results.should.not.be.empty;
+            });
+            it('should parse the unknown container id', () => {
+                results[0].id.should.be.equal('U_HEAD');
+            });
+            it('should not touch/parse the container data',()=>{
+                results[0].container_data.should.be.deep.equal(Buffer.from('Test'));
+            })
+        })
        
     });
 });
