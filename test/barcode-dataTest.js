@@ -11,8 +11,8 @@ describe('barcode-data', ()=>{
         });
         //FIXIT: this test fails actually, because of zlib.unzipSync(data).
         // Maybe it's a better solution to return null.
-        it('should return an empty object if input param is an empty buffer.', ()=>{
-            bcd.interpret(Buffer.from('')).should.be.an('object').and.be.empty;
+        it('should return an empty array if input param is an empty buffer.', ()=>{
+            bcd.interpret(Buffer.from('')).ticketContainers.should.be.an('array').and.be.empty;
         });
         
         describe('on unknown data fieleds', ()=>{
