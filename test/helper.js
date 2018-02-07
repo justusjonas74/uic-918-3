@@ -1,4 +1,6 @@
 const zlib = require('zlib');
+const bwip =require('bwip-js');
+var iconv = require('iconv-lite');
 
 
 function pad(num, size) {
@@ -19,6 +21,29 @@ const dummyTicket = (id_str,version, body_str) => {
     return Buffer.concat(ticket_arr,totalLength);
 };
 
-module.exports = {dummyTicket};
+const dummyBarcode = (ticket) => {
+    return new Promise((resolve, reject) => {
+        var test = {
+            text: ticket,
+            bcid: "azteccode"
+        };
+        bwip.toBuffer(test, function(err, png) {
+            if (err) {
+              reject(err);
+            }
+            else {
+            resolve(png);
+            }
+        });
+    });
+}
 
 
+const unfixingZXing = (buffer) => {
+    iconv.skipDecodeWarning = true;
+    const latin1str = iconv.decode(buffer.toString('latin1'), 'utf-8');
+    return Buffer.from(latin1str);
+};
+
+
+module.exports = {dummyTicket, dummyBarcode, unfixingZXing};
