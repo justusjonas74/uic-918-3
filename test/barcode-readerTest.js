@@ -18,8 +18,7 @@ describe('barcode-reader.js', () => {
                 ticket = helper.dummyTicket('U_TEST', '03','Test');
                 return helper.dummyBarcode(ticket.toString())
                     .then((bc)=> result=bc)
-                    .then((t) => {ticket_fixed = helper.unfixingZXing(t);
-                      console.log(ticket_fixed);})
+                    .then((t) => {ticket_fixed = helper.unfixingZXing(t);})
                     .catch((e)=>console.log(e.message));
             });
 
