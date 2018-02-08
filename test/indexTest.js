@@ -1,18 +1,20 @@
-var should = require('chai').should();
+var chai = require('chai');
+var should = chai.should();
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 
 const main = require('../index');
 var helper = require('./helper');
 
-// describe('index.js', () => {
-//     describe('index.readBarcode', () =>{
-//         it('should return an object on sucess', ()=>{
-//             var result;
-//             beforeEach((done)=>{
-//                 const ticket = helper.dummyTicket('U_TEST', '03','Test');
-//                 const barcode = helper.dummyBarcode(ticket);
-//                 result = main.readBarcode()     
-//             })
-//         })
-//     })
-// })
-
+describe('index.js', () => {
+    describe('index.readBarcode', () =>{
+        const dummy = 'test/images/barcode-dummy.png';
+        const false_dummy = 'test/images/barcode dummy.png';
+        it('should return an object on sucess', ()=>{
+            main.readBarcode(dummy).should.eventually.be.an('object');
+        });
+        it('should reject if file not found', () =>{
+            main.readBarcode(false_dummy).should.be.rejected;
+        });
+    });
+});
