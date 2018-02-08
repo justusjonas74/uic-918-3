@@ -2,4 +2,7 @@ language: node_js
 node_js:
   - "stable"
 sudo: false
+before_script:
+  - echo $JAVA_HOME
+  - java -version
 after_success: 'npm run coveralls'
