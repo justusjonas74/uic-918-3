@@ -1,14 +1,11 @@
 const zlib = require('zlib');
-const bwip =require('bwip-js');
-var iconv = require('iconv-lite');
-
+//const bwip =require('bwip-js');
 
 function pad(num, size) {
     var s = num+"";
     while (s.length < size) s = "0" + s;
     return s;
 }
-
 
 const dummyTicket = (id_str,version, body_str) => {
     const ticket_header = Buffer.from('2355543031303038303030303036302c021402a7689c8181e5c32b839b21f603972512d26504021441b789b47ea70c02ae1b8106d3362ad1cd34de5b00000000','hex');
@@ -21,29 +18,23 @@ const dummyTicket = (id_str,version, body_str) => {
     return Buffer.concat(ticket_arr,totalLength);
 };
 
-const dummyBarcode = (ticket) => {
-    return new Promise((resolve, reject) => {
-        var test = {
-            text: ticket,
-            bcid: "azteccode"
-        };
-        bwip.toBuffer(test, function(err, png) {
-            if (err) {
-              reject(err);
-            }
-            else {
-            resolve(png);
-            }
-        });
-    });
-}
+// ACTUALLY UNUSED BUT MAYBE WILL BE USEFUL IN THE FUTURE
+// const dummyBarcode = (ticket) => {
+//     return new Promise((resolve, reject) => {
+//         var test = {
+//             text: ticket,
+//             bcid: "azteccode"
+//         };
+//         bwip.toBuffer(test, function(err, png) {
+//             if (err) {
+//               reject(err);
+//             }
+//             else {
+//             resolve(png);
+//             }
+//         });
+//     });
+// };
 
 
-const unfixingZXing = (buffer) => {
-    iconv.skipDecodeWarning = true;
-    const latin1str = iconv.decode(buffer.toString('latin1'), 'utf-8');
-    return Buffer.from(latin1str);
-};
-
-
-module.exports = {dummyTicket, dummyBarcode, unfixingZXing};
+module.exports = {dummyTicket};

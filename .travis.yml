@@ -1,11 +1,4 @@
 language: node_js
 node_js:
   - "stable"
-addons:
-  apt:
-    packages:
-      - oracle-java8-set-default
-cache:
-  directories:
-    - node_modules
 after_success: 'npm run coveralls'
