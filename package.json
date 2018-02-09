@@ -21,6 +21,7 @@
     "bwip-js": "^1.6.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "chai-things": "^0.2.0",
     "coveralls": "^3.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.0.0",
