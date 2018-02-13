@@ -11,13 +11,13 @@ describe('index.js', () => {
         const dummy = 'test/images/barcode-dummy2.png';
         const false_dummy = 'test/images/barcode dummy.png';
         it('should return an object on sucess', ()=>{
-            main.readBarcode(dummy).should.eventually.be.an('object');
+            return main.readBarcode(dummy).should.eventually.be.an('object');
         });
         it('should eventually be resolved', ()=>{
-            main.readBarcode(dummy).should.eventually.be.fulfilled;
+            return main.readBarcode(dummy).should.eventually.be.fulfilled;
         });
         it('should reject if file not found', () =>{
-            main.readBarcode(false_dummy).should.be.rejected;
+            return main.readBarcode(false_dummy).should.be.rejected;
         });
     });
 });
