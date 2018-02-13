@@ -4,7 +4,6 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
 const main = require('../index');
-var helper = require('./helper');
 
 describe('index.js', () => {
     describe('index.readBarcode', () =>{

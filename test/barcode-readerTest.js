@@ -5,9 +5,6 @@ var should = chai.should();
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
-var helper = require('./helper');
-var utils= require('../lib/utils');
-
 describe('barcode-reader.js', () => {
     describe('barcode-reader.ZXing', function (){
         this.timeout(4500);

@@ -36,5 +36,4 @@ const dummyTicket = (id_str,version, body_str) => {
 //     });
 // };
 
-
 module.exports = {dummyTicket};

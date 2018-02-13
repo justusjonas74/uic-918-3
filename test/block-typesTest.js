@@ -88,7 +88,6 @@ describe('block-types.js', ()=>{
             const result = fn(RCT2_TEST_DATA);
             it('should return an array', ()=>{
                 result.should.be.an('array');
-                
             });
             it('should return object as array items', ()=>{
                 result.should.all.be.instanceof(Object);

@@ -1,5 +1,4 @@
 var should = require('chai').should();
-var zlib = require('zlib');
 
 var helper = require('./helper');
 

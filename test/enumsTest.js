@@ -15,6 +15,4 @@ describe('enums.sBlockTypes', ()=>{
     it('should not be empty', () => {
         sBlockTypes.enums.should.not.be.empty;
     });
-}
-
-);
+});
