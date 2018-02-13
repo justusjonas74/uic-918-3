@@ -1,6 +1,7 @@
 var chai = require("chai");
 var should = chai.should();
 chai.use(require('chai-things'));
+chai.use(require('chai-properties'));
 
 const bt = require('../lib/block-types');
 
@@ -81,16 +82,36 @@ describe('block-types.js', ()=>{
                 res_dc10['1'].should.have.nested.property('Liste_DC.typ_DC', '10');
             });
         });
+        describe('RCT2_TEST_DATA', ()=>{
+            const fn = bt.filter(typ => (typ.name === 'U_TLAY'))[0].versions['01'][2][2];
+            const RCT2_TEST_DATA = Buffer.from('303030303031373130303031384d617274696e61204d75737465726d616e6e3031303030313731303030313654616765735469636b657420506c757330323030303137313030303239507265697373747566652031302c2056474e20476573616d747261756d3033303030313731303030333332372e30352e323031372030303a30302d32392e30352e323031372030333a30303035303030313731303030313030312e30312e31393930','hex');
+            const result = fn(RCT2_TEST_DATA);
+            it('should return an array', ()=>{
+                result.should.be.an('array');
+                
+            });
+            it('should return object as array items', ()=>{
+                result.should.all.be.instanceof(Object);
+            });
+            it('should return objects inside array with specific properties', ()=>{
+                result.should.all.have.property('line')
+                        .and.all.have.property('column')
+                        .and.all.have.property('height')
+                        .and.all.have.property('width')
+                        .and.all.have.property('style')
+                        .and.all.have.property('value');
+            });
+            it('should parse the content of properties correctly', ()=>{
+                result[0].should.have.properties({
+                    line: 0,
+                    column: 0,
+                    height: 1,
+                    width:  71,
+                    style: 0,
+                    value: 'Martina Mustermann'
+                });
+                     
+            });
+        });
     });
-})
-
-
-// berechtigungs_nr: 319263216,
-//      kvp_organisations_id: 6260,
-//      produkt_nr: 2000,
-//      pv_organisations_id: 6262,
-//      valid_from: undefined,
-//      valid_to: undefined,
-//      preis: 0,
-//      sam_seqno: 319263216,
-//      lengthList_DC: 8,
+});

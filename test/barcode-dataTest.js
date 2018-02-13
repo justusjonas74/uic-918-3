@@ -15,7 +15,7 @@ describe('barcode-data', () => {
       bcd.interpret(Buffer.from('')).ticketContainers.should.be.an('array').and.be.empty;
     });
 
-    describe('on unknown data fieleds', () => {
+    describe('on unknown data fields', () => {
       var results;
       beforeEach((done) => {
         const ticket = helper.dummyTicket('MYID!!', '01', 'Test');
