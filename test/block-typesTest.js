@@ -154,5 +154,16 @@ describe('block-types.js', ()=>{
                 });
             });
         });
+        describe('AUSWEIS_TYP', ()=>{
+            const fn = bt.filter(typ => (typ.name === '0080ID'))[0].versions['01'][0][2];
+            const TEST_DATA = Buffer.from('09');
+            const result = fn(TEST_DATA);
+            it ('should return a string', ()=>{
+                result.should.be.a('string');
+            });
+            it('should parse the value correctly', ()=>{
+                result.should.be.equal('Personalausweis');
+            });
+        })
     });
 });
