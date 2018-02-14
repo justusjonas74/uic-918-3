@@ -136,6 +136,20 @@ describe('utils.js', ()=>{
         it('should return true if a file with absolute path is found', ()=>{
             utils.fileExists(file_path.absolute_true).should.be.true;
         });
-       
+    });
+    describe('utils.pad', ()=>{
+        it('should return a string', ()=>{
+            utils.pad(12, 4).should.be.a('string');
+        });
+        it('should return a string with the give length', ()=>{
+            const len = 12;
+            utils.pad(12, len).length.should.be.equal(len);
+        });
+        it('should return a string respresentation of a number with leading zeros', ()=>{
+            utils.pad(12,4).should.be.equal('0012');
+        });
+        it('should return a string respresentation of a hexstring with leading zeros', ()=>{
+            utils.pad("11",4).should.be.equal('0011');
+        });
     });
 });
