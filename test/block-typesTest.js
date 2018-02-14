@@ -81,6 +81,9 @@ describe('block-types.js', ()=>{
             it('should handle DC-typ 0x10', ()=>{
                 res_dc10['1'].should.have.nested.property('Liste_DC.typ_DC', '10');
             });
+            it('should parse the DateTime correctly', ()=>{
+                res['1'].should.have.deep.property('valid_from', new Date(2018,0,1,0,0,0)); //.and.be.instanceof(Date);
+            });
         });
         describe('RCT2_TEST_DATA', ()=>{
             const fn = bt.filter(typ => (typ.name === 'U_TLAY'))[0].versions['01'][2][2];
