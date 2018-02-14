@@ -152,4 +152,23 @@ describe('utils.js', ()=>{
             utils.pad("11",4).should.be.equal('0011');
         });
     });
+    describe('utils.assignArrayToObj', ()=>{
+        const TEST_DATA = [
+                {hello: 'world'},
+                {thats: 's'},
+                {a: 'test'}
+            ]
+        const result = utils.assignArrayToObj(TEST_DATA);
+        
+        it('should return an object', ()=>{
+            result.should.be.an('object');
+        });
+        it('should have all given properties', ()=>{
+            result.should.have.properties({
+                hello: 'world',
+                thats: 's',
+                a: 'test'
+            });
+        });
+    })
 });
