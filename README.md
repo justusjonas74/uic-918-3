@@ -52,7 +52,7 @@ const onRejectedFunction = (reason) => {
   console.log(reason);
 };
 
-uic.readBarcode(file_path, onFulfilledFunction, onRejectedFunction);
+uic.readBarcode(file_path).then(onFulfilledFunction).then(onRejectedFunction);
 ```
 
 The `data` object consists of (among other things) one or more TicketDataContainers which hold ticket data for different purposes. The most interesting containers are:
