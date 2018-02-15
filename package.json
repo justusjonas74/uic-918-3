@@ -1,6 +1,6 @@
 {
   "name": "uic-918-3",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,6 @@
     "lib": "lib"
   },
   "devDependencies": {
-    "bwip-js": "^1.6.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-properties": "^1.3.0",
