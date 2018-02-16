@@ -4,7 +4,8 @@
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcov -- -R spec",
+    "standard-fix": "standard --fix",
+    "test": "standard && NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcov -- -R spec",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "author": "Francis Doege",
@@ -25,11 +26,17 @@
     "coveralls": "^3.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.0.0",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "standard": "^10.0.3"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/justusjonas74/uic-918-3.git"
+  },
+  "standard": {
+    "env": [
+      "mocha"
+    ]
   },
   "keywords": [
     "uic-918-3",

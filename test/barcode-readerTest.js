@@ -1,29 +1,29 @@
-const bcr = require('../lib/barcode-reader');
+const bcr = require('../lib/barcode-reader')
 
-var chai = require('chai');
-var should = chai.should();
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
+var chai = require('chai')
+chai.should()
+var chaiAsPromised = require('chai-as-promised')
+chai.use(chaiAsPromised)
 
 describe('barcode-reader.js', () => {
-    describe('barcode-reader.ZXing', function (){
-        this.timeout(4500);
-        const dummy = 'test/images/barcode-dummy2.png';
-        //const ticket = Buffer.from('2355543031303038303030303036302c021402c3afc2bfc2bd68c3afc2bfc2bdc3afc2bfc2bdc3afc2bfc2bdc3afc2bfc2bdc3afc2bfc2bd2bc3afc2bfc2bdc3afc2bfc2bd21c3afc2bfc2bd03c3afc2bfc2bd2512c3afc2bfc2bd6504021441c3afc2bfc2bdc3afc2bfc2bdc3afc2bfc2bd7ec3afc2bfc2bd0c02c3afc2bfc2bd1bc3afc2bfc2bd06c3afc2bfc2bd362ac3afc2bfc2bdc3afc2bfc2bd34c3afc2bfc2bd5b000000003030323478c3afc2bfc2bd0bc3afc2bfc2bd0f710d0e3130363030340b492d2e0100271204c3afc2bfc2bd', 'hex');
-        const ticket = Buffer.from('2355543031333431353030303033302e021500c28bc3abc283c385c39b49c2924a13c287c3a9c29ec395c28fc3a2c38c59c2aac28ac28c021500c3b66f662724c38a0b49c2a95d7fc281c2810cc2bfc2a5696d06c3ad00003031373078c29c4d4ec3810ac2824014c3bcc295c3b70125c3b376c39b6cc2bd09c28a1dc2b2c28434c3a8144b6c21c2a50777c3bdc3bf56106d18c39ec3a1c38d0c33c38dc3a3c298c2a719185052c3ae58710cc3854ac3913fc2a0c2a10438660ec2b62c276a1ec3b529c2bdc287106bc38e2fc3970621c28d09c38133c39d436906c39fc3b6c286c38ac391793b74c2a6c3afc381c2abc2bcc2afc38dc39bc2bac2ba7d7ec2acc2a7c3aa3b3ac2884514c2ba1a6cc3abc29c1f5fc296181bc2ba15672ac2ac33c29d1fc38cc398412e4e29451c4145c393320212602bc3b4c3bac290c389c2bc6a2e0dc28c02596bc3bc005e033b47','hex');
-        it('should return an object on sucess', ()=>{
-            return  bcr.ZXing(dummy).should.eventually.be.an('object');
-        });
-         it('should be fulfilled', ()=>{
-            return bcr.ZXing(dummy).should.be.fulfilled;
-        });
-        it('should have property of raw', ()=>{
-            return bcr.ZXing(dummy)
-            .should.eventually.have.deep.property('raw');
-        });
-        it('should return the ticket data', ()=>{
-            return bcr.ZXing(dummy)
-            .should.eventually.have.deep.property('raw', ticket);
-        });
-    });
-});
+  describe('barcode-reader.ZXing', function () {
+    this.timeout(4500)
+    const dummy = 'test/images/barcode-dummy2.png'
+        // const ticket = Buffer.from('2355543031303038303030303036302c021402c3afc2bfc2bd68c3afc2bfc2bdc3afc2bfc2bdc3afc2bfc2bdc3afc2bfc2bdc3afc2bfc2bd2bc3afc2bfc2bdc3afc2bfc2bd21c3afc2bfc2bd03c3afc2bfc2bd2512c3afc2bfc2bd6504021441c3afc2bfc2bdc3afc2bfc2bdc3afc2bfc2bd7ec3afc2bfc2bd0c02c3afc2bfc2bd1bc3afc2bfc2bd06c3afc2bfc2bd362ac3afc2bfc2bdc3afc2bfc2bd34c3afc2bfc2bd5b000000003030323478c3afc2bfc2bd0bc3afc2bfc2bd0f710d0e3130363030340b492d2e0100271204c3afc2bfc2bd', 'hex');
+    const ticket = Buffer.from('2355543031333431353030303033302e021500c28bc3abc283c385c39b49c2924a13c287c3a9c29ec395c28fc3a2c38c59c2aac28ac28c021500c3b66f662724c38a0b49c2a95d7fc281c2810cc2bfc2a5696d06c3ad00003031373078c29c4d4ec3810ac2824014c3bcc295c3b70125c3b376c39b6cc2bd09c28a1dc2b2c28434c3a8144b6c21c2a50777c3bdc3bf56106d18c39ec3a1c38d0c33c38dc3a3c298c2a719185052c3ae58710cc3854ac3913fc2a0c2a10438660ec2b62c276a1ec3b529c2bdc287106bc38e2fc3970621c28d09c38133c39d436906c39fc3b6c286c38ac391793b74c2a6c3afc381c2abc2bcc2afc38dc39bc2bac2ba7d7ec2acc2a7c3aa3b3ac2884514c2ba1a6cc3abc29c1f5fc296181bc2ba15672ac2ac33c29d1fc38cc398412e4e29451c4145c393320212602bc3b4c3bac290c389c2bc6a2e0dc28c02596bc3bc005e033b47', 'hex')
+    it('should return an object on sucess', () => {
+      return bcr.ZXing(dummy).should.eventually.be.an('object')
+    })
+    it('should be fulfilled', () => {
+      return bcr.ZXing(dummy).should.be.fulfilled
+    })
+    it('should have property of raw', () => {
+      return bcr.ZXing(dummy)
+            .should.eventually.have.deep.property('raw')
+    })
+    it('should return the ticket data', () => {
+      return bcr.ZXing(dummy)
+            .should.eventually.have.deep.property('raw', ticket)
+    })
+  })
+})
