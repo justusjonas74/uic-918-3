@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/justusjonas74/uic-918-3.svg?branch=master)](https://travis-ci.org/justusjonas74/uic-918-3)
 [![Coverage Status](https://coveralls.io/repos/github/justusjonas74/uic-918-3/badge.svg?branch=master)](https://coveralls.io/github/justusjonas74/uic-918-3?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a9c146a8fdf552dbbcc/maintainability)](https://codeclimate.com/github/justusjonas74/uic-918-3/maintainability)
+[![npm version](https://badge.fury.io/js/uic-918-3.svg)](https://badge.fury.io/js/uic-918-3)
 
 A Node.js package for decoding and parsing barcodes according to the "UIC 918.3" specification, which is commonly used on Print and Mobile Tickets from public transport companies (e.g. Deutsche Bahn).
 
@@ -41,19 +42,11 @@ convert your-ticket-00x.ppm your-ticket-00x.png;
 ```javascript
 const uic = require('uic-918-3');
 
-const file_path = '/path/to/your/file.png';
+const file_path = '/path/to/your/file.png'; // could also be a Buffer
 
-const onFulfilledFunction = (data) => {
-  // Handle the Ticket object after parsing
-  console.log(data);
-};
-
-const onRejectedFunction = (reason) => {
-  // Handle Errors
-  console.log(reason);
-};
-
-uic.readBarcode(file_path).then(onFulfilledFunction).then(onRejectedFunction);
+uic.readBarcode(file_path).then((ticket)=>{
+  //do something with the ticket
+});
 ```
 
 The `data` object consists of (among other things) one or more TicketDataContainers which hold ticket data for different purposes. The most interesting containers are:
