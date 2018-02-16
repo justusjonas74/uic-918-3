@@ -1,6 +1,7 @@
 # uic-918-3.js
 [![Build Status](https://travis-ci.org/justusjonas74/uic-918-3.svg?branch=master)](https://travis-ci.org/justusjonas74/uic-918-3)
 [![Coverage Status](https://coveralls.io/repos/github/justusjonas74/uic-918-3/badge.svg?branch=master)](https://coveralls.io/github/justusjonas74/uic-918-3?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8a9c146a8fdf552dbbcc/maintainability)](https://codeclimate.com/github/justusjonas74/uic-918-3/maintainability)
 
 A Node.js package for decoding and parsing barcodes according to the "UIC 918.3" specification, which is commonly used on Print and Mobile Tickets from public transport companies (e.g. Deutsche Bahn).
 
