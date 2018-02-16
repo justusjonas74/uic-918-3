@@ -152,6 +152,19 @@ describe('utils.js', ()=>{
             utils.pad("11",4).should.be.equal('0011');
         });
     });
+    
+    describe('utils.arrayDefinedAndNotEmpty',()=>{
+        it('should return true on array with items', ()=>{
+            utils.arrayDefinedAndNotEmpty([1,2,3]).should.be.true;
+        });
+        it('should return false on array without items', ()=>{
+            utils.arrayDefinedAndNotEmpty([]).should.be.false;
+        });
+        it('should return false on undefined input', ()=>{
+            var input;
+            utils.arrayDefinedAndNotEmpty(input).should.be.false;
+        });
+    });
     describe('utils.assignArrayToObj', ()=>{
         const TEST_DATA = [
                 {hello: 'world'},
