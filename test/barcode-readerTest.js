@@ -1,6 +1,9 @@
 const bcr = require('../lib/barcode-reader')
 
 var chai = require('chai')
+var dirtyChai = require('dirty-chai')
+chai.use(dirtyChai)
+
 chai.should()
 var chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
@@ -15,7 +18,7 @@ describe('barcode-reader.js', () => {
       return bcr.ZXing(dummy).should.eventually.be.an('object')
     })
     it('should be fulfilled', () => {
-      return bcr.ZXing(dummy).should.be.fulfilled
+      return bcr.ZXing(dummy).should.be.fulfilled()
     })
     it('should have property of raw', () => {
       return bcr.ZXing(dummy)

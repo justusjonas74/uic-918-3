@@ -1,4 +1,7 @@
 var chai = require('chai')
+var dirtyChai = require('dirty-chai')
+chai.use(dirtyChai)
+
 chai.use(require('chai-properties'))
 chai.should()
 

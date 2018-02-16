@@ -1,5 +1,7 @@
 var chai = require('chai')
 // var should = chai.should()
+var dirtyChai = require('dirty-chai')
+chai.use(dirtyChai)
 chai.should()
 
 var helper = require('./helper')
