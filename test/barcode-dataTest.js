@@ -6,23 +6,23 @@ chai.should()
 
 var helper = require('./helper')
 
-const bcd = require('../lib/barcode-data')
+const interpretBarcode = require('../lib/barcode-data')
 
 describe('barcode-data', () => {
   describe('barcode-data.interpret', () => {
     it('should return an object', () => {
       const ticket = helper.dummyTicket('U_HEAD', '01', 'Hi!')
-      bcd.interpret(ticket).should.be.an('object')
+      interpretBarcode(ticket).should.be.an('object')
     })
     it('should return an empty array if input param is an empty buffer.', () => {
-      bcd.interpret(Buffer.from('')).ticketContainers.should.be.an('array').and.be.empty()
+      interpretBarcode(Buffer.from('')).ticketContainers.should.be.an('array').and.be.empty()
     })
 
     describe('on unknown data fields', () => {
       var results
       beforeEach((done) => {
         const ticket = helper.dummyTicket('MYID!!', '01', 'Test')
-        results = bcd.interpret(ticket).ticketContainers
+        results = interpretBarcode(ticket).ticketContainers
         done()
       })
       it('should ignore unkown data fields', () => {
@@ -39,7 +39,7 @@ describe('barcode-data', () => {
       var results
       beforeEach((done) => {
         const ticket = helper.dummyTicket('U_HEAD', '03', 'Test')
-        results = bcd.interpret(ticket).ticketContainers
+        results = interpretBarcode(ticket).ticketContainers
         done()
       })
       it('should ignore unkown versions of data fields', () => {

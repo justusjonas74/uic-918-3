@@ -1,5 +1,5 @@
 const barcodeReader = require('./lib/barcode-reader.js')
-const barcodeData = require('./lib/barcode-data.js')
+const interpretBarcode = require('./lib/barcode-data.js')
 const fixingZXing = require('./lib/fixingZXing')
 const fileExists = require('./lib/fileExists')
 
@@ -16,14 +16,14 @@ function fileWillExists (filePath) {
 
 const fixZXING = (res) => { return Promise.resolve(fixingZXing(res.raw)) }
 const readZxing = (filePath) => barcodeReader.ZXing(filePath)
-const interpretBarcode = (res) => { return Promise.resolve(barcodeData.interpret(res)) }
+const interpretBarcodeFn = (res) => { return Promise.resolve(interpretBarcode(res)) }
 
 let readBarcode = function (filePath) {
   return new Promise((resolve, reject) => {
     fileWillExists(filePath)
       .then(readZxing)
       .then(fixZXING)
-      .then(interpretBarcode)
+      .then(interpretBarcodeFn)
       .then((res) => resolve(res))
       .catch((err) => reject(err))
   })
