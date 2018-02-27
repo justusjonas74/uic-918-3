@@ -1,6 +1,6 @@
 {
   "name": "uic-918-3",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "index.js",
   "scripts": {
