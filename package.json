@@ -13,6 +13,8 @@
   "dependencies": {
     "enum": "^2.5.0",
     "iconv-lite": "^0.4.19",
+    "request": "^2.85.0",
+    "xml2js": "^0.4.19",
     "zebra-crossing": "^0.1.1"
   },
   "directories": {
@@ -26,7 +28,7 @@
     "coveralls": "^3.0.0",
     "dirty-chai": "^2.0.1",
     "istanbul": "^0.4.5",
-    "mocha": "^5.0.0",
+    "mocha": "^5.1.1",
     "randomstring": "^1.1.5",
     "standard": "^10.0.3"
   },
