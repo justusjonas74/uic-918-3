@@ -6,13 +6,16 @@
   "scripts": {
     "standard-fix": "standard --fix",
     "test": "standard && NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcov -- -R spec",
-    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "postinstall": "node ./updateCerts.js"
   },
   "author": "Francis Doege",
   "license": "MIT",
   "dependencies": {
     "enum": "^2.5.0",
     "iconv-lite": "^0.4.19",
+    "jsrsasign": "^8.0.12",
+    "jsrsasign-util": "^1.0.0",
     "request": "^2.85.0",
     "xml2js": "^0.4.19",
     "zebra-crossing": "^0.1.1"
