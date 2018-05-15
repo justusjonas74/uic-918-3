@@ -1,9 +1,7 @@
 var chai = require('chai')
-var dirtyChai = require('dirty-chai')
 
 chai.use(require('chai-things'))
 chai.use(require('chai-properties'))
-chai.use(dirtyChai)
 chai.should()
 
 const bt = require('../lib/block-types')

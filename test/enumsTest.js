@@ -1,8 +1,5 @@
 var chai = require('chai')
-var dirtyChai = require('dirty-chai')
-
 chai.use(require('chai-properties'))
-chai.use(dirtyChai)
 chai.should()
 
 const enums = require('../lib/enums')
@@ -14,7 +11,7 @@ describe('enums.sBlockTypes', () => {
     sBlockTypes.should.be.an.instanceof(Enum)
   })
   it('should not be empty', () => {
-    sBlockTypes.enums.should.not.be.empty()
+    sBlockTypes.enums.should.not.be.empty // eslint-disable-line no-unused-expressions
   })
 })
 describe('enums.id_types', () => {
@@ -23,7 +20,7 @@ describe('enums.id_types', () => {
     result.should.be.an.instanceof(Enum)
   })
   it('should not be empty', () => {
-    result.enums.should.not.be.empty()
+    result.enums.should.not.be.empty // eslint-disable-line no-unused-expressions
   })
 })
 describe('enums.efm_produkt', () => {

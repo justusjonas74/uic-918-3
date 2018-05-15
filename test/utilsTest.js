@@ -1,6 +1,4 @@
 var chai = require('chai')
-var dirtyChai = require('dirty-chai')
-chai.use(dirtyChai)
 
 chai.should()
 
@@ -39,7 +37,7 @@ describe('utils.js', () => {
       const data = Buffer.from('Test')
       const fields = []
       const result = utils.interpretField(data, fields)
-      result.should.be.empty()
+      result.should.be.empty // eslint-disable-line no-unused-expressions
     })
     it('should parse a buffer using a given data field specification', () => {
       const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21])
@@ -106,14 +104,14 @@ describe('utils.js', () => {
 
   describe('utils.arrayDefinedAndNotEmpty', () => {
     it('should return true on array with items', () => {
-      utils.arrayDefinedAndNotEmpty([1, 2, 3]).should.be.true()
+      utils.arrayDefinedAndNotEmpty([1, 2, 3]).should.be.true // eslint-disable-line no-unused-expressions
     })
     it('should return false on array without items', () => {
-      utils.arrayDefinedAndNotEmpty([]).should.be.false()
+      utils.arrayDefinedAndNotEmpty([]).should.be.false // eslint-disable-line no-unused-expressions
     })
     it('should return false on undefined input', () => {
       var input
-      utils.arrayDefinedAndNotEmpty(input).should.be.false()
+      utils.arrayDefinedAndNotEmpty(input).should.be.false // eslint-disable-line no-unused-expressions
     })
   })
   describe('utils.assignArrayToObj', () => {

@@ -1,9 +1,5 @@
 var chai = require('chai')
-var dirtyChai = require('dirty-chai')
-chai.use(dirtyChai)
-
 chai.should()
-
 var randomstring = require('randomstring')
 
 const fixingZXing = require('../lib/fixingZXing')

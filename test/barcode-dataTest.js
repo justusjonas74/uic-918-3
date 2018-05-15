@@ -1,7 +1,4 @@
 var chai = require('chai')
-// var should = chai.should()
-var dirtyChai = require('dirty-chai')
-chai.use(dirtyChai)
 chai.should()
 
 var helper = require('./helper')
@@ -15,7 +12,8 @@ describe('barcode-data', () => {
       interpretBarcode(ticket).should.be.an('object')
     })
     it('should return an empty array if input param is an empty buffer.', () => {
-      interpretBarcode(Buffer.from('')).ticketContainers.should.be.an('array').and.be.empty()
+      interpretBarcode(Buffer.from('')).ticketContainers.should.be.an('array')
+      interpretBarcode(Buffer.from('')).ticketContainers.should.be.empty // eslint-disable-line no-unused-expressions
     })
 
     describe('on unknown data fields', () => {
@@ -26,7 +24,7 @@ describe('barcode-data', () => {
         done()
       })
       it('should ignore unkown data fields', () => {
-        results.should.not.be.empty()
+        results.should.not.be.empty // eslint-disable-line no-unused-expressions
       })
       it('should parse the unknown container id', () => {
         results[0].id.should.be.equal('MYID!!')
@@ -43,7 +41,7 @@ describe('barcode-data', () => {
         done()
       })
       it('should ignore unkown versions of data fields', () => {
-        results.should.not.be.empty()
+        results.should.not.be.empty // eslint-disable-line no-unused-expressions
       })
       it('should parse the unknown container id', () => {
         results[0].id.should.be.equal('U_HEAD')

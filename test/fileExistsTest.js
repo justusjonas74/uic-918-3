@@ -1,6 +1,4 @@
 var chai = require('chai')
-var dirtyChai = require('dirty-chai')
-chai.use(dirtyChai)
 
 chai.should()
 
@@ -20,18 +18,18 @@ describe('fileExists', () => {
     done()
   })
   it('should return false if no file path given', () => {
-    fileExists(null).should.be.false()
+    fileExists(null).should.be.false // eslint-disable-line no-unused-expressions
   })
   it('should return false if a file with relative path isn\'t found', () => {
-    fileExists(filePath.relative_false).should.be.false()
+    fileExists(filePath.relative_false).should.be.false // eslint-disable-line no-unused-expressions
   })
   it('should return true if a file with relative path is found', () => {
-    fileExists(filePath.relative_true).should.be.true()
+    fileExists(filePath.relative_true).should.be.true // eslint-disable-line no-unused-expressions
   })
   it('should return false if a file with absolute path isn\'t found', () => {
-    fileExists(filePath.absolute_false).should.be.false()
+    fileExists(filePath.absolute_false).should.be.false // eslint-disable-line no-unused-expressions
   })
   it('should return true if a file with absolute path is found', () => {
-    fileExists(filePath.absolute_true).should.be.true()
+    fileExists(filePath.absolute_true).should.be.true // eslint-disable-line no-unused-expressions
   })
 })
