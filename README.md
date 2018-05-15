@@ -49,13 +49,26 @@ uic.readBarcode(file_path).then((ticket)=>{
   //do something with the ticket
 });
 ```
+### Options
+Following options are available:
+```javascript
+const options = {
+    verifySignature: true // Verify the signature included in the ticket barcode with a public key set from a Public Key Infrastructure (PKI). The PKI url is set inside './lib/cert_url.json'. Default is 'false'.
+}
 
-The `data` object consists of (among other things) one or more TicketDataContainers which hold ticket data for different purposes. The most interesting containers are:
+uic.readBarcode(file_path, options).then((ticket)=>{
+  console.log(ticket.isSignatureValid) // Returns 'true' or 'false'.
+});
+// 
+```
 
-* **U_HEAD** The ticket header ...
-* **U_TLAY** A representation of the informations which are printed on the ticket.
-* **0080BL** A specific container on tickets from Deutsche Bahn. Consists of all relevant information which will be used for proof-of-payment checks on the train.
-* **0080VU** A specific container on (some) tickets from Deutsche Bahn. This container is used on products, which are also accepted by other carriers, especially (local) public transport companies. Get more information about this container [here](https://www.bahn.de/vdv-barcode).
+### Returning object
+The returning object consists of (among other things) one or more `TicketDataContainers` which hold ticket data for different purposes. The most interesting containers are:
+
+* `**U_HEAD**` The ticket header ...
+* `**U_TLAY**` A representation of the informations which are printed on the ticket.
+* `**0080BL**` A specific container on tickets from Deutsche Bahn. Consists of all relevant information which will be used for proof-of-payment checks on the train.
+* `**0080VU**` A specific container on (some) tickets from Deutsche Bahn. This container is used on products, which are also accepted by other carriers, especially (local) public transport companies. Get more information about this container [here](https://www.bahn.de/vdv-barcode).
 
 ## Expected Quality
 The *UIC 913.3* specifications aren't available for free, so the whole underlying logic is build upon third party sources, particularly the Python script [onlineticket](https://github.com/rumpeltux/onlineticket/) from Hagen Fritzsch, the [diploma thesis](https://monami.hs-mittweida.de/files/4983/WaitzRoman_Diplomarbeit.pdf) from Roman Waitz and the Wikipedia discussion about [Online-Tickets](https://de.wikipedia.org/wiki/Diskussion:Online-Ticket). Therefore results from this package (especially the parsing logic) should be taken with care.
