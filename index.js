@@ -20,19 +20,19 @@ const fixZXING = (res) => { return Promise.resolve(fixingZXing(res.raw)) }
 const readZxing = (filePath) => barcodeReader.ZXing(filePath)
 const interpretBarcodeFn = (res) => { return Promise.resolve(interpretBarcode(res)) }
 
-const checkSignature = async function (ticket, verifyTicket) { 
+const checkSignature = async function (ticket, verifyTicket) {
   if (verifyTicket) {
     let isValid = await verifySignature(ticket)
-    ticket.isSignatureValid = isValid 
-  } 
+    ticket.isSignatureValid = isValid
+  }
   return ticket
 }
 
-let readBarcode = function(filePath, options = {}) {
+let readBarcode = function (filePath, options = {}) {
   let defaults = {
     verifySignature: false
-  };
-  let opts = Object.assign({}, defaults, options);
+  }
+  let opts = Object.assign({}, defaults, options)
 
   return new Promise((resolve, reject) => {
     fileWillExists(filePath)

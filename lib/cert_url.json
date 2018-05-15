@@ -1,4 +1,4 @@
 {
     "url": "https://railpublickey.uic.org/download.php",
-    "file_name": "keys.json"
+    "fileName": "../keys.json"
 }
