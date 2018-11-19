@@ -126,11 +126,9 @@ describe('utils.js', () => {
       result.should.be.an('object')
     })
     it('should have all given properties', () => {
-      result.should.have.properties({
-        hello: 'world',
-        thats: 's',
-        a: 'test'
-      })
+      result.should.have.deep.property('hello', 'world')
+      result.should.have.deep.property('thats', 's')
+      result.should.have.deep.property('a', 'test')
     })
   })
 })

@@ -1,7 +1,7 @@
 var chai = require('chai')
 
 chai.use(require('chai-things'))
-chai.use(require('chai-properties'))
+// chai.use(require('chai-properties'))
 chai.should()
 
 const bt = require('../lib/block-types')
@@ -106,14 +106,12 @@ describe('block-types.js', () => {
                         .and.all.have.property('value')
       })
       it('should parse the content of properties correctly', () => {
-        result[0].should.have.properties({
-          line: 0,
-          column: 0,
-          height: 1,
-          width: 71,
-          style: 0,
-          value: 'Martina Mustermann'
-        })
+        result[0].should.have.deep.property('line', 0)
+        result[0].should.have.deep.property('column', 0)
+        result[0].should.have.deep.property('height', 1)
+        result[0].should.have.deep.property('width', 71)
+        result[0].should.have.deep.property('style', 0)
+        result[0].should.have.deep.property('value', 'Martina Mustermann')
       })
     })
     describe('auftraegeSblocks_V3', () => {
@@ -124,14 +122,12 @@ describe('block-types.js', () => {
         result.should.be.an('object')
       })
       it('should return an object with correct properties', () => {
-        result.should.have.properties({
-          auftrag_count: 1,
-          auftrag_1: {
-            valid_from: '01012018',
-            valid_to: '01012018',
-            serial: '278941452\u0000'
-          },
-          sblock_amount: 16
+        result.should.have.deep.property('auftrag_count', 1)
+        result.should.have.deep.property('sblock_amount', 16)
+        result.should.have.deep.property('auftrag_1', {
+          valid_from: '01012018',
+          valid_to: '01012018',
+          serial: '278941452\u0000'
         })
       })
       describe('auftraegeSblocks_V3.sblocks', () => {
@@ -151,16 +147,14 @@ describe('block-types.js', () => {
         result.should.be.an('object')
       })
       it('should return an object with correct properties', () => {
-        result.should.have.properties({
-          auftrag_count: 1,
-          auftrag_1: {
-            certificate: '0123456789!',
-            padding: '3031323334353637383921',
-            valid_from: '01042018',
-            valid_to: '01042018',
-            serial: '01042018'
-          },
-          sblock_amount: 16
+        result.should.have.deep.property('auftrag_count', 1)
+        result.should.have.deep.property('sblock_amount', 16)
+        result.should.have.deep.property('auftrag_1', {
+          certificate: '0123456789!',
+          padding: '3031323334353637383921',
+          valid_from: '01042018',
+          valid_to: '01042018',
+          serial: '01042018'
         })
       })
     })

@@ -1,5 +1,4 @@
 var chai = require('chai')
-chai.use(require('chai-properties'))
 chai.should()
 
 const enums = require('../lib/enums')
@@ -27,23 +26,19 @@ describe('enums.efm_produkt', () => {
   it('should return an object', () => {
     enums.efm_produkt(6263, 1005).should.be.a('object')
   })
-  it('should have correct properties', () => {
-    enums.efm_produkt(6263, 1005).should.have.properties({
-      kvp_organisations_id: '6263 (DB Regio Zentrale)',
-      produkt_nr: '1005 (Bayern-Ticket)'
-    })
+  it('should have correct property kvp_organisations_id', () => {
+    enums.efm_produkt(6263, 1005).should.have.deep.property('kvp_organisations_id', '6263 (DB Regio Zentrale)')
+  })
+  it('should have correct property produkt_nr', () => {
+    enums.efm_produkt(6263, 1005).should.have.deep.property('produkt_nr', '1005 (Bayern-Ticket)')
   })
   it('should ignore unknow products', () => {
-    enums.efm_produkt(6263, 1).should.have.properties({
-      kvp_organisations_id: '6263 (DB Regio Zentrale)',
-      produkt_nr: '1'
-    })
+    enums.efm_produkt(6263, 1).should.have.deep.property('kvp_organisations_id', '6263 (DB Regio Zentrale)')
+    enums.efm_produkt(6263, 1).should.have.deep.property('produkt_nr', '1')
   })
   it('should ignore unknow organisations', () => {
-    enums.efm_produkt(815, 1005).should.have.properties({
-      kvp_organisations_id: '815',
-      produkt_nr: '1005'
-    })
+    enums.efm_produkt(815, 1005).should.have.deep.property('kvp_organisations_id', '815')
+    enums.efm_produkt(815, 1005).should.have.deep.property('produkt_nr', '1005')
   })
 })
 
