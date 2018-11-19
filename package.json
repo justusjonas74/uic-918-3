@@ -1,6 +1,6 @@
 {
   "name": "uic-918-3",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "iconv-lite": "^0.4.24",
     "jsrsasign": "^8.0.12",
     "lodash": "^4.17.11",
+    "ot-aztec-extract": "git+https://github.com/pbock/ot-aztec-extract.git",
     "request": "^2.88.0",
     "xml2js": "^0.4.19",
     "zebra-crossing": "^0.1.1"
