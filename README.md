@@ -43,9 +43,12 @@ convert your-ticket-00x.ppm your-ticket-00x.png;
 ```javascript
 const uic = require('uic-918-3');
 
-const file_path = '/path/to/your/file.png'; // could also be a Buffer
+// Input could be a string with path to image... 
+const image = '/path/to/your/file.png'; 
+// ... or a Buffer object with an image  
+const image_as_buffer = fs.readFileSync('/path/to/your/file.png');
 
-uic.readBarcode(file_path).then((ticket)=>{
+uic.readBarcode(image).then((ticket)=>{
   //do something with the ticket
 });
 ```

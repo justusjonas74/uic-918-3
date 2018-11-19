@@ -1,30 +1,21 @@
 const barcodeReader = require('./lib/barcode-reader.js')
 const interpretBarcode = require('./lib/barcode-data.js')
 const fixingZXing = require('./lib/fixingZXing')
-const fileExists = require('./lib/fileExists')
+const {loadFileOrBuffer} = require('./lib/checkInput')
+const pdfReader = require('./lib/pdfReader')
+// const {checkInput} = require('./lib/utils')
 
 const verifySignature = require('./lib/check_signature').verifyTicket
 
-// TODO: Move this to lib/fileExists.js
-function fileWillExists (filePath) {
-  return new Promise((resolve, reject) => {
-    if (fileExists(filePath)) {
-      resolve(filePath)
-    } else {
-      reject(new Error(`${filePath} not found.`))
-    }
-  })
-}
-
-const checkInput = (input) => {
-  if (typeof input === 'string') {
-    return fileWillExists(input)
-  } else if (input instanceof Buffer) {
-    return Promise.resolve(input)
-  } else {
-    return Promise.reject(new Error(`Error: Input must be a Buffer (Image) or a String (path to image)`))
-  }
-}
+// const checkInput = (input, stringCallback =null, bufferCallback = null , defaultCallback = null) => {
+//   if (typeof input === 'string') {
+//     return fileWillExists(input)
+//   } else if (input instanceof Buffer) {
+//     return Promise.resolve(input)
+//   } else {
+//     return Promise.reject(new Error(`Error: Input must be a Buffer (Image) or a String (path to image)`))
+//   }
+// }
 
 const fixZXING = (res) => { return Promise.resolve(fixingZXing(res.raw)) }
 const readZxing = (filePath) => barcodeReader.ZXing(filePath)
@@ -38,7 +29,7 @@ const checkSignature = async function (ticket, verifyTicket) {
   return ticket
 }
 
-let readBarcode = function (input, options = {}) {
+const readBarcode = function (input, options = {}) {
   let defaults = {
     verifySignature: false
   }
@@ -46,7 +37,7 @@ let readBarcode = function (input, options = {}) {
 
   return new Promise((resolve, reject) => {
     // fileWillExists(filePath)
-    checkInput(input)
+    loadFileOrBuffer(input)
       .then(readZxing)
       .then(fixZXING)
       .then(interpretBarcodeFn)
@@ -55,5 +46,12 @@ let readBarcode = function (input, options = {}) {
       .catch((err) => reject(err))
   })
 }
-
-module.exports = { readBarcode }
+const readPDFBarcode = (input, options) => {
+  return new Promise((resolve, reject) => {
+    pdfReader(input)
+      .then(x => readBarcode(x, options))
+      .then((res) => resolve(res))
+      .catch((err) => reject(err))
+  })
+}
+module.exports = { readBarcode, readPDFBarcode }

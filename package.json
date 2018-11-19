@@ -16,6 +16,7 @@
     "iconv-lite": "^0.4.24",
     "jsrsasign": "^8.0.12",
     "lodash": "^4.17.11",
+    "ot-aztec-extract": "git+https://github.com/pbock/ot-aztec-extract.git",
     "request": "^2.88.0",
     "xml2js": "^0.4.19",
     "zebra-crossing": "^0.1.1"
