@@ -44,5 +44,19 @@ describe('index.js', () => {
         return main.readBarcode(dummy3Buff, {verifySignature: true}).should.eventually.have.property('isSignatureValid')
       })
     })
+    describe('...when input is something else', () => {
+      it('should reject if input is array', () => {
+        return main.readBarcode([1, 2, 3]).should.be.rejected
+      })
+      it('should reject if input is array', () => {
+        return main.readBarcode([1, 2, 3]).should.be.rejected
+      })
+      it('should reject if input is object', () => {
+        return main.readBarcode({'nr': 3}).should.be.rejected
+      })
+      it('should reject if input is null', () => {
+        return main.readBarcode().should.be.rejected
+      })
+    })
   })
 })
