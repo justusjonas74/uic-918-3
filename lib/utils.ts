@@ -1,13 +1,15 @@
-exports.stringifyBufferObj = function (obj) {
-  for (const key in obj) {
-    if (Buffer.isBuffer(obj[key])) {
-      obj[key] = obj[key].toString()
-    }
-  }
-  return obj
-}
+// Does not to be used....
 
-exports.interpretField = function (data, fields) {
+// export function stringifyBufferObj (obj) {
+//   for (const key in obj) {
+//     if (Buffer.isBuffer(obj[key])) {
+//       obj[key] = obj[key].toString()
+//     }
+//   }
+//   return obj
+// }
+
+export function interpretField (data, fields) {
   var remainder = data
   var res = {}
   fields.forEach(f => {
@@ -27,7 +29,7 @@ exports.interpretField = function (data, fields) {
   return res
 }
 
-exports.parseContainers = function (data, f) {
+export function parseContainers (data, f) {
   // f is a function which returns an array with a interpreted value from data and the remaining data as the second item
   var remainder = data
   var containers = []
@@ -40,15 +42,15 @@ exports.parseContainers = function (data, f) {
   return containers
 }
 
-function myConsoleLogFn (str) {
+
+
+export function myConsoleLog (str) : void  {
   /* following if statement is never fired up during test, so should be ignored */
   /* istanbul ignore if  */
   if (process.env.NODE_ENV !== 'test') { console.error(str) }
 }
 
-exports.myConsoleLog = myConsoleLogFn
-
-function pad (number, length) {
+export function pad (number, length) {
   var str = '' + number
   while (str.length < length) {
     str = '0' + str
@@ -56,14 +58,6 @@ function pad (number, length) {
   return str
 }
 
-exports.pad = pad
-
-exports.assignArrayToObj = (arr) => {
-  const reducer = (accumulator, currentValue) => Object.assign({}, accumulator, currentValue)
-  return arr.reduce(reducer)
-  // var obj = Object.assign({}, o1, o2, o3);
-}
-
-exports.arrayDefinedAndNotEmpty = (arr) => {
+export function arrayDefinedAndNotEmpty (arr) {
   return (typeof arr !== 'undefined' && arr.length > 0)
 }

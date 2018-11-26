@@ -1,0 +1,117 @@
+const utils = require('./utils.js')
+const KA_DATA = require('./ka-data.js')
+import {tarifpunkteData, orgIdData, efmProdukteData} from './ka-data.js'
+
+export function orgId (orgId:number) : string {
+  const res: string = orgIdData[orgId] ? orgIdData[orgId] : orgId.toString()
+  return res
+}
+
+export function tarifpunkt (orgId:number, tp:number) : string {
+  // var res:string
+  // try {
+  //   res = tarifpunkteData[orgId][tp]
+  // } catch (e) {
+  //   utils.myConsoleLog(e)
+  // }
+  // if (res) {
+  //   return res
+  // } else {
+  //   return tp.toString()
+  }
+  var res:string
+  try {
+    res = tarifpunkteData[orgId][tp]
+  } catch (e) {
+    utils.myConsoleLog(e)
+  }
+  return res ? res : tp.toString()
+}
+
+interface EFMProdukt {
+    produkt_nr: string?,
+    kvp_organisations_id: string
+}
+
+export function efm_produkt (orgId:number, produktId:number) : EFMProdukt  {
+  var kvp_organisations_id : string = orgid(orgId)
+  var produkt_nr: string
+  try {
+    produkt_nr = efmProdukteData[orgId][produktId]
+  } catch (e) {
+    utils.myConsoleLog(e)
+    produkt_nr = produktId.toString()
+  } 
+  return {produkt_nr: produkt_nr, kvp_organisations_id: kvp_organisations_id }
+}
+
+export enum SBlockTypes {
+  Preismodell = 1,
+  ProduktklasseGesamtticket = 2,
+  ProduktklasseHinfahrt = 3,
+  ProduktklasseRückfahrt = 4,
+  Passagiere = 9,
+  Kinder = 12,
+  Klasse = 14,
+  HinfahrtStartBf = 15,
+  HinfahrtZielBf = 16,
+  RueckfahrtStartBf = 17,
+  RueckfahrtZielBf = 18,
+  Vorgangsnr = 19,
+  Vertragspartner = 20,
+  VIA = 21,
+  Personenname = 23,
+  Preisart = 26,
+  AusweisID = 27,
+  VornameName = 28,
+  GueltigVon = 31,
+  GueltigBis = 32,
+  StartBfID = 35,
+  ZielBfID = 36,
+  AnzahlPersonen = 40,
+  TBDEFSAnzahl =  41
+  // 'Preismodell': 1,
+  // 'Produktklasse Gesamtticket': 2,
+  // 'Produktklasse Hinfahrt': 3,
+  // 'Produktklasse Rückfahrt': 4,
+  // 'Passagiere': 9,
+  // 'Kinder': 12,
+  // 'Klasse': 14,
+  // 'H-Start-Bf': 15,
+  // 'H-Ziel-Bf': 16,
+  // 'R-Start-Bf': 17,
+  // 'R-Ziel-Bf': 18,
+  // 'Vorgangsnr./Flugscheinnr.': 19,
+  // 'Vertragspartner': 20,
+  // 'VIA': 21,
+  // 'Personenname': 23,
+  // 'Preisart': 26,
+  // 'Ausweis-ID': 27,
+  // 'Vorname, Name': 28,
+  // 'Gueltig von': 31,
+  // 'Gueltig bis': 32,
+  // 'Start-Bf-ID': 35,
+  // 'Ziel-Bf-ID': 36,
+  // 'Anzahl Personen': 40,
+  // 'TBD EFS Anzahl': 41
+}
+
+// exports.TBD0 = new Enum({
+//   /* # '00' bei Schönem WE-Ticket / Ländertickets / Quer-Durchs-Land
+//   # '00' bei Vorläufiger BC
+//   # '02' bei Normalpreis Produktklasse C/B, aber auch Ausnahmen
+//   # '03' bei normalem IC/EC/ICE Ticket
+//   # '04' Hinfahrt A, Rückfahrt B; Rail&Fly ABC; Veranstaltungsticket; auch Ausnahmen
+//   # '05' bei Facebook-Ticket, BC+Sparpreis+neue BC25 [Ticket von 2011]
+//   # '18' bei Kauf via Android App */
+// })
+
+export enum IDTypes {
+  CC = 1,
+  BC = 4,
+  EC = 7,
+  BCbusiness = 8,
+  Personalausweis = 9,
+  Reisepass = 10,
+  bahnBonusCard = 11
+}

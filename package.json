@@ -4,6 +4,7 @@
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "lib/index.js",
   "scripts": {
+    "tsc": "tsc",
     "standard-fix": "standard --fix",
     "test": "standard && NODE_ENV=test nyc mocha",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
@@ -12,12 +13,13 @@
   "author": "Francis Doege",
   "license": "MIT",
   "dependencies": {
-    "enum": "^2.5.0",
+    "@types/node": "^10.12.10",
     "iconv-lite": "^0.4.24",
     "jsrsasign": "^8.0.12",
     "lodash": "^4.17.11",
     "ot-aztec-extract": "git+https://github.com/pbock/ot-aztec-extract.git",
     "request": "^2.88.0",
+    "typescript": "^3.1.6",
     "xml2js": "^0.4.19",
     "zebra-crossing": "^0.1.1"
   },

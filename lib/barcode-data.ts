@@ -1,7 +1,7 @@
-const zlib = require('zlib')
+import zlib = require('zlib')
 
-const BLOCK_TYPES = require('./block-types.js') // Array with objects
-const utils = require('./utils.js')
+import BLOCK_TYPES = require('./block-types.js') // Array with objects
+import utils = require('./utils.js')
 
 // Get raw data and uncompress the TicketData
 function getHeader (data) {

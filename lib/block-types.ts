@@ -161,7 +161,7 @@ function auftraegeSblocks (x, A_LENGTH, fields) {
     res[bez] = utils.interpretField(x.slice(1 + (i * A_LENGTH), (i + 1) * A_LENGTH + 1), fields)
   }
   res.sblock_amount = parseInt(x.slice(A_LENGTH * res.auftrag_count + 1, A_LENGTH * res.auftrag_count + 3).toString(), 10)
-  res.sblocks = utils.assignArrayToObj(utils.parseContainers(x.slice(A_LENGTH * res.auftrag_count + 3), interpretSingleSBlock))
+  res.sblocks = assignArrayToObj(utils.parseContainers(x.slice(A_LENGTH * res.auftrag_count + 3), interpretSingleSBlock))
   return res
 }
 
@@ -266,3 +266,10 @@ module.exports = [{
     ]
   }
 }]
+
+
+function assignArrayToObj (arr) {
+  const reducer = (accumulator, currentValue) => Object.assign({}, accumulator, currentValue)
+  return arr.reduce(reducer)
+  // var obj = Object.assign({}, o1, o2, o3);
+}
