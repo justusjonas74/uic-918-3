@@ -2,12 +2,12 @@
   "name": "uic-918-3",
   "version": "0.4.0",
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "standard-fix": "standard --fix",
     "test": "standard && NODE_ENV=test nyc mocha",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "postinstall": "node ./updateCerts.js"
+    "postinstall": "node ./lib/updateCerts.js"
   },
   "author": "Francis Doege",
   "license": "MIT",

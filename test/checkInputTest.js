@@ -12,7 +12,7 @@ describe('checkInput.js', () => {
   var filePath = {}
 
   beforeEach((done) => {
-    const file = 'index.js'
+    const file = './lib/index.js'
     filePath.relative_true = file
     filePath.relative_false = file + '1458'
     filePath.absolute_true = path.resolve(file)

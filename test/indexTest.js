@@ -4,7 +4,7 @@ const fs = require('fs')
 chai.use(chaiAsPromised)
 chai.should()
 
-const main = require('../index')
+const main = require('../lib/index')
 
 describe('index.js', () => {
   describe('index.readBarcode', () => {
