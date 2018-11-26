@@ -18,26 +18,27 @@ export function tarifpunkt (orgId:number, tp:number) : string {
   //   return res
   // } else {
   //   return tp.toString()
-  }
-  var res:string
+  
+  let res : string
   try {
     res = tarifpunkteData[orgId][tp]
   } catch (e) {
     utils.myConsoleLog(e)
+    res = tp.toString()
   }
-  return res ? res : tp.toString()
+  return res
 }
 
 interface EFMProdukt {
-    produkt_nr: string?,
+    produkt_nr: string | null,
     kvp_organisations_id: string
 }
 
-export function efm_produkt (orgId:number, produktId:number) : EFMProdukt  {
-  var kvp_organisations_id : string = orgid(orgId)
+export function efm_produkt (org_id:number, produktId:number) : EFMProdukt  {
+  var kvp_organisations_id : string = orgId(org_id)
   var produkt_nr: string
   try {
-    produkt_nr = efmProdukteData[orgId][produktId]
+    produkt_nr = efmProdukteData[org_id][produktId]
   } catch (e) {
     utils.myConsoleLog(e)
     produkt_nr = produktId.toString()

@@ -5,7 +5,6 @@
         "target": "es6",
         "outDir": "./built",
         "allowJs": true,
-        "module": "commonjs",
         "noEmitOnError": true,
         "moduleResolution": "node",
         "baseUrl": ".",
