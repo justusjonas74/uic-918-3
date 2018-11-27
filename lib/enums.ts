@@ -1,6 +1,5 @@
-const utils = require('./utils.js')
-const KA_DATA = require('./ka-data.js')
-import {tarifpunkteData, orgIdData, efmProdukteData} from './ka-data.js'
+import {myConsoleLog} from './utils'
+import {tarifpunkteData, orgIdData, efmProdukteData} from './ka-data'
 
 export function orgId (orgId:number) : string {
   const res: string = orgIdData[orgId] ? orgIdData[orgId] : orgId.toString()
@@ -8,25 +7,13 @@ export function orgId (orgId:number) : string {
 }
 
 export function tarifpunkt (orgId:number, tp:number) : string {
-  // var res:string
-  // try {
-  //   res = tarifpunkteData[orgId][tp]
-  // } catch (e) {
-  //   utils.myConsoleLog(e)
-  // }
-  // if (res) {
-  //   return res
-  // } else {
-  //   return tp.toString()
-  
-  let res : string
+  let res : string | undefined = undefined
   try {
     res = tarifpunkteData[orgId][tp]
   } catch (e) {
-    utils.myConsoleLog(e)
-    res = tp.toString()
+    myConsoleLog(e)
   }
-  return res
+  return res ? res : tp.toString()
 }
 
 interface EFMProdukt {
@@ -35,14 +22,14 @@ interface EFMProdukt {
 }
 
 export function efm_produkt (org_id:number, produktId:number) : EFMProdukt  {
-  var kvp_organisations_id : string = orgId(org_id)
-  var produkt_nr: string
+  const kvp_organisations_id : string = orgId(org_id)
+  let produkt : string | undefined = undefined
   try {
-    produkt_nr = efmProdukteData[org_id][produktId]
+     produkt = efmProdukteData[org_id][produktId] 
   } catch (e) {
-    utils.myConsoleLog(e)
-    produkt_nr = produktId.toString()
-  } 
+    myConsoleLog(e)
+  }
+  const produkt_nr: string = produkt ? produkt : produktId.toString()
   return {produkt_nr: produkt_nr, kvp_organisations_id: kvp_organisations_id }
 }
 
@@ -50,7 +37,7 @@ export enum SBlockTypes {
   Preismodell = 1,
   ProduktklasseGesamtticket = 2,
   ProduktklasseHinfahrt = 3,
-  ProduktklasseRückfahrt = 4,
+  ProduktklasseRueckfahrt = 4,
   Passagiere = 9,
   Kinder = 12,
   Klasse = 14,
@@ -71,30 +58,6 @@ export enum SBlockTypes {
   ZielBfID = 36,
   AnzahlPersonen = 40,
   TBDEFSAnzahl =  41
-  // 'Preismodell': 1,
-  // 'Produktklasse Gesamtticket': 2,
-  // 'Produktklasse Hinfahrt': 3,
-  // 'Produktklasse Rückfahrt': 4,
-  // 'Passagiere': 9,
-  // 'Kinder': 12,
-  // 'Klasse': 14,
-  // 'H-Start-Bf': 15,
-  // 'H-Ziel-Bf': 16,
-  // 'R-Start-Bf': 17,
-  // 'R-Ziel-Bf': 18,
-  // 'Vorgangsnr./Flugscheinnr.': 19,
-  // 'Vertragspartner': 20,
-  // 'VIA': 21,
-  // 'Personenname': 23,
-  // 'Preisart': 26,
-  // 'Ausweis-ID': 27,
-  // 'Vorname, Name': 28,
-  // 'Gueltig von': 31,
-  // 'Gueltig bis': 32,
-  // 'Start-Bf-ID': 35,
-  // 'Ziel-Bf-ID': 36,
-  // 'Anzahl Personen': 40,
-  // 'TBD EFS Anzahl': 41
 }
 
 // exports.TBD0 = new Enum({

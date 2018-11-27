@@ -3,7 +3,6 @@ interface IntCodedList {
 }
 
 interface Tarifpunkte extends IntCodedList {}
-interface KAOrgID extends IntCodedList {}
 interface KAProduktnummern extends IntCodedList {};
 
 interface EFMProduktID {
@@ -11,19 +10,56 @@ interface EFMProduktID {
 }
 interface OrgTarifpunkte {
   [index: number] : Tarifpunkte;
+} 
+
+class EFMProdukt {
+  name:string
+  id: number 
+  constructor (nummer:number, nameText: string) {
+    this.name = nameText
+    this.id = nummer
+  }
+}
+
+interface EFMProdukteListe {
+  [index: number]: EFMProdukt
+}
+
+interface OrganisationsProdukteListe {
+   [index: number]: EFMProdukteListe
+}
+
+
+class EfmProduktePool {
+  produkte: OrganisationsProdukteListe
+  constructor (produkte: OrganisationsProdukteListe) {
+    this.produkte = produkte
+  }
+  
+  getProductsByOrgID (orgId:number) : EFMProdukteListe | undefined {
+    const produkteListe = this.produkte[orgId]
+    return produkteListe
+  }
+  
+  getProduct (orgId: number, produktnummer: number ) : EFMProdukteListe | undefined {
+    let orgIdResult: string
+    let produktResult: string
+    const produkte = this.getProductsByOrgID(orgId)
+    return undefined
+  }
 }
 
 
 
-
-
-
-export const orgIdData : KAOrgID = {
-    5000: '5000 (VDV E-Ticket Service)',
-    6262: '6262 (DB Fernverkehr)',
-    6263: '6263 (DB Regio Zentrale)',
-    6260: '6260 (DB Vertrieb GmbH)',
+const organisationenListe : OrganisationenListe = {
+    5000: new Organisation(5000, 'VDV E-Ticket Service'),
+    6262: new Organisation(6262, 'DB Fernverkehr'),
+    6263: new Organisation(6263, 'DB Regio Zentrale'),
+    6260: new Organisation(6260, 'DB Vertrieb GmbH')
 }
+
+
+export const organisationen = new OrganisationenPool(organisationenListe)
 
 export const efmProdukteData : EFMProduktID = {
   6262: {
