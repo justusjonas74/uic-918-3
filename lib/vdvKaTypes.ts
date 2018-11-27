@@ -15,7 +15,12 @@ interface ProduktListe {
 }
 
 // ORGANISATION 
-
+function isDuplicateFree (liste1 : ProduktListe, liste2: ProduktListe): boolean {
+  const keys1 = Object.keys(liste1)
+  const keys2 = Object.keys(liste2)
+  let intersection = keys1.filter(x => keys2.includes(x));
+  return intersection.length === 0
+}
 export class Organisation {
   readonly name: string
   readonly id: number
@@ -30,12 +35,9 @@ export class Organisation {
   addProducts(produktListe : ProduktListe) : void {
     if (!this.products) {
       this.products = produktListe
-    } else {
+    } else if (isDuplicateFree(this.products, produktListe))  {
       // CHECK IF PRODUCT IS ALLREADY INCLUDED
-      const keys1 = Object.keys(this.products)
-      const keys2 = Object.keys(produktListe)
-      console.log(keys1)
-      console.log(keys2)
+      
       
       this.products = Object.assign(this.products, produktListe)
     }

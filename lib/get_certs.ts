@@ -1,21 +1,21 @@
-const fs = require('fs')
-const path = require('path')
-const request = require('request')
-const _ = require('lodash')
-var xml2js = require('xml2js')
+import * as fs  from 'fs'
+import * as path  from 'path'
+import * as request  from 'request'
+import * as _  from 'lodash'
+import * as xml2js  from 'xml2js'
 var parser = new xml2js.Parser()
 
 const myConsoleLog = require('./utils.js').myConsoleLog
-const { url, fileName } = require('./cert_url.json')
-const basePath = path.dirname(require.resolve('./cert_url.json'))
+const { url, fileName } = require('../cert_url.json')
+const basePath = path.dirname(require.resolve('../cert_url.json'))
 const filePath = path.join(basePath, fileName)
 
 const updateLocalCerts = () => {
   myConsoleLog(`Load public keys from ${url} ...`)
-  request.get(url, function (error, response, body) {
+  request.get(url, function (error:any, response: request.Response, body:any) {
     /* istanbul ignore else */
     if (!error && response.statusCode === 200) {
-      parser.parseString(body, function (err, result) {
+      parser.parseString(body, function (err:any, result:any) {
         /* istanbul ignore else */
         if (!err) {
           fs.writeFileSync(filePath, JSON.stringify(result))
@@ -31,7 +31,7 @@ const updateLocalCerts = () => {
   })
 }
 
-const openLocalFiles = (useRemote = true) => {
+function openLocalFiles (useRemote : boolean = true): Promise<keysJSON> {
   return new Promise(function (resolve, reject) {
     // const filePath = path.join(__dirname, '../', fileName)
     fs.readFile(filePath, 'utf8', function (err, data) {
@@ -45,18 +45,28 @@ const openLocalFiles = (useRemote = true) => {
   })
 }
 
-const selectCert = (keys, orgId, keyId) => {
+interface keysJSON {
+  keys: {
+    key: {
+      issuerCode: string,
+      id: string
+    }
+  }
+}
+
+function selectCert (keys: keysJSON, orgId:number, keyId:number) : Promise<string>  {
   return new Promise(function (resolve, reject) {
-    const cert = _.find(keys.keys.key, {issuerCode: [orgId.toString()], id: [keyId.toString()]})
+    const searchTerm = function(o:any) { return o.issuerCode == orgId.toString() && o.id === keyId.toString()}
+    const cert = _.find(keys.keys.key, searchTerm)
     if (cert) {
       resolve(cert)
     } else {
-      reject(Error('Not Found!'))
+      reject(new Error('Not Found!'))
     }
   })
 }
 
-const getCertByID = (orgId, keyId) => {
+const getCertByID = (orgId:number, keyId:number) => {
   return new Promise(function (resolve, reject) {
     openLocalFiles()
         .then(keys => selectCert(keys, orgId, keyId))
