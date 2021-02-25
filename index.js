@@ -54,4 +54,4 @@ const readPDFBarcode = (input, options) => {
       .catch((err) => reject(err))
   })
 }
-module.exports = { readBarcode, readPDFBarcode }
+module.exports = { readBarcode, readPDFBarcode , interpretBarcode}
