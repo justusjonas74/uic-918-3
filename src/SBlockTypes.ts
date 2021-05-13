@@ -1,0 +1,27 @@
+
+export enum SBlockTypes {
+  Preismodell = 1,
+  ProduktklasseGesamtticket = 2,
+  ProduktklasseHinfahrt = 3,
+  ProduktklasseRueckfahrt = 4,
+  Passagiere = 9,
+  Kinder = 12,
+  Klasse = 14,
+  HinfahrtStartBf = 15,
+  HinfahrtZielBf = 16,
+  RueckfahrtStartBf = 17,
+  RueckfahrtZielBf = 18,
+  Vorgangsnr = 19,
+  Vertragspartner = 20,
+  VIA = 21,
+  Personenname = 23,
+  Preisart = 26,
+  AusweisID = 27,
+  VornameName = 28,
+  GueltigVon = 31,
+  GueltigBis = 32,
+  StartBfID = 35,
+  ZielBfID = 36,
+  AnzahlPersonen = 40,
+  TBDEFSAnzahl = 41
+}

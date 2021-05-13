@@ -1,23 +1,18 @@
-const utils = require('./utils.js')
-const enums = require('./enums.js')
-
 // ################
 // DATA TYPES
 // ################
+
+import { RCT2ContainerType } from "../uic/UIC_RCT2Block"
+import { ElementaryType, ElementaryTypes } from "./ElementaryType"
+import { PrintableString } from "./PrintableString"
+
+
 
 const STRING = (x) => x.toString()
 const HEX = (x) => x.toString('hex')
 const STR_INT = (x) => parseInt(x.toString(), 10)
 const INT = (x) => x.readUIntBE(0, x.length)
-const DB_DATETIME = (x) => {
-  // DDMMYYYYHHMM
-  const day = STR_INT(x.slice(0, 2))
-  const month = STR_INT(x.slice(2, 4)) - 1
-  const year = STR_INT(x.slice(4, 8))
-  const hour = STR_INT(x.slice(8, 10))
-  const minute = STR_INT(x.slice(10, 12))
-  return new Date(year, month, day, hour, minute)
-}
+
 const KA_DATETIME = (x) => {
   // ‘yyyyyyymmmmddddd’B + hhhhhmmmmmmsssss’B  (4 Byte)
   const dateStr = utils.pad(parseInt(x.toString('hex'), 16).toString(2), 32)
@@ -169,103 +164,9 @@ function auftraegeSblocks (x, A_LENGTH, fields) {
 // DATA FIELDS
 // ################
 
-module.exports = [{
-  name: 'U_HEAD',
-  versions: {
-    '01': [
-      ['carrier', 4, STRING],
-      ['auftragsnummer', 8, STRING],
-      ['padding', 12, HEX],
-      ['creation_date', 12, DB_DATETIME], /*, datetime_parser() */
-      ['flags', 1, STRING
-        /*, lambda x: ",".join(
-                               ['international'] if int(x) & 1 else [] +
-                               ['edited'] if int(x) & 2 else [] +
-                               ['specimen'] if int(x) & 4 else [])), */
-      ],
-      ['language', 2, STRING],
-      ['language_2', 2, STRING]
-    ]
-  }
-}, {
-  name: '0080VU',
-  versions: {
-    '01': [
-      ['Terminalnummer:', 2, INT],
-      ['SAM_ID', 3, INT],
-      ['persons', 1, INT],
-      ['anzahlEFS', 1, INT],
-      ['VDV_EFS_BLOCK', null, EFS_DATA]
-    ]
-  }
-}, {
-  name: '1180AI',
-  versions: {
-    '01': [
-      ['customer?', 7, STRING],
-      ['vorgangs_num', 8, STRING],
-      ['unknown1', 5, STRING],
-      ['unknown2', 2, STRING],
-      ['full_name', 20, STRING],
-      ['adults#', 2, INT],
-      ['children#', 2, INT],
-      ['unknown3', 2, STRING],
-      ['description', 20, STRING],
-      ['ausweis?', 10, STRING],
-      ['unknown4', 7, STRING],
-      ['valid_from', 8, STRING],
-      ['valid_to?', 8, STRING],
-      ['unknown5', 5, STRING],
-      ['start_bf', 20, STRING],
-      ['unknown6', 5, STRING],
-      ['ziel_bf?', 20, STRING],
-      ['travel_class', 1, INT],
-      ['unknown7', 6, STRING],
-      ['unknown8', 1, STRING],
-      ['issue_date', 8, STRING]
-    ]
-  }
-}, {
-  name: '0080BL',
-  versions: {
-    '02': [
-      ['TBD0', 2, STRING],
-      /* # '00' bei Schönem WE-Ticket / Ländertickets / Quer-Durchs-Land
-      # '00' bei Vorläufiger BC
-      # '02' bei Normalpreis Produktklasse C/B, aber auch Ausnahmen
-      # '03' bei normalem IC/EC/ICE Ticket
-      # '04' Hinfahrt A, Rückfahrt B; Rail&Fly ABC; Veranstaltungsticket; auch Ausnahmen
-      # '05' bei Facebook-Ticket, BC+Sparpreis+neue BC25 [Ticket von 2011]
-      # '18' bei Kauf via Android App */
-      ['blocks', null, auftraegeSBlocksV2]
-    ],
-    '03': [
-      ['TBD0', 2, STRING],
-      ['blocks', null, auftraegeSBlocksV3]
-    ]
-  }
-}, {
-  name: '0080ID',  // NO SOURCE FOUND FOR THIS BLOCK.
-  versions: {
-    '01': [
-      ['ausweis_typ', 2, AUSWEIS_TYP],
-      ['ziffer_ausweis', 4, STRING]
-    ],
-    '02': [
-      ['ausweis_typ', 2, AUSWEIS_TYP],
-      ['ziffer_ausweis', 4, STRING]
-    ]
-  }
-}, {
-  name: 'U_TLAY',
-  versions: {
-    '01': [
-      ['layout', 4, STRING],
-      ['amount_rct2_blocks', 4, STR_INT],
-      ['rct2_blocks', null, RCT2_BLOCKS]
-    ]
-  }
-}]
+
+
+
 
 
 function assignArrayToObj (arr) {
