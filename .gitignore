@@ -1,6 +1,7 @@
 # CUSTOM
 samples/
 keys.json
+.DS_Store
 
 # https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore
 # Logs

@@ -10,7 +10,8 @@ describe('index.js', () => {
   describe('index.readBarcode', () => {
     describe('...when inputis a local file', () => {
       const dummy = 'test/images/barcode-dummy2.png'
-      const dummy3 = 'test/images/barcode-dummy3.png'
+      // const dummy3 = 'test/images/barcode-dummy3.png'
+      const dummy4 = 'test/images/CT-003.png'
       const falseDummy = 'test/images/barcode dummy.png'
       it('should return an object on sucess', () => {
         return main.readBarcode(dummy).should.eventually.be.an('object')
@@ -25,12 +26,13 @@ describe('index.js', () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return main.readBarcode(dummy3, {verifySignature: true}).should.eventually.have.property('isSignatureValid')
+        return main.readBarcode(dummy4, {verifySignature: true}).should.eventually.have.property('isSignatureValid')
       })
     })
     describe('...when input is an image buffer', () => {
       const dummyBuff = fs.readFileSync('test/images/barcode-dummy2.png')
-      const dummy3Buff = fs.readFileSync('test/images/barcode-dummy3.png')
+      // const dummy3Buff = fs.readFileSync('test/images/barcode-dummy3.png')
+      const dummy4Buff = fs.readFileSync('test/images/CT-003.png')
       it('should return an object on sucess', () => {
         return main.readBarcode(dummyBuff).should.eventually.be.an('object')
       })
@@ -41,7 +43,7 @@ describe('index.js', () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return main.readBarcode(dummy3Buff, {verifySignature: true}).should.eventually.have.property('isSignatureValid')
+        return main.readBarcode(dummy4Buff, {verifySignature: true}).should.eventually.have.property('isSignatureValid')
       })
     })
     describe('...when input is something else', () => {
