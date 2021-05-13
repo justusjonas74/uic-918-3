@@ -2,7 +2,7 @@ const barcodeReader = require('./lib/barcode-reader.js')
 const interpretBarcode = require('./lib/barcode-data.js')
 const fixingZXing = require('./lib/fixingZXing')
 const {loadFileOrBuffer} = require('./lib/checkInput')
-const pdfReader = require('./lib/pdfReader')
+// const pdfReader = require('./lib/pdfReader')
 // const {checkInput} = require('./lib/utils')
 
 const verifySignature = require('./lib/check_signature').verifyTicket
@@ -46,12 +46,12 @@ const readBarcode = function (input, options = {}) {
       .catch((err) => reject(err))
   })
 }
-const readPDFBarcode = (input, options) => {
-  return new Promise((resolve, reject) => {
-    pdfReader(input)
-      .then(x => readBarcode(x, options))
-      .then((res) => resolve(res))
-      .catch((err) => reject(err))
-  })
-}
-module.exports = { readBarcode, readPDFBarcode , interpretBarcode}
+// const readPDFBarcode = (input, options) => {
+//   return new Promise((resolve, reject) => {
+//     pdfReader(input)
+//       .then(x => readBarcode(x, options))
+//       .then((res) => resolve(res))
+//       .catch((err) => reject(err))
+//   })
+// }
+module.exports = {readBarcode, interpretBarcode}

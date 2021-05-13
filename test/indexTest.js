@@ -56,28 +56,28 @@ describe('index.js', () => {
       })
     })
   })
-  describe('index.readPDFBarcode', () => {
-    describe('...when input is something else', () => {
-      it('should reject if input is array', () => {
-        return main.readPDFBarcode([1, 2, 3]).should.be.rejected
-      })
-      it('should reject if input is object', () => {
-        return main.readPDFBarcode({'nr': 3}).should.be.rejected
-      })
-      it('should reject if input is null', () => {
-        return main.readPDFBarcode().should.be.rejected
-      })
-    })
-    describe('...when input is a buffer', () => {
-      const ticketPath = './test/pdf/ticketdump.data'
-      const ticket = fs.readFileSync(ticketPath)
+  // describe('index.readPDFBarcode', () => {
+  //   describe('...when input is something else', () => {
+  //     it('should reject if input is array', () => {
+  //       return main.readPDFBarcode([1, 2, 3]).should.be.rejected
+  //     })
+  //     it('should reject if input is object', () => {
+  //       return main.readPDFBarcode({'nr': 3}).should.be.rejected
+  //     })
+  //     it('should reject if input is null', () => {
+  //       return main.readPDFBarcode().should.be.rejected
+  //     })
+  //   })
+  //   describe('...when input is a buffer', () => {
+  //     const ticketPath = './test/pdf/ticketdump.data'
+  //     const ticket = fs.readFileSync(ticketPath)
 
-      it('should be fulfilled with buffer input', () => {
-        return main.readPDFBarcode(ticket).should.be.fulfilled
-      })
-      it('should be fulfilled with string input', () => {
-        return main.readPDFBarcode(ticketPath).should.be.fulfilled
-      })
-    })
-  })
+  //     it('should be fulfilled with buffer input', () => {
+  //       return main.readPDFBarcode(ticket).should.be.fulfilled
+  //     })
+  //     it('should be fulfilled with string input', () => {
+  //       return main.readPDFBarcode(ticketPath).should.be.fulfilled
+  //     })
+  //   })
+  // })
 })
