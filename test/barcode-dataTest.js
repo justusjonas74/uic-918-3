@@ -7,9 +7,21 @@ const interpretBarcode = require('../lib/barcode-data')
 
 describe('barcode-data', () => {
   describe('barcode-data.interpret', () => {
-    it('should return an object', () => {
+    it('should return an object for ticket version 1', () => {
       const ticket = helper.dummyTicket('U_HEAD', '01', 'Hi!')
       interpretBarcode(ticket).should.be.an('object')
+    })
+    it('should return an object for ticket version 2', () => {
+      const ticket = helper.dummyTicket('U_HEAD', '02', 'Hi!')
+      interpretBarcode(ticket).should.be.an('object')
+    })
+    it('should show the correct version for ticket version 1', () => {
+      const ticket = helper.dummyTicket('U_HEAD', '01', 'Hi!')
+      interpretBarcode(ticket).version.should.be.equal(1)
+    })
+    it('should show the correct version for ticket version 2', () => {
+      const ticket = helper.dummyTicket2('U_HEAD', '01', 'Hi!')
+      interpretBarcode(ticket).version.should.be.equal(2)
     })
     it('should return an empty array if input param is an empty buffer.', () => {
       interpretBarcode(Buffer.from('')).ticketContainers.should.be.an('array')
