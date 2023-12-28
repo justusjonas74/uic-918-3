@@ -1,7 +1,7 @@
-var chai = require('chai')
+const chai = require('chai')
 chai.should()
 
-var helper = require('./helper')
+const helper = require('./helper')
 
 const interpretBarcode = require('../lib/barcode-data')
 
@@ -17,7 +17,7 @@ describe('barcode-data', () => {
     })
 
     describe('on unknown data fields', () => {
-      var results
+      let results
       beforeEach((done) => {
         const ticket = helper.dummyTicket('MYID!!', '01', 'Test')
         results = interpretBarcode(ticket).ticketContainers
@@ -34,7 +34,7 @@ describe('barcode-data', () => {
       })
     })
     describe('on unknown data fieds versions but known id', () => {
-      var results
+      let results
       beforeEach((done) => {
         const ticket = helper.dummyTicket('U_HEAD', '03', 'Test')
         results = interpretBarcode(ticket).ticketContainers

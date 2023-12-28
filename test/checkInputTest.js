@@ -1,15 +1,15 @@
-var chai = require('chai')
-var chaiAsPromised = require('chai-as-promised')
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 chai.should()
 
 const path = require('path')
 const fs = require('fs')
 
-const {fileExists, fileWillExists, loadFileOrBuffer, readFileAsync} = require('../lib/checkInput')
+const { fileExists, fileWillExists, loadFileOrBuffer, readFileAsync } = require('../lib/checkInput')
 
 describe('checkInput.js', () => {
-  var filePath = {}
+  const filePath = {}
 
   beforeEach((done) => {
     const file = 'index.js'

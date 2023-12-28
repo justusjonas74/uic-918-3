@@ -1,6 +1,6 @@
-var chai = require('chai')
+const chai = require('chai')
 chai.should()
-var randomstring = require('randomstring')
+const randomstring = require('randomstring')
 
 const fixingZXing = require('../lib/fixingZXing')
 

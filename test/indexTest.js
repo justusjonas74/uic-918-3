@@ -1,5 +1,5 @@
-var chai = require('chai')
-var chaiAsPromised = require('chai-as-promised')
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
 const fs = require('fs')
 chai.use(chaiAsPromised)
 chai.should()
@@ -26,7 +26,7 @@ describe('index.js', () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return main.readBarcode(dummy4, {verifySignature: true}).should.eventually.have.property('isSignatureValid')
+        return main.readBarcode(dummy4, { verifySignature: true }).should.eventually.have.property('isSignatureValid')
       })
     })
     describe('...when input is an image buffer', () => {
@@ -43,7 +43,7 @@ describe('index.js', () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return main.readBarcode(dummy4Buff, {verifySignature: true}).should.eventually.have.property('isSignatureValid')
+        return main.readBarcode(dummy4Buff, { verifySignature: true }).should.eventually.have.property('isSignatureValid')
       })
     })
     describe('...when input is something else', () => {
@@ -51,7 +51,7 @@ describe('index.js', () => {
         return main.readBarcode([1, 2, 3]).should.be.rejected
       })
       it('should reject if input is object', () => {
-        return main.readBarcode({'nr': 3}).should.be.rejected
+        return main.readBarcode({ nr: 3 }).should.be.rejected
       })
       it('should reject if input is null', () => {
         return main.readBarcode().should.be.rejected

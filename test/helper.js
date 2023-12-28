@@ -2,7 +2,7 @@ const zlib = require('zlib')
 // const bwip =require('bwip-js');
 
 function pad (num, size) {
-  var s = num + ''
+  let s = num + ''
   while (s.length < size) s = '0' + s
   return s
 }
@@ -36,4 +36,4 @@ const dummyTicket = (idStr, version, bodyStr) => {
 //     });
 // };
 
-module.exports = {dummyTicket}
+module.exports = { dummyTicket }

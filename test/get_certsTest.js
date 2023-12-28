@@ -1,6 +1,6 @@
-var fs = require('fs')
-var path = require('path')
-var chai = require('chai')
+const fs = require('fs')
+const path = require('path')
+const chai = require('chai')
 
 chai.should()
 
