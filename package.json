@@ -12,12 +12,12 @@
   "author": "Francis Doege",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.6.3",
     "enum": "^2.5.0",
     "iconv-lite": "^0.4.24",
     "jsrsasign": "^10.2.0",
     "lodash": "^4.17.11",
-    "xml2js": "^0.4.19",
+    "xml2js": "^0.6.2",
     "zebra-crossing": "^0.1.1"
   },
   "directories": {
@@ -28,10 +28,10 @@
     "chai-as-promised": "^7.1.1",
     "chai-things": "^0.2.0",
     "coveralls": "^3.0.2",
-    "mocha": "^8.3.0",
+    "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "randomstring": "^1.1.5",
-    "standard": "^10.0.3"
+    "standard": "^17.1.0"
   },
   "repository": {
     "type": "git",

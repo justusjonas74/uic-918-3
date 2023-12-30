@@ -1,4 +1,4 @@
-var chai = require('chai')
+const chai = require('chai')
 
 chai.use(require('chai-things'))
 // chai.use(require('chai-properties'))
@@ -54,9 +54,9 @@ describe('block-types.js', () => {
   })
   describe('Special Types', () => {
     describe('EFS_DATA', () => {
-      var res
-      var res2
-      var resDc10
+      let res
+      let res2
+      let resDc10
       before((done) => {
         const fn = bt.filter(typ => (typ.name === '0080VU'))[0].versions['01'][4][2]
         const testBuf = Buffer.from('130791f0187407d018763821000138221800000000130791f008dc060d18767a131c', 'hex')
@@ -99,11 +99,11 @@ describe('block-types.js', () => {
       })
       it('should return objects inside array with specific properties', () => {
         result.should.all.have.property('line')
-                        .and.all.have.property('column')
-                        .and.all.have.property('height')
-                        .and.all.have.property('width')
-                        .and.all.have.property('style')
-                        .and.all.have.property('value')
+          .and.all.have.property('column')
+          .and.all.have.property('height')
+          .and.all.have.property('width')
+          .and.all.have.property('style')
+          .and.all.have.property('value')
       })
       it('should parse the content of properties correctly', () => {
         result[0].should.have.deep.property('line', 0)

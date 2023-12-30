@@ -1,11 +1,11 @@
-var chai = require('chai')
+const chai = require('chai')
 chai.should()
 
 const enums = require('../lib/enums')
-var Enum = require('enum')
+const Enum = require('enum')
 
 describe('enums.sBlockTypes', () => {
-  var sBlockTypes = enums.sBlockTypes
+  const sBlockTypes = enums.sBlockTypes
   it('should return an instance of enum', () => {
     sBlockTypes.should.be.an.instanceof(Enum)
   })
@@ -14,7 +14,7 @@ describe('enums.sBlockTypes', () => {
   })
 })
 describe('enums.id_types', () => {
-  var result = enums.id_types
+  const result = enums.id_types
   it('should return an instance of enum', () => {
     result.should.be.an.instanceof(Enum)
   })

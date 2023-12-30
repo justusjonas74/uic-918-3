@@ -1,4 +1,4 @@
-var chai = require('chai')
+const chai = require('chai')
 
 chai.should()
 
@@ -8,9 +8,11 @@ describe('utils.js', () => {
   describe('utils.stringifyBufferObj', () => {
     const str = 'Hello World!'
     const str2 = 'Hello World!!!!!'
-    const obj = { a: Buffer.from(str),
+    const obj = {
+      a: Buffer.from(str),
       b: 123,
-      c: Buffer.from(str2)}
+      c: Buffer.from(str2)
+    }
     const result = utils.stringifyBufferObj(obj)
     it('should return an object where all buffer values would be converted to string values', () => {
       result.a.should.be.equal(str)
@@ -42,9 +44,9 @@ describe('utils.js', () => {
     it('should parse a buffer using a given data field specification', () => {
       const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21])
       const fields = [
-                ['TAG', 2, (x) => x.toString('hex')],
-                ['LENGTH', 1],
-                ['TEXT', null, (x) => x.toString()]
+        ['TAG', 2, (x) => x.toString('hex')],
+        ['LENGTH', 1],
+        ['TEXT', null, (x) => x.toString()]
       ]
       const result = utils.interpretField(data, fields)
       result.TAG.should.be.equal('1414')
@@ -54,9 +56,9 @@ describe('utils.js', () => {
     it('should parse a buffer using a given data field specification', () => {
       const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21])
       const fields = [
-                ['TAG', 2, (x) => x.toString('hex')],
-                ['LENGTH', 1],
-                ['TEXT', null, (x) => x.toString()]
+        ['TAG', 2, (x) => x.toString('hex')],
+        ['LENGTH', 1],
+        ['TEXT', null, (x) => x.toString()]
       ]
       const result = utils.interpretField(data, fields)
       result.TAG.should.be.equal('1414')
@@ -66,11 +68,11 @@ describe('utils.js', () => {
   })
 
   describe('utils.parseContainers', () => {
-    var results
+    let results
     beforeEach((done) => {
       const data = Buffer.from('Test')
       const f = (buf) => {
-        var ret = []
+        const ret = []
         ret.push(buf.slice(0, 1).toString())
         ret.push(buf.slice(1))
         return ret
@@ -110,15 +112,15 @@ describe('utils.js', () => {
       utils.arrayDefinedAndNotEmpty([]).should.be.false // eslint-disable-line no-unused-expressions
     })
     it('should return false on undefined input', () => {
-      var input
+      let input
       utils.arrayDefinedAndNotEmpty(input).should.be.false // eslint-disable-line no-unused-expressions
     })
   })
   describe('utils.assignArrayToObj', () => {
     const TEST_DATA = [
-                {hello: 'world'},
-                {thats: 's'},
-                {a: 'test'}
+      { hello: 'world' },
+      { thats: 's' },
+      { a: 'test' }
     ]
     const result = utils.assignArrayToObj(TEST_DATA)
 

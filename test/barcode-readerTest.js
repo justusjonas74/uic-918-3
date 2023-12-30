@@ -1,7 +1,7 @@
 const bcr = require('../lib/barcode-reader')
-var chai = require('chai')
+const chai = require('chai')
 
-var chaiAsPromised = require('chai-as-promised')
+const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 chai.should()
 
@@ -18,11 +18,11 @@ describe('barcode-reader.js', () => {
     })
     it('should have property of raw', () => {
       return bcr.ZXing(dummy)
-            .should.eventually.have.deep.property('raw')
+        .should.eventually.have.deep.property('raw')
     })
     it('should return the ticket data', () => {
       return bcr.ZXing(dummy)
-            .should.eventually.have.deep.property('raw', ticket)
+        .should.eventually.have.deep.property('raw', ticket)
     })
   })
 })
