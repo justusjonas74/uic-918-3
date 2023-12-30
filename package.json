@@ -10,6 +10,12 @@
     "postinstall": "node ./updateCerts.js"
   },
   "author": "Francis Doege",
+  "contributors": [
+    {
+      "name": "Arne Breitsprecher",
+      "url": "https://github.com/arnebr"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "axios": "^1.6.3",
