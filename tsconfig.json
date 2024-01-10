@@ -3,7 +3,8 @@
       "outDir": "./build",
       "allowJs": true,
       "target": "es5",
-      "noImplicitReturns": true
+      "noImplicitReturns": true,
+      "noImplicitAny": true
     },
     "include": ["./src/**/*"]
     
