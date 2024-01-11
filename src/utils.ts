@@ -1,33 +1,46 @@
-exports.stringifyBufferObj = function (obj) {
-  for (const key in obj) {
-    if (Buffer.isBuffer(obj[key])) {
-      obj[key] = obj[key].toString()
-    }
-  }
-  return obj
+// 2024-01-10 seems not to be used anymore...
+// exports.stringifyBufferObj = function (obj) {
+//   for (const key in obj) {
+//     if (Buffer.isBuffer(obj[key])) {
+//       obj[key] = obj[key].toString()
+//     }
+//   }
+//   return obj
+// }
+
+
+export type SupportedTypes = Date | string | number | Buffer // TODO: Stupid Solution
+
+export interface FieldsType {
+  length?: number,
+  name: string,
+  interpreterFn?: (x: Buffer) => SupportedTypes
 }
 
-exports.interpretField = function (data, fields) {
+type interpretFieldResult = { [index: string]: SupportedTypes }
+
+export function interpretField(data: Buffer, fields: FieldsType[]) {
   let remainder = data
-  const res = {}
-  fields.forEach(f => {
-    let interpretFunction
-    if (f[2]) {
-      interpretFunction = f[2]
+  const res: interpretFieldResult = {}
+  fields.forEach(field => {
+    const { name, interpreterFn, length } = field
+    const interpreterFnDefault = (x: Buffer) => x
+    const interpretFunction = interpreterFn || interpreterFnDefault
+
+    if (length) {
+      res[name] = interpretFunction(remainder.subarray(0, length))
+      remainder = remainder.subarray(length)
     } else {
-      interpretFunction = (x) => x
-    }
-    if (f[1]) {
-      res[f[0]] = interpretFunction(remainder.slice(0, f[1]))
-      remainder = remainder.slice(f[1])
-    } else {
-      res[f[0]] = interpretFunction(remainder)
+      res[name] = interpretFunction(remainder)
     }
   })
   return res
 }
 
-exports.parseContainers = function (data, f) {
+
+// f is a function which returns an array with a interpreted value from data and the remaining data as the second item
+export type parsingFunction = (data: Buffer) => [SupportedTypes, Buffer?]
+export function parseContainers(data: Buffer, f: parsingFunction): SupportedTypes[] {
   // f is a function which returns an array with a interpreted value from data and the remaining data as the second item
   let remainder = data
   const containers = []
@@ -40,15 +53,15 @@ exports.parseContainers = function (data, f) {
   return containers
 }
 
-function myConsoleLogFn (str) {
+export function myConsoleLog(str: string) {
   /* following if statement is never fired up during test, so should be ignored */
   /* istanbul ignore if  */
   if (process.env.NODE_ENV !== 'test') { console.error(str) }
 }
 
-exports.myConsoleLog = myConsoleLogFn
 
-function pad (number, length) {
+
+export function pad(number: number | string, length: number) {
   let str = '' + number
   while (str.length < length) {
     str = '0' + str
@@ -56,14 +69,16 @@ function pad (number, length) {
   return str
 }
 
-exports.pad = pad
-
-exports.assignArrayToObj = (arr) => {
-  const reducer = (accumulator, currentValue) => Object.assign({}, accumulator, currentValue)
-  return arr.reduce(reducer)
-  // var obj = Object.assign({}, o1, o2, o3);
+export function assignArrayToObj(arr: object[]) {
+  // const reducer = (accumulator, currentValue) => Object.assign({}, accumulator, currentValue)
+  // return arr.reduce(reducer)
+  // // var obj = Object.assign({}, o1, o2, o3);
+  const initialValue = {};
+  return arr.reduce((obj, item) => {
+    return {
+      ...obj,
+      ...item,
+    };
+  }, initialValue);
 }
-
-exports.arrayDefinedAndNotEmpty = (arr) => {
-  return (typeof arr !== 'undefined' && arr.length > 0)
-}
+  
