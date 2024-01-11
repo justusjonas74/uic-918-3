@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "standard-fix": "standard --fix",
-    "test": "standard && NODE_ENV=test nyc mocha",
+    "test": "cross-env TS_NODE_PROJECT='./tsconfig.test.json' nyc mocha",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "postinstall": "node ./updateCerts.js",
     "build": "tsc -p tsconfig.json",
@@ -22,8 +22,8 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^1.6.3",
-    "enum": "^2.5.0",
-    "iconv-lite": "^0.4.24",
+    "enum": "^3.0.4",
+    "iconv-lite": "^0.6.3",
     "jsrsasign": "^10.2.0",
     "lodash": "^4.17.11",
     "typescript": "^5.3.3",
@@ -34,18 +34,23 @@
     "lib": "lib"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.11",
+    "@types/chai-as-promised": "^7.1.8",
+    "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.8",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
-    "chai": "^4.2.0",
+    "chai": "^4.4.0",
     "chai-as-promised": "^7.1.1",
     "chai-things": "^0.2.0",
     "coveralls": "^3.0.2",
+    "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "randomstring": "^1.1.5",
-    "standard": "^17.1.0"
+    "standard": "^17.1.0",
+    "ts-node": "^10.9.2"
   },
   "repository": {
     "type": "git",

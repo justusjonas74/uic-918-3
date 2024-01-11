@@ -1,2 +1,2 @@
-const getCerts = require('./lib/get_certs')
+const getCerts = require('./build/get_certs')
 getCerts.updateLocalCerts()
