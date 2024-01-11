@@ -7,7 +7,7 @@
     "standard-fix": "standard --fix",
     "test": "cross-env TS_NODE_PROJECT='./tsconfig.test.json' nyc mocha",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "postinstall": "node ./updateCerts.js",
+    "postinstall": "node ./updateCerts.ts",
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -w -p tsconfig.json",
     "lint": "eslint . --ext .ts --ext .mts"
@@ -36,8 +36,10 @@
   "devDependencies": {
     "@types/chai": "^4.3.11",
     "@types/chai-as-promised": "^7.1.8",
+    "@types/lodash": "^4.14.202",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.8",
+    "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
     "chai": "^4.4.0",

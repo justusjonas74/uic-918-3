@@ -4,7 +4,9 @@
       "allowJs": true,
       "target": "es5",
       "noImplicitReturns": true,
-      "noImplicitAny": true
+      "noImplicitAny": true,
+      "resolveJsonModule": true,
+
     },
     "include": ["./src/**/*"]
     

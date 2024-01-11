@@ -1,21 +1,22 @@
-const fs = require('fs')
-const path = require('path')
-const chai = require('chai')
+import { existsSync, unlinkSync } from 'fs'
+import {join} from 'path'
+import * as chai from 'chai';
 
 chai.should()
 
-const gc = require('../lib/get_certs')
-const fileName = require('../lib/cert_url.json').fileName
-const filePath = path.join(__dirname, '../', fileName)
+import {updateLocalCerts} from '../src/get_certs'
+import {fileName} from '../cert_url.json'
+
+const filePath = join(__dirname, '../', fileName)
 
 describe('get_certs.js', () => {
   describe('updateLocalCerts', () => {
     before((done) => {
       // remove keys.json
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath)
+      if (existsSync(filePath)) {
+        unlinkSync(filePath)
       }
-      gc.updateLocalCerts(filePath)
+      updateLocalCerts()
       done()
     })
     it('should create a not empty file', () => {
