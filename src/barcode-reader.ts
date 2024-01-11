@@ -1,12 +1,12 @@
-const ZebraCrossing = require('zebra-crossing')
+//TODO: No declaration for this package...
+import {read as readBarcode} from 'zebra-crossing'
 
-const defaultOptions = {
+
+const defaultOptions : ReadingOptions = {
   pureBarcode: true,
   tryHarder: true
 }
 
-function ZXing (data, options = defaultOptions) {
-  return ZebraCrossing.read(data, options)
+export function ZXing (data: string|Buffer, options:ReadingOptions = defaultOptions) {
+  return readBarcode(data, options)
 }
-
-module.exports = { ZXing }
