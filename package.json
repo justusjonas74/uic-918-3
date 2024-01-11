@@ -1,5 +1,6 @@
 {
   "name": "uic-918-3",
+  "type": "module",
   "version": "0.5.0",
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "index.js",
@@ -7,7 +8,7 @@
     "standard-fix": "standard --fix",
     "test": "cross-env TS_NODE_PROJECT='./tsconfig.test.json' nyc mocha",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "postinstall": "node ./updateCerts.ts",
+    "postinstall": "node ./updateCerts.js",
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -w -p tsconfig.json",
     "lint": "eslint . --ext .ts --ext .mts"

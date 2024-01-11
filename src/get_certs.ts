@@ -1,12 +1,10 @@
-import  {readFile, writeFileSync} from 'fs'
+import  {readFile} from 'fs'
 import {dirname, join} from 'path'
-import axios from 'axios';
-import {find} from 'lodash';
-import * as xml2js from 'xml2js'
-const parser = new xml2js.Parser()
 
-import {myConsoleLog} from './utils'
-import { url, fileName } from '../cert_url.json'
+import {find} from 'lodash';
+
+
+import {  fileName } from '../cert_url.json' 
 const basePath = dirname(require.resolve('../cert_url.json'))
 const filePath = join(basePath, fileName)
 
@@ -45,39 +43,7 @@ export enum BarcodeXSD {
 }
 
 
-export const updateLocalCerts = () => {
-  myConsoleLog(`Load public keys from ${url} ...`)
-  axios.get(url)
-    .then((response) => {
-      parser.parseString(response.data, function (err, result) {
-      /* istanbul ignore else */
-        if (!err) {
-          writeFileSync(filePath, JSON.stringify(result))
-          myConsoleLog(`Loaded ${result.keys.key.length} public keys and saved under "${filePath}".`)
-        } else {
-          console.log(err)
-        }
-      })
-    })
-    .catch(function (error) {
-      if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-        console.log(error.response.data)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-      } else if (error.request) {
-      // The request was made but no response was received
-      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-      // http.ClientRequest in node.js
-        console.log(error.request)
-      } else {
-      // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message)
-      }
-      console.log(error.config)
-    })
-}
+
 
 const openLocalFiles = () => {
   return new Promise<UICKeys>(function (resolve, reject) {
