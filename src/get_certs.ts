@@ -1,23 +1,58 @@
-const fs = require('fs')
-const path = require('path')
-const axios = require('axios')
-const _ = require('lodash')
-const xml2js = require('xml2js')
+import  {readFile, writeFileSync} from 'fs'
+import {dirname, join} from 'path'
+import axios from 'axios';
+import {find} from 'lodash';
+import * as xml2js from 'xml2js'
 const parser = new xml2js.Parser()
 
-const myConsoleLog = require('./utils.js').myConsoleLog
-const { url, fileName } = require('./cert_url.json')
-const basePath = path.dirname(require.resolve('./cert_url.json'))
-const filePath = path.join(basePath, fileName)
+import {myConsoleLog} from './utils'
+import { url, fileName } from '../cert_url.json'
+const basePath = dirname(require.resolve('../cert_url.json'))
+const filePath = join(basePath, fileName)
 
-const updateLocalCerts = () => {
+export interface UICKeys {
+  keys: Keys;
+}
+
+export interface Keys {
+  key: Key[];
+}
+
+export interface Key {
+  issuerName:               string[];
+  issuerCode:               string[];
+  versionType:              string[];
+  signatureAlgorithm:       string[];
+  id:                       string[];
+  publicKey:                string[];
+  barcodeVersion:           string[];
+  startDate:                Date[];
+  endDate:                  Date[];
+  barcodeXsd:               BarcodeXSD[];
+  allowedProductOwnerCodes: Array<AllowedProductOwnerCodeClass | string>;
+  keyForged:                string[];
+  commentForEncryptionType: string[];
+}
+
+export interface AllowedProductOwnerCodeClass {
+  productOwnerCode: string[];
+  productOwnerName: string[];
+}
+
+export enum BarcodeXSD {
+  Empty = "",
+  String = "String",
+}
+
+
+export const updateLocalCerts = () => {
   myConsoleLog(`Load public keys from ${url} ...`)
   axios.get(url)
     .then((response) => {
       parser.parseString(response.data, function (err, result) {
       /* istanbul ignore else */
         if (!err) {
-          fs.writeFileSync(filePath, JSON.stringify(result))
+          writeFileSync(filePath, JSON.stringify(result))
           myConsoleLog(`Loaded ${result.keys.key.length} public keys and saved under "${filePath}".`)
         } else {
           console.log(err)
@@ -44,10 +79,10 @@ const updateLocalCerts = () => {
     })
 }
 
-const openLocalFiles = (useRemote = true) => {
-  return new Promise(function (resolve, reject) {
+const openLocalFiles = () => {
+  return new Promise<UICKeys>(function (resolve, reject) {
     // const filePath = path.join(__dirname, '../', fileName)
-    fs.readFile(filePath, 'utf8', function (err, data) {
+    readFile(filePath, 'utf8', function (err, data) {
       /* istanbul ignore else */
       if (!err) {
         resolve(JSON.parse(data))
@@ -58,9 +93,9 @@ const openLocalFiles = (useRemote = true) => {
   })
 }
 
-const selectCert = (keys, orgId, keyId) => {
+const selectCert = (keys:UICKeys, orgId:number, keyId:number) => {
   return new Promise(function (resolve, reject) {
-    const cert = _.find(keys.keys.key, { issuerCode: [orgId.toString()], id: [keyId.toString()] })
+    const cert = find(keys.keys.key, { issuerCode: [orgId.toString()], id: [keyId.toString()] })
     if (cert) {
       resolve(cert)
     } else {
@@ -69,7 +104,7 @@ const selectCert = (keys, orgId, keyId) => {
   })
 }
 
-const getCertByID = (orgId, keyId) => {
+export const getCertByID = (orgId:number, keyId:number) => {
   return new Promise(function (resolve, reject) {
     openLocalFiles()
       .then(keys => selectCert(keys, orgId, keyId))
@@ -77,5 +112,3 @@ const getCertByID = (orgId, keyId) => {
       .catch(err => reject(err))
   })
 }
-
-module.exports = { updateLocalCerts, getCertByID }
