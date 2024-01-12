@@ -1,15 +1,18 @@
 // const utils = require('./utils.js')
 // const enums = require('./enums.js')
 
+import { FieldsType, interpreterFunctionType } from "./FieldsType"
+import { ticketContainer } from "./ticketContainer"
+
 // ################
 // DATA TYPES
 // ################
 
-const STRING = (x:Buffer) => x.toString()
-const HEX = (x:Buffer) => x.toString('hex')
-const STR_INT = (x:Buffer) => parseInt(x.toString(), 10)
-const INT = (x:Buffer) => x.readUIntBE(0, x.length)
-const DB_DATETIME = (x:Buffer) => {
+export const STRING = (x: Buffer) => x.toString()
+export const HEX = (x: Buffer) => x.toString('hex')
+export const STR_INT = (x: Buffer) => parseInt(x.toString(), 10)
+export const INT = (x: Buffer) => x.readUIntBE(0, x.length)
+export const DB_DATETIME = (x: Buffer) => {
   // DDMMYYYYHHMM
   const day = STR_INT(x.subarray(0, 2))
   const month = STR_INT(x.subarray(2, 4)) - 1
@@ -18,7 +21,7 @@ const DB_DATETIME = (x:Buffer) => {
   const minute = STR_INT(x.subarray(10, 12))
   return new Date(year, month, day, hour, minute)
 }
-const KA_DATETIME = (x:Buffer) => {
+const KA_DATETIME = (x: Buffer) => {
   // ‘yyyyyyymmmmddddd’B + hhhhhmmmmmmsssss’B  (4 Byte)
   const dateStr = utils.pad(parseInt(x.toString('hex'), 16).toString(2), 32)
   const year = parseInt(dateStr.slice(0, 7), 2) + 1990
@@ -40,7 +43,7 @@ const EFM_PRODUKT = (x) => {
   const produktNr = INT(x.slice(0, 2))
   return enums.efm_produkt(orgId, produktNr)
 }
-const AUSWEIS_TYP = (x) => {
+export const AUSWEIS_TYP = (x) => {
   const number = STR_INT(x)
   return enums.id_types.get(number).key
 }
@@ -70,7 +73,7 @@ const EFS_FIELDS = [
   ['Liste_DC', null, DC_LISTE]
 ]
 
-const EFS_DATA = (x) => {
+export const EFS_DATA = (x) => {
   const lengthListDC = INT(x.slice(25, 26))
   const t = []
   if (lengthListDC + 26 < x.length) {
@@ -86,7 +89,7 @@ const EFS_DATA = (x) => {
   return res
 }
 
-function splitDCList (dcLength, typDC, data) {
+function splitDCList(dcLength, typDC, data) {
   // 0x0D 3 Byte CT, CM
   // 0x10 2 Byte Länder,SWT, QDL
   let SEP
@@ -103,7 +106,7 @@ function splitDCList (dcLength, typDC, data) {
   return res
 }
 
-function interpretRCT2Block (data) {
+function interpretRCT2Block(data) {
   const res = {}
   res.line = parseInt(data.slice(0, 2).toString(), 10)
   res.column = parseInt(data.slice(2, 4).toString(), 10)
@@ -116,7 +119,7 @@ function interpretRCT2Block (data) {
   return [res, rem]
 }
 
-const RCT2_BLOCKS = (x) => {
+export const RCT2_BLOCKS = (x) => {
   return utils.parseContainers(x, interpretRCT2Block)
 }
 
@@ -134,7 +137,7 @@ const A_BLOCK_FIELDS_V3 = [
   ['serial', 10, STRING]
 ]
 
-function interpretSingleSBlock (data) {
+function interpretSingleSBlock(data) {
   const res = {}
   const type = enums.sBlockTypes.get(parseInt(data.slice(1, 4).toString(), 10))
   const length = parseInt(data.slice(4, 8).toString(), 10)
@@ -143,17 +146,17 @@ function interpretSingleSBlock (data) {
   return [res, rem]
 }
 
-const auftraegeSBlocksV2 = (x) => {
+export const auftraegeSBlocksV2 = (x) => {
   const A_LENGTH = 11 + 11 + 8 + 8 + 8
   return auftraegeSblocks(x, A_LENGTH, A_BLOCK_FIELDS_V2)
 }
 
-const auftraegeSBlocksV3 = (x) => {
+export const auftraegeSBlocksV3 = (x) => {
   const A_LENGTH = 10 + 8 + 8
   return auftraegeSblocks(x, A_LENGTH, A_BLOCK_FIELDS_V3)
 }
 
-function auftraegeSblocks (x, A_LENGTH, fields) {
+function auftraegeSblocks(x, A_LENGTH, fields) {
   const res = {}
   res.auftrag_count = parseInt(x.slice(0, 1).toString(), 10)
   for (let i = 0; i < res.auftrag_count; i++) {
@@ -165,104 +168,17 @@ function auftraegeSblocks (x, A_LENGTH, fields) {
   return res
 }
 
+
+
 // ################
 // DATA FIELDS
 // ################
+type TicketContainerTypeVersions = '01' | '02' | '03'
 
-module.exports = [{
-  name: 'U_HEAD',
-  versions: {
-    '01': [
-      ['carrier', 4, STRING],
-      ['auftragsnummer', 8, STRING],
-      ['padding', 12, HEX],
-      ['creation_date', 12, DB_DATETIME], /*, datetime_parser() */
-      ['flags', 1, STRING
-        /*, lambda x: ",".join(
-                               ['international'] if int(x) & 1 else [] +
-                               ['edited'] if int(x) & 2 else [] +
-                               ['specimen'] if int(x) & 4 else [])), */
-      ],
-      ['language', 2, STRING],
-      ['language_2', 2, STRING]
-    ]
-  }
-}, {
-  name: '0080VU',
-  versions: {
-    '01': [
-      ['Terminalnummer:', 2, INT],
-      ['SAM_ID', 3, INT],
-      ['persons', 1, INT],
-      ['anzahlEFS', 1, INT],
-      ['VDV_EFS_BLOCK', null, EFS_DATA]
-    ]
-  }
-}, {
-  name: '1180AI',
-  versions: {
-    '01': [
-      ['customer?', 7, STRING],
-      ['vorgangs_num', 8, STRING],
-      ['unknown1', 5, STRING],
-      ['unknown2', 2, STRING],
-      ['full_name', 20, STRING],
-      ['adults#', 2, INT],
-      ['children#', 2, INT],
-      ['unknown3', 2, STRING],
-      ['description', 20, STRING],
-      ['ausweis?', 10, STRING],
-      ['unknown4', 7, STRING],
-      ['valid_from', 8, STRING],
-      ['valid_to?', 8, STRING],
-      ['unknown5', 5, STRING],
-      ['start_bf', 20, STRING],
-      ['unknown6', 5, STRING],
-      ['ziel_bf?', 20, STRING],
-      ['travel_class', 1, INT],
-      ['unknown7', 6, STRING],
-      ['unknown8', 1, STRING],
-      ['issue_date', 8, STRING]
-    ]
-  }
-}, {
-  name: '0080BL',
-  versions: {
-    '02': [
-      ['TBD0', 2, STRING],
-      /* # '00' bei Schönem WE-Ticket / Ländertickets / Quer-Durchs-Land
-      # '00' bei Vorläufiger BC
-      # '02' bei Normalpreis Produktklasse C/B, aber auch Ausnahmen
-      # '03' bei normalem IC/EC/ICE Ticket
-      # '04' Hinfahrt A, Rückfahrt B; Rail&Fly ABC; Veranstaltungsticket; auch Ausnahmen
-      # '05' bei Facebook-Ticket, BC+Sparpreis+neue BC25 [Ticket von 2011]
-      # '18' bei Kauf via Android App */
-      ['blocks', null, auftraegeSBlocksV2]
-    ],
-    '03': [
-      ['TBD0', 2, STRING],
-      ['blocks', null, auftraegeSBlocksV3]
-    ]
-  }
-}, {
-  name: '0080ID', // NO SOURCE FOUND FOR THIS BLOCK.
-  versions: {
-    '01': [
-      ['ausweis_typ', 2, AUSWEIS_TYP],
-      ['ziffer_ausweis', 4, STRING]
-    ],
-    '02': [
-      ['ausweis_typ', 2, AUSWEIS_TYP],
-      ['ziffer_ausweis', 4, STRING]
-    ]
-  }
-}, {
-  name: 'U_TLAY',
-  versions: {
-    '01': [
-      ['layout', 4, STRING],
-      ['amount_rct2_blocks', 4, STR_INT],
-      ['rct2_blocks', null, RCT2_BLOCKS]
-    ]
-  }
-}]
+export interface TicketContainerType {
+  name: string,
+  version: TicketContainerTypeVersions
+  dataFields: FieldsType[]
+}
+
+export default ticketContainer
