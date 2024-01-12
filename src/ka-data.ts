@@ -1,5 +1,5 @@
 // Data from https://assets.static-bahn.de/dam/jcr:78591073-77fd-4e3d-968d-c5a7cf20eec5/mdb_305706_uic_918-3_vdv_stammdaten_version_16_12_2022%20mk.xls
-const DB_ORTE = {
+const DB_ORTE: Record<number, string> = {
   8000001: '8000001 (Aachen Hbf)',
   8000002: '8000002 (Aalen)',
   8000441: '8000441 (Ahlen(Westf))',
@@ -181,7 +181,7 @@ const DB_ORTE = {
 }
 
 
-const DB_PRODUKTE = {
+const DB_PRODUKTE: Record<number, string> = {
   1000: '1000 (City-mobil Einzelfahrt)',
   1001: '1001 (City-mobil Tageskarte)',
   1002: '1002 (Baden-Württemberg-Ticket)',
@@ -211,7 +211,16 @@ const DB_PRODUKTE = {
   3000: '3000 (In-Out-System)',
   9999: '9999 (Deutschlandticket)'
 }
-module.exports = {
+
+export type OrgID = number
+export type Produktnummer = number
+export type TarifpunktNr = number
+export interface VDVKAData {
+  org_id: Record<OrgID, string>,
+  efmprodukte: Record<OrgID, Record<Produktnummer, string>>,
+  tarifpunkte: Record<OrgID, Record<TarifpunktNr, string>>,
+}
+const kaData: VDVKAData = {
   org_id: {
     5000: '5000 (VDV E-Ticket Service)',
     6262: '6262 (DB Fernverkehr)',
@@ -255,3 +264,5 @@ module.exports = {
     6263: DB_ORTE
   }
 }
+
+export default kaData
