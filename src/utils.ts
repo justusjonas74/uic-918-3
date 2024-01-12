@@ -8,14 +8,10 @@
 //   return obj
 // }
 
+import { FieldsType, SupportedTypes } from "./FieldsType"
 
-export type SupportedTypes = Date | string | number | Buffer // TODO: Stupid Solution
 
-export interface FieldsType {
-  length?: number,
-  name: string,
-  interpreterFn?: (x: Buffer) => SupportedTypes
-}
+
 
 type interpretFieldResult = { [index: string]: SupportedTypes }
 

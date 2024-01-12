@@ -1,10 +1,9 @@
-const chai = require('chai')
-
-chai.use(require('chai-things'))
-// chai.use(require('chai-properties'))
+import * as chai from 'chai';
+import * as chaiThings from 'chai-things'
+chai.use(chaiThings)
 chai.should()
 
-const bt = require('../lib/block-types')
+import bt from '../src/TicketContainer'
 
 describe('block-types.js', () => {
   it('should return an array', () => {

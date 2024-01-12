@@ -1,9 +1,6 @@
 // const utils = require('./utils.js')
 // const enums = require('./enums.js')
 
-import { FieldsType, interpreterFunctionType } from "./FieldsType"
-import { ticketContainer } from "./ticketContainer"
-
 // ################
 // DATA TYPES
 // ################
@@ -170,15 +167,3 @@ function auftraegeSblocks(x, A_LENGTH, fields) {
 
 
 
-// ################
-// DATA FIELDS
-// ################
-type TicketContainerTypeVersions = '01' | '02' | '03'
-
-export interface TicketContainerType {
-  name: string,
-  version: TicketContainerTypeVersions
-  dataFields: FieldsType[]
-}
-
-export default ticketContainer

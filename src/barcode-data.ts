@@ -1,7 +1,7 @@
 import {unzipSync} from 'zlib'
 
 const BLOCK_TYPES = require('./block-types.js') // Array with objects
-const utils = require('./utils.js')
+import {} from './utils.js'
 
 // Get raw data and uncompress the TicketData
 function getVersion (data) {
