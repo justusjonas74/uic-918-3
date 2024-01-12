@@ -1,15 +1,19 @@
 // const utils = require('./utils.js')
-// const enums = require('./enums.js')
+import {id_types, sBlockTypes, orgid, efm_produkt, tarifpunkt} from './enums'
+
+import { InterpreterFunctionType } from "./FieldsType"
 
 // ################
 // DATA TYPES
 // ################
 
-export const STRING = (x: Buffer) => x.toString()
-export const HEX = (x: Buffer) => x.toString('hex')
-export const STR_INT = (x: Buffer) => parseInt(x.toString(), 10)
-export const INT = (x: Buffer) => x.readUIntBE(0, x.length)
-export const DB_DATETIME = (x: Buffer) => {
+
+
+export const STRING : InterpreterFunctionType<string>= (x: Buffer) => x.toString()
+export const HEX : InterpreterFunctionType<string> = (x: Buffer) => x.toString('hex')
+export const STR_INT : InterpreterFunctionType<number> = (x: Buffer) => parseInt(x.toString(), 10)
+export const INT : InterpreterFunctionType<number> = (x: Buffer) => x.readUIntBE(0, x.length)
+export const DB_DATETIME : InterpreterFunctionType<Date> = (x: Buffer) => {
   // DDMMYYYYHHMM
   const day = STR_INT(x.subarray(0, 2))
   const month = STR_INT(x.subarray(2, 4)) - 1
@@ -18,7 +22,7 @@ export const DB_DATETIME = (x: Buffer) => {
   const minute = STR_INT(x.subarray(10, 12))
   return new Date(year, month, day, hour, minute)
 }
-const KA_DATETIME = (x: Buffer) => {
+const KA_DATETIME : InterpreterFunctionType<Date> = (x: Buffer) => {
   // ‘yyyyyyymmmmddddd’B + hhhhhmmmmmmsssss’B  (4 Byte)
   const dateStr = utils.pad(parseInt(x.toString('hex'), 16).toString(2), 32)
   const year = parseInt(dateStr.slice(0, 7), 2) + 1990
@@ -32,17 +36,17 @@ const KA_DATETIME = (x: Buffer) => {
 
 const ORG_ID = (x) => {
   const id = INT(x)
-  return enums.org_id(id)
+  return orgid(id)
 }
 
 const EFM_PRODUKT = (x) => {
   const orgId = INT(x.slice(2, 4))
   const produktNr = INT(x.slice(0, 2))
-  return enums.efm_produkt(orgId, produktNr)
+  return efm_produkt(orgId, produktNr)
 }
 export const AUSWEIS_TYP = (x) => {
   const number = STR_INT(x)
-  return enums.id_types.get(number).key
+  return id_types[number]
 }
 
 const DC_LISTE = (x) => {
@@ -52,7 +56,7 @@ const DC_LISTE = (x) => {
   res.pv_org_id = INT(x.slice(3, 5))
   const TP = splitDCList(res.dc_length, res.typ_DC, x.slice(5, x.length))
   // FIXIT: ADD A PARSER
-  res.TP = TP.map((item) => enums.tarifpunkt(res.pv_org_id, item))
+  res.TP = TP.map((item) => tarifpunkt(res.pv_org_id, item))
 
   return res
 }
@@ -136,7 +140,7 @@ const A_BLOCK_FIELDS_V3 = [
 
 function interpretSingleSBlock(data) {
   const res = {}
-  const type = enums.sBlockTypes.get(parseInt(data.slice(1, 4).toString(), 10))
+  const type = sBlockTypes[parseInt(data.slice(1, 4).toString(), 10)]
   const length = parseInt(data.slice(4, 8).toString(), 10)
   res[type] = data.slice(8, 8 + length).toString()
   const rem = data.slice(8 + length)
