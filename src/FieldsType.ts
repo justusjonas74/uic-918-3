@@ -1,10 +1,10 @@
 export type SupportedTypes = Date | string | number | Buffer // TODO: Stupid Solution
 
-export type interpreterFunctionType = (x: Buffer) => SupportedTypes;
+export type InterpreterFunctionType<T extends SupportedTypes> = (x: Buffer) => T;
 
 
-export interface FieldsType {
+export interface FieldsType<T extends SupportedTypes> {
   length?: number;
   name: string;
-  interpreterFn?: interpreterFunctionType
+  interpreterFn?: InterpreterFunctionType<T>
 }
