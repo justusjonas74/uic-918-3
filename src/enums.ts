@@ -1,11 +1,8 @@
-const Enum = require('enum')
-// const fs= require('fs');
-// const path =
 const utils = require('./utils.js')
 
-const KA_DATA = require('./ka-data.js')
+const KA_DATA = require('./ka-data')
 
-const orgid = (orgId) => {
+const orgid = (orgId:number) => {
   const res = KA_DATA.org_id[orgId]
   if (res) {
     return res
@@ -15,11 +12,11 @@ const orgid = (orgId) => {
 }
 exports.org_id = orgid
 
-exports.tarifpunkt = (orgId, tp) => {
+exports.tarifpunkt = (orgId:number, tp:number) => {
   let res
   try {
     res = KA_DATA.tarifpunkte[orgId][tp]
-  } catch (e) {
+  } catch (error) {
     utils.myConsoleLog(e)
     res = null
   }

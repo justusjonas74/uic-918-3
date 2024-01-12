@@ -1,4 +1,4 @@
-const zlib = require('zlib')
+import {unzipSync} from 'zlib'
 
 const BLOCK_TYPES = require('./block-types.js') // Array with objects
 const utils = require('./utils.js')
@@ -43,7 +43,7 @@ function getTicketDataRaw (data, version) {
 
 function getTicketDataUncompressed (data) {
   if (data && data.length > 0) {
-    return zlib.unzipSync(data)
+    return unzipSync(data)
   } else {
     return data
   }
@@ -79,7 +79,7 @@ function interpretTicketContainer (data) {
 
 function getBlockTypeFieldsByIdAndVersion (id, version) {
   const types = BLOCK_TYPES.filter(typ => (typ.name === id))
-  if (utils.arrayDefinedAndNotEmpty(types)) {
+  if ((typeof types !== 'undefined' && types.length > 0)) {
     return types[0].versions[version]
   } else {
     return null

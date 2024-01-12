@@ -1,24 +1,24 @@
-const utils = require('./utils.js')
-const enums = require('./enums.js')
+// const utils = require('./utils.js')
+// const enums = require('./enums.js')
 
 // ################
 // DATA TYPES
 // ################
 
-const STRING = (x) => x.toString()
-const HEX = (x) => x.toString('hex')
-const STR_INT = (x) => parseInt(x.toString(), 10)
-const INT = (x) => x.readUIntBE(0, x.length)
-const DB_DATETIME = (x) => {
+const STRING = (x:Buffer) => x.toString()
+const HEX = (x:Buffer) => x.toString('hex')
+const STR_INT = (x:Buffer) => parseInt(x.toString(), 10)
+const INT = (x:Buffer) => x.readUIntBE(0, x.length)
+const DB_DATETIME = (x:Buffer) => {
   // DDMMYYYYHHMM
-  const day = STR_INT(x.slice(0, 2))
-  const month = STR_INT(x.slice(2, 4)) - 1
-  const year = STR_INT(x.slice(4, 8))
-  const hour = STR_INT(x.slice(8, 10))
-  const minute = STR_INT(x.slice(10, 12))
+  const day = STR_INT(x.subarray(0, 2))
+  const month = STR_INT(x.subarray(2, 4)) - 1
+  const year = STR_INT(x.subarray(4, 8))
+  const hour = STR_INT(x.subarray(8, 10))
+  const minute = STR_INT(x.subarray(10, 12))
   return new Date(year, month, day, hour, minute)
 }
-const KA_DATETIME = (x) => {
+const KA_DATETIME = (x:Buffer) => {
   // ‘yyyyyyymmmmddddd’B + hhhhhmmmmmmsssss’B  (4 Byte)
   const dateStr = utils.pad(parseInt(x.toString('hex'), 16).toString(2), 32)
   const year = parseInt(dateStr.slice(0, 7), 2) + 1990

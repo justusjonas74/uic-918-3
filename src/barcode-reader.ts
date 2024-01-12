@@ -1,5 +1,6 @@
 //TODO: No declaration for this package...
-import {read as readBarcode} from 'zebra-crossing'
+import zebra = require('zebra-crossing');
+
 
 // TODO: Types are defined twice in src\zebra-crossing.d.ts. Should be defined once.
 type BarcodeFormats  = 'AZTEC' |'CODABAR' |'CODE_39' |'CODE_93' |'CODE_128' |'DATA_MATRIX' |'EAN_8' |'EAN_13' |'ITF' |'MAXICODE' |'PDF_417' |'QR_CODE' |'RSS_14' |'RSS_EXPANDED' |'UPC_A' |'UPC_E' |'UPC_EAN_EXTENSION'
@@ -19,5 +20,5 @@ const defaultOptions : ReadingOptions = {
 }
 
 export function ZXing (data: string|Buffer, options:ReadingOptions = defaultOptions) {
-  return readBarcode(data, options)
+  return zebra.read(data, options)
 }

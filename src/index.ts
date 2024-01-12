@@ -1,4 +1,4 @@
-const barcodeReader = require('./lib/barcode-reader.js')
+import {ZXing} from './barcode-reader'
 const interpretBarcode = require('./lib/barcode-data.js')
 const fixingZXing = require('./lib/fixingZXing')
 const { loadFileOrBuffer } = require('./lib/checkInput')
@@ -18,7 +18,7 @@ const verifySignature = require('./lib/check_signature').verifyTicket
 // }
 
 const fixZXING = (res) => { return Promise.resolve(fixingZXing(res.raw)) }
-const readZxing = (filePath) => barcodeReader.ZXing(filePath)
+const readZxing = (filePath) => ZXing(filePath)
 const interpretBarcodeFn = (res) => { return Promise.resolve(interpretBarcode(res)) }
 
 const checkSignature = async function (ticket, verifyTicket) {
