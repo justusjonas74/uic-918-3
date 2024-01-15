@@ -10,10 +10,7 @@
 
 import { FieldsType, SupportedTypes } from "./FieldsType"
 
-
-
-
-type interpretFieldResult = { [index: string]: SupportedTypes }
+export type interpretFieldResult = { [index: string]: SupportedTypes }
 
 export function interpretField(data: Buffer, fields: FieldsType[]) {
   let remainder = data
@@ -55,8 +52,6 @@ export function myConsoleLog(str: string) {
   if (process.env.NODE_ENV !== 'test') { console.error(str) }
 }
 
-
-
 export function pad(number: number | string, length: number) {
   let str = '' + number
   while (str.length < length) {
@@ -64,17 +59,3 @@ export function pad(number: number | string, length: number) {
   }
   return str
 }
-
-export function assignArrayToObj(arr: object[]) {
-  // const reducer = (accumulator, currentValue) => Object.assign({}, accumulator, currentValue)
-  // return arr.reduce(reducer)
-  // // var obj = Object.assign({}, o1, o2, o3);
-  const initialValue = {};
-  return arr.reduce((obj, item) => {
-    return {
-      ...obj,
-      ...item,
-    };
-  }, initialValue);
-}
-  
