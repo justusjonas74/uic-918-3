@@ -1,26 +1,27 @@
-const chai = require('chai')
+import * as chai from 'chai';
 chai.should()
 
-const helper = require('./helper')
 
-const interpretBarcode = require('../lib/barcode-data')
+import { dummyTicket, dummyTicket2 } from './helper'
+
+import interpretBarcode from '../src/barcode-data'
 
 describe('barcode-data', () => {
   describe('barcode-data.interpret', () => {
     it('should return an object for ticket version 1', () => {
-      const ticket = helper.dummyTicket('U_HEAD', '01', 'Hi!')
+      const ticket = dummyTicket('U_HEAD', '01', 'Hi!')
       interpretBarcode(ticket).should.be.an('object')
     })
     it('should return an object for ticket version 2', () => {
-      const ticket = helper.dummyTicket('U_HEAD', '02', 'Hi!')
+      const ticket = dummyTicket('U_HEAD', '02', 'Hi!')
       interpretBarcode(ticket).should.be.an('object')
     })
     it('should show the correct version for ticket version 1', () => {
-      const ticket = helper.dummyTicket('U_HEAD', '01', 'Hi!')
+      const ticket = dummyTicket('U_HEAD', '01', 'Hi!')
       interpretBarcode(ticket).version.should.be.equal(1)
     })
     it('should show the correct version for ticket version 2', () => {
-      const ticket = helper.dummyTicket2('U_HEAD', '01', 'Hi!')
+      const ticket = dummyTicket2('U_HEAD', '01', 'Hi!')
       interpretBarcode(ticket).version.should.be.equal(2)
     })
     it('should return an empty array if input param is an empty buffer.', () => {
@@ -31,7 +32,7 @@ describe('barcode-data', () => {
     describe('on unknown data fields', () => {
       let results
       beforeEach((done) => {
-        const ticket = helper.dummyTicket('MYID!!', '01', 'Test')
+        const ticket = dummyTicket('MYID!!', '01', 'Test')
         results = interpretBarcode(ticket).ticketContainers
         done()
       })
@@ -48,7 +49,7 @@ describe('barcode-data', () => {
     describe('on unknown data fieds versions but known id', () => {
       let results
       beforeEach((done) => {
-        const ticket = helper.dummyTicket('U_HEAD', '03', 'Test')
+        const ticket = dummyTicket('U_HEAD', '03', 'Test')
         results = interpretBarcode(ticket).ticketContainers
         done()
       })
