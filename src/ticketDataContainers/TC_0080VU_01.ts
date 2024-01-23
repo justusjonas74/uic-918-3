@@ -1,7 +1,7 @@
 import { TicketContainerType } from "../TicketContainer";
 import {INT, EFS_DATA } from "../block-types";
 
-const TC_0080VU : TicketContainerType = 
+const TC_0080VU_01 : TicketContainerType = 
 {
   name: '0080VU',
   version: '01',
@@ -34,4 +34,4 @@ const TC_0080VU : TicketContainerType =
   ]
 }
 
-export default TC_0080VU
+export default TC_0080VU_01

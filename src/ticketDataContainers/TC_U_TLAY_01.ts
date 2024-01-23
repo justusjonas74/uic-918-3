@@ -1,7 +1,7 @@
 import { TicketContainerType } from "../TicketContainer";
 import { RCT2_BLOCKS, STRING, STR_INT } from "../block-types";
 
-const U_TLAY_01 : TicketContainerType = {
+const TC_U_TLAY_01 : TicketContainerType = {
     name: 'U_TLAY',
     version: '01',
     dataFields: [
@@ -23,4 +23,4 @@ const U_TLAY_01 : TicketContainerType = {
     ]
   }
 
-  export default U_TLAY_01
+  export default TC_U_TLAY_01

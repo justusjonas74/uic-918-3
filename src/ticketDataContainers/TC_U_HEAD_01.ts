@@ -1,7 +1,7 @@
 import { TicketContainerType } from "../TicketContainer";
 import { DB_DATETIME, HEX, STRING } from "../block-types";
 
-const U_HEAD : TicketContainerType =  {
+const TC_U_HEAD_01 : TicketContainerType =  {
     name: 'U_HEAD',
     version: '01',
     dataFields: [
@@ -42,4 +42,4 @@ const U_HEAD : TicketContainerType =  {
         }
     ]
 }
-export default U_HEAD
+export default TC_U_HEAD_01

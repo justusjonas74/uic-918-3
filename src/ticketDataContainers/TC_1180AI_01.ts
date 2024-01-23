@@ -1,7 +1,7 @@
 import { TicketContainerType } from "../TicketContainer";
 import { INT, STRING } from "../block-types";
 
-const TC_1180AI: TicketContainerType = {
+const TC_1180AI_01: TicketContainerType = {
     name: '1180AI',
     version: '01',
     dataFields: [
@@ -113,4 +113,4 @@ const TC_1180AI: TicketContainerType = {
     ]
 }
 
-export default TC_1180AI
+export default TC_1180AI_01
