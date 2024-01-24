@@ -102,6 +102,7 @@ export type ParsedUIC918Barcode = {
   ticketDataRaw: Buffer;
   ticketDataUncompressed: Buffer;
   ticketContainers: SupportedTypes[];
+  isSignatureValid?: boolean
 }
 function parseBarcodeData(data:Buffer) {
   const version = getVersion(data)

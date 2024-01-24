@@ -36,7 +36,7 @@ export const fileWillExists = (filePath:string) => {
 
 // promisify fs.readFile()
 export const readFileAsync = (filename:PathOrFileDescriptor) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<Buffer>((resolve, reject) => {
     readFile(filename, function (err, buffer) {
       if (err) reject(err); else resolve(buffer)
     })
@@ -44,7 +44,7 @@ export const readFileAsync = (filename:PathOrFileDescriptor) => {
 }
 
 const tryToLoadFile = (input:string) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<Buffer>((resolve, reject) => {
     fileWillExists(input)
       .then(input => readFileAsync(input))
       .then(buffer => resolve(buffer))

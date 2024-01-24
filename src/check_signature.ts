@@ -26,7 +26,7 @@ function getCertByHeader (header: BarcodeHeader) {
 }
 
 export const verifyTicket = function (ticket: ParsedUIC918Barcode) {
-  return new Promise(function (resolve, reject) {
+  return new Promise<boolean | null>(function (resolve, reject) {
     if (ticket) {
       getCertByHeader(ticket.header)
         .then(cert => {
