@@ -1,7 +1,9 @@
-const certs = require('./get_certs')
-const rs = require('jsrsasign')
+import * as rs from 'jsrsasign'
 
-function checkSignature (certPEM, signature, message) {
+import { Key, getCertByID } from './get_certs'
+import { BarcodeHeader, ParsedUIC918Barcode } from './barcode-data'
+
+function checkSignature (certPEM: rs.RSAKey | rs.KJUR.crypto.DSA | rs.KJUR.crypto.ECDSA, signature:string, message:string) {
   // DSA signature validation
   const sig = new rs.KJUR.crypto.Signature({ alg: 'SHA1withDSA' })
   sig.init(certPEM)
@@ -9,12 +11,12 @@ function checkSignature (certPEM, signature, message) {
   return sig.verify(signature)
 }
 
-function getCertByHeader (header) {
-  return new Promise(function (resolve, reject) {
+function getCertByHeader (header: BarcodeHeader) {
+  return new Promise<Key>(function (resolve, reject) {
     if (header) {
       const orgId = parseInt(header.rics.toString(), 10)
       const keyId = parseInt(header.key_id.toString(), 10)
-      certs.getCertByID(orgId, keyId)
+      getCertByID(orgId, keyId)
         .then(cert => resolve(cert))
         .catch(err => reject(err))
     } else {
@@ -23,7 +25,7 @@ function getCertByHeader (header) {
   })
 }
 
-const verifyTicket = function (ticket) {
+export const verifyTicket = function (ticket: ParsedUIC918Barcode) {
   return new Promise(function (resolve, reject) {
     if (ticket) {
       getCertByHeader(ticket.header)
@@ -42,4 +44,4 @@ const verifyTicket = function (ticket) {
   })
 }
 
-module.exports = { verifyTicket }
+

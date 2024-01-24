@@ -60,7 +60,7 @@ const openLocalFiles = () => {
 }
 
 const selectCert = (keys:UICKeys, orgId:number, keyId:number) => {
-  return new Promise(function (resolve, reject) {
+  return new Promise<Key>(function (resolve, reject) {
     const cert = find(keys.keys.key, { issuerCode: [orgId.toString()], id: [keyId.toString()] })
     if (cert) {
       resolve(cert)
@@ -71,7 +71,7 @@ const selectCert = (keys:UICKeys, orgId:number, keyId:number) => {
 }
 
 export const getCertByID = (orgId:number, keyId:number) => {
-  return new Promise(function (resolve, reject) {
+  return new Promise<Key>(function (resolve, reject) {
     openLocalFiles()
       .then(keys => selectCert(keys, orgId, keyId))
       .then(cert => resolve(cert))
