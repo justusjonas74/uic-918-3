@@ -2,13 +2,14 @@ import {unzipSync} from 'zlib'
 
 import TicketContainer, { TicketContainerType } from './TicketContainer'
 import { interpretField, myConsoleLog, parseContainers, parsingFunction } from './utils.js'
+import { SupportedTypes } from './FieldsType'
 
 // Get raw data and uncompress the TicketData
 function getVersion (data:Buffer) {
   return parseInt(data.subarray(3, 5).toString(), 10)
 }
 
-type BarcodeHeader = {
+export type BarcodeHeader = {
   umid: Buffer;
   mt_version: Buffer;
   rics: Buffer;
@@ -93,7 +94,15 @@ function getBlockTypeFieldsByIdAndVersion (id:string, version:string) : TicketCo
   return TicketContainer.find(ticketContainer => (ticketContainer.name === id && ticketContainer.version === version ))
   
 }
-
+export type ParsedUIC918Barcode = {
+  version: number;
+  header: BarcodeHeader;
+  signature: Buffer;
+  ticketDataLength: Buffer;
+  ticketDataRaw: Buffer;
+  ticketDataUncompressed: Buffer;
+  ticketContainers: SupportedTypes[];
+}
 function parseBarcodeData(data:Buffer) {
   const version = getVersion(data)
   const header = getHeader(data)
