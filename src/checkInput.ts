@@ -1,31 +1,31 @@
-const fs = require('fs')
-const path = require('path')
-const myConsoleLogFn = require('./utils.js').myConsoleLog
+import { PathLike, PathOrFileDescriptor, existsSync, readFile } from 'fs'
+import { isAbsolute, join } from 'path'
+import {myConsoleLog} from './utils'
 
-const fileWithAbsolutePathExists = (filePath) => {
-  if (fs.existsSync(filePath)) {
+const fileWithAbsolutePathExists = (filePath:PathLike) => {
+  if (existsSync(filePath)) {
     return true
   } else {
-    myConsoleLogFn(`ERROR: ${filePath} not found.`)
+    myConsoleLog(`ERROR: ${filePath} not found.`)
     return false
   }
 }
 
-const fileExists = (filePath) => {
+export const fileExists = (filePath:string) => {
   if (!filePath) {
-    myConsoleLogFn('No path passed.')
+    myConsoleLog('No path passed.')
     return false
   }
-  if (path.isAbsolute(filePath)) {
+  if (isAbsolute(filePath)) {
     return fileWithAbsolutePathExists(filePath)
   } else {
-    const absolutePath = path.join(process.cwd(), filePath)
+    const absolutePath = join(process.cwd(), filePath)
     return fileWithAbsolutePathExists(absolutePath)
   }
 }
 
-const fileWillExists = (filePath) => {
-  return new Promise((resolve, reject) => {
+export const fileWillExists = (filePath:string) => {
+  return new Promise<string>((resolve, reject) => {
     if (fileExists(filePath)) {
       resolve(filePath)
     } else {
@@ -35,15 +35,15 @@ const fileWillExists = (filePath) => {
 }
 
 // promisify fs.readFile()
-const readFileAsync = (filename) => {
+export const readFileAsync = (filename:PathOrFileDescriptor) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(filename, function (err, buffer) {
+    readFile(filename, function (err, buffer) {
       if (err) reject(err); else resolve(buffer)
     })
   })
 }
 
-const tryToLoadFile = (input) => {
+const tryToLoadFile = (input:string) => {
   return new Promise((resolve, reject) => {
     fileWillExists(input)
       .then(input => readFileAsync(input))
@@ -53,7 +53,7 @@ const tryToLoadFile = (input) => {
 }
 
 // const loadFileOrBuffer = (input, stringCallback = null, bufferCallback = null, defaultCallback = null) => {
-const loadFileOrBuffer = (input) => {
+export const loadFileOrBuffer = (input:PathLike) => {
   if (typeof input === 'string') {
     // return stringCallback ? stringCallback(input) : tryToLoadFile(input)
     return tryToLoadFile(input)
@@ -65,5 +65,3 @@ const loadFileOrBuffer = (input) => {
     return Promise.reject(new Error('Error: Input must be a Buffer (Image) or a String (path to image)'))
   }
 }
-
-module.exports = { fileWillExists, fileExists, loadFileOrBuffer, readFileAsync }
