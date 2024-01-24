@@ -160,7 +160,7 @@ export type RCT2_BLOCK = {
   value: string;
 }
 
-const interpretRCT2Block: parsingFunction = (data: Buffer) => {
+const interpretRCT2Block: parsingFunction = (data: Buffer) : [RCT2_BLOCK, Buffer]=> {
   const line = parseInt(data.subarray(0, 2).toString(), 10)
   const column = parseInt(data.subarray(2, 4).toString(), 10)
   const height = parseInt(data.subarray(4, 6).toString(), 10)
@@ -181,7 +181,7 @@ const interpretRCT2Block: parsingFunction = (data: Buffer) => {
 }
 
 export const RCT2_BLOCKS = (x: Buffer) => {
-  return parseContainers(x, interpretRCT2Block)
+  return Object.assign({}, ...(parseContainers(x, interpretRCT2Block)))
 }
 
 const A_BLOCK_FIELDS_V2: FieldsType[] = [

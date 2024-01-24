@@ -17,6 +17,7 @@ type ZebraCrossingReturnType = {
     type: string,
     points: [number, number][],
 
+}
 
 declare module 'zebra-crossing' {
     function read(file: string | Buffer, options: ReadingOptions): Promise<ZebraCrossingReturnType>
