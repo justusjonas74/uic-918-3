@@ -1,27 +1,16 @@
 import {ZXing} from './barcode-reader'
-const interpretBarcode = require('./lib/barcode-data.js')
-const fixingZXing = require('./lib/fixingZXing')
-const { loadFileOrBuffer } = require('./lib/checkInput')
-// const pdfReader = require('./lib/pdfReader')
-// const {checkInput} = require('./lib/utils')
+import  interpretBarcode, { ParsedUIC918Barcode } from './barcode-data'
+import fixingZXing  from './fixingZXing'
+import { loadFileOrBuffer } from './checkInput'
 
-const verifySignature = require('./lib/check_signature').verifyTicket
 
-// const checkInput = (input, stringCallback =null, bufferCallback = null , defaultCallback = null) => {
-//   if (typeof input === 'string') {
-//     return fileWillExists(input)
-//   } else if (input instanceof Buffer) {
-//     return Promise.resolve(input)
-//   } else {
-//     return Promise.reject(new Error(`Error: Input must be a Buffer (Image) or a String (path to image)`))
-//   }
-// }
+import {verifyTicket as verifySignature} from './check_signature'
 
-const fixZXING = (res) => { return Promise.resolve(fixingZXing(res.raw)) }
-const readZxing = (filePath) => ZXing(filePath)
-const interpretBarcodeFn = (res) => { return Promise.resolve(interpretBarcode(res)) }
+const fixZXING = (res:ZebraCrossingReturnType) => { return Promise.resolve(fixingZXing(res.raw)) }
+const readZxing = (filePath:string|Buffer) => ZXing(filePath)
+const interpretBarcodeFn = (res:Buffer) => { return Promise.resolve(interpretBarcode(res)) }
 
-const checkSignature = async function (ticket, verifyTicket) {
+const checkSignature = async function (ticket:ParsedUIC918Barcode, verifyTicket?:boolean) {
   if (verifyTicket) {
     const isValid = await verifySignature(ticket)
     ticket.isSignatureValid = isValid
@@ -29,11 +18,16 @@ const checkSignature = async function (ticket, verifyTicket) {
   return ticket
 }
 
-const readBarcode = function (input, options = {}) {
+type ReadBarcodeOptions = {
+  verifySignature? : boolean
+}
+
+
+const readBarcode = function (input:string|Buffer, options? : ReadBarcodeOptions) {
   const defaults = {
     verifySignature: false
   }
-  const opts = Object.assign({}, defaults, options)
+  const opts: ReadBarcodeOptions = Object.assign({}, defaults, options)
 
   return new Promise((resolve, reject) => {
     // fileWillExists(filePath)
@@ -46,12 +40,5 @@ const readBarcode = function (input, options = {}) {
       .catch((err) => reject(err))
   })
 }
-// const readPDFBarcode = (input, options) => {
-//   return new Promise((resolve, reject) => {
-//     pdfReader(input)
-//       .then(x => readBarcode(x, options))
-//       .then((res) => resolve(res))
-//       .catch((err) => reject(err))
-//   })
-// }
+
 module.exports = { readBarcode, interpretBarcode }
