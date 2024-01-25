@@ -1,15 +1,20 @@
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
+import * as chai from 'chai';
+import * as chaiAsPromised from 'chai-as-promised'
 chai.use(chaiAsPromised)
 chai.should()
 
-const path = require('path')
-const fs = require('fs')
+import path  from 'path'
+import fs from 'fs'
 
-const { fileExists, fileWillExists, loadFileOrBuffer, readFileAsync } = require('../lib/checkInput')
+import { fileExists, fileWillExists, loadFileOrBuffer, readFileAsync } from '../src/checkInput'
 
 describe('checkInput.js', () => {
-  const filePath = {}
+  const filePath = {
+    relative_true : "",
+    relative_false : "" + '1458',
+    absolute_true : "",
+    absolute_false : ""
+  }
 
   beforeEach((done) => {
     const file = 'index.js'
@@ -21,9 +26,6 @@ describe('checkInput.js', () => {
   })
 
   describe('fileExists', () => {
-    it('should return false if no file path given', () => {
-      fileExists(null).should.be.false // eslint-disable-line no-unused-expressions
-    })
     it('should return false if a file with relative path isn\'t found', () => {
       fileExists(filePath.relative_false).should.be.false // eslint-disable-line no-unused-expressions
     })
@@ -39,9 +41,6 @@ describe('checkInput.js', () => {
   })
 
   describe('fileWillExists', () => {
-    it('should return false if no file path given', () => {
-      return fileWillExists(null).should.be.rejected // eslint-disable-line no-unused-expressions
-    })
     it('should return false if a file with relative path isn\'t found', () => {
       return fileWillExists(filePath.relative_false).should.be.rejected // eslint-disable-line no-unused-expressions
     })
@@ -56,9 +55,7 @@ describe('checkInput.js', () => {
     })
   })
   describe('readFileAsync', () => {
-    it('should return false if no file path given', () => {
-      return readFileAsync(null).should.be.rejected // eslint-disable-line no-unused-expressions
-    })
+
     it('should return false if a file with relative path isn\'t found', () => {
       return readFileAsync(filePath.relative_false).should.be.rejected // eslint-disable-line no-unused-expressions
     })

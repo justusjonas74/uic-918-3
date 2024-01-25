@@ -23,7 +23,7 @@ type ReadBarcodeOptions = {
 }
 
 
-const readBarcode = function (input:string|Buffer, options? : ReadBarcodeOptions) {
+export const readBarcode = function (input:string|Buffer, options? : ReadBarcodeOptions) {
   const defaults = {
     verifySignature: false
   }
@@ -41,4 +41,5 @@ const readBarcode = function (input:string|Buffer, options? : ReadBarcodeOptions
   })
 }
 
-module.exports = { readBarcode, interpretBarcode }
+export {default as interpretBarcode} from "./barcode-data"
+

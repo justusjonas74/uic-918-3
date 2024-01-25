@@ -1,8 +1,9 @@
-const chai = require('chai')
+import * as chai from 'chai';
 chai.should()
-const randomstring = require('randomstring')
 
-const fixingZXing = require('../lib/fixingZXing')
+import randomstring from 'randomstring'
+
+import fixingZXing from '../src/fixingZXing'
 
 describe('fixingZXing.js', function () {
   it('should return a buffer', () => {
