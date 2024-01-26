@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised'
 chai.use(chaiAsPromised)
-chai.should()
+expect(chai)()
 
 import {verifyTicket} from '../src/check_signature'
 import { ParsedUIC918Barcode } from '../src/barcode-data';
@@ -24,7 +24,7 @@ describe('check_signature.js', () => {
         ticketDataUncompressed:Buffer.from("")
 
       }
-      return verifyTicket(ticket).should.be.fulfilled.and.become(true)
+      return expect(verifyTicket(ticket)).be.fulfilled.and.become(true);
     })
     it('should return false if an invalid message is given', () => {
       const ticket = {
@@ -41,7 +41,7 @@ describe('check_signature.js', () => {
       ticketDataLength:Buffer.from(""),
       ticketDataUncompressed:Buffer.from("")
     }
-      return verifyTicket(ticket).should.be.fulfilled.and.become(false)
+      return expect(verifyTicket(ticket)).be.fulfilled.and.become(false);
     })
   })
 })

@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised'
 chai.use(chaiAsPromised)
-chai.should()
+expect(chai)()
 
 import fs from 'fs'
 import {readBarcode} from '../src/index'
@@ -14,19 +14,19 @@ describe('index.js', () => {
       const dummy4 = 'test/images/CT-003.png'
       const falseDummy = 'test/images/barcode dummy.png'
       it('should return an object on sucess', () => {
-        return readBarcode(dummy).should.eventually.be.an('object')
+        return expect(readBarcode(dummy)).toBeInstanceOf(Object);
       })
       it('should eventually be resolved', () => {
-        return readBarcode(dummy).should.eventually.be.fulfilled
+        return expect(readBarcode(dummy)).eventually.be.fulfilled;
       })
       it('should reject if file not found', () => {
-        return readBarcode(falseDummy).should.be.rejected
+        return expect(readBarcode(falseDummy)).be.rejected;
       })
       it('should handle verifySignature option and resolve', async () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return readBarcode(dummy4, { verifySignature: true }).should.eventually.have.property('isSignatureValid')
+        return expect(readBarcode(dummy4, { verifySignature: true })).toHaveProperty('isSignatureValid');
       })
     })
     describe('...when input is an image buffer', () => {
@@ -34,16 +34,16 @@ describe('index.js', () => {
       // const dummy3Buff = fs.readFileSync('test/images/barcode-dummy3.png')
       const dummy4Buff = fs.readFileSync('test/images/CT-003.png')
       it('should return an object on sucess', () => {
-        return readBarcode(dummyBuff).should.eventually.be.an('object')
+        return expect(readBarcode(dummyBuff)).toBeInstanceOf(Object);
       })
       it('should eventually be resolved', () => {
-        return readBarcode(dummyBuff).should.eventually.be.fulfilled
+        return expect(readBarcode(dummyBuff)).eventually.be.fulfilled;
       })
       it('should handle verifySignature option and resolve', async () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return readBarcode(dummy4Buff, { verifySignature: true }).should.eventually.have.property('isSignatureValid')
+        return expect(readBarcode(dummy4Buff, { verifySignature: true })).toHaveProperty('isSignatureValid');
       })
     })
     // describe('...when input is something else', () => {

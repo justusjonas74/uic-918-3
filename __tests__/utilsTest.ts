@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-chai.should()
+expect(chai)()
 
 import { FieldsType, SupportedTypes, assignArrayToObj, interpretField, pad, parseContainers, parsingFunction } from '../src/utils';
 
@@ -33,13 +33,13 @@ describe('utils.js', () => {
       const data = Buffer.from('Test')
       const fields : FieldsType[] = []
       const result = interpretField(data, fields)
-      result.should.be.an('object')
+      expect(result).toBeInstanceOf(Object)
     })
     it('should return an empty object if fields is an empty arry', () => {
       const data = Buffer.from('Test')
       const fields : FieldsType[] = []
       const result = interpretField(data, fields)
-      result.should.be.empty // eslint-disable-line no-unused-expressions
+      expect(Object.keys(result)).toHaveLength(0) // eslint-disable-line no-unused-expressions
     })
     it('should parse a buffer using a given data field specification', () => {
       const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21])
@@ -60,9 +60,9 @@ describe('utils.js', () => {
         }
       ]
       const result = interpretField(data, fields)
-      result.TAG.should.be.equal('1414')
-      result.LENGTH.should.be.deep.equal(Buffer.from('06', 'hex'))
-      result.TEXT.should.be.equal('Hello!')
+      expect(result.TAG).toBe('1414')
+      expect(result.LENGTH).toEqual(Buffer.from('06', 'hex'))
+      expect(result.TEXT).toBe('Hello!')
     })
     it('should parse a buffer using a given data field specification', () => {
       const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21])
@@ -83,9 +83,9 @@ describe('utils.js', () => {
         }
       ]
       const result = interpretField(data, fields)
-      result.TAG.should.be.equal('1414')
-      result.LENGTH.should.be.deep.equal(Buffer.from('06', 'hex'))
-      result.TEXT.should.be.equal('Hello!')
+      expect(result.TAG).toBe('1414')
+      expect(result.LENGTH).toEqual(Buffer.from('06', 'hex'))
+      expect(result.TEXT).toBe('Hello!')
     })
   })
 
@@ -103,26 +103,26 @@ describe('utils.js', () => {
       done()
     })
     it('should return an array', () => {
-      results.should.be.a('array')
+      expect(Array.isArray(results)).toBe(true)
     })
     it('should parse the values with the given logic in the function', () => {
-      results.should.be.deep.equal(['T', 'e', 's', 't'])
+      expect(results).toEqual(['T', 'e', 's', 't'])
     })
   })
 
   describe('utils.pad', () => {
     it('should return a string', () => {
-      pad(12, 4).should.be.a('string')
+      expect(typeof pad(12, 4)).toBe('string')
     })
     it('should return a string with the give length', () => {
       const len = 12
-      pad(12, len).length.should.be.equal(len)
+      expect(pad(12, len).length).toBe(len)
     })
     it('should return a string respresentation of a number with leading zeros', () => {
-      pad(12, 4).should.be.equal('0012')
+      expect(pad(12, 4)).toBe('0012')
     })
     it('should return a string respresentation of a hexstring with leading zeros', () => {
-      pad('11', 4).should.be.equal('0011')
+      expect(pad('11', 4)).toBe('0011')
     })
   })
 
@@ -136,12 +136,12 @@ describe('utils.js', () => {
     const result = assignArrayToObj(TEST_DATA)
 
     it('should return an object', () => {
-      result.should.be.an('object')
+      expect(result).toBeInstanceOf(Object)
     })
     it('should have all given properties', () => {
-      result.should.have.deep.property('hello', 'world')
-      result.should.have.deep.property('thats', 's')
-      result.should.have.deep.property('a', 'test')
+      expect(result).toHaveProperty('hello', 'world')
+      expect(result).toHaveProperty('thats', 's')
+      expect(result).toHaveProperty('a', 'test')
     })
   })
 })
