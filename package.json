@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "standard-fix": "standard --fix",
-    "test": "cross-env TS_NODE_PROJECT='./tsconfig.test.json' nyc mocha",
+    "test": "jest",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "postinstall": "node ./updateCerts.js",
     "build": "tsc -p tsconfig.json",
@@ -34,6 +34,7 @@
     "lib": "lib"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@types/chai": "^4.3.11",
     "@types/chai-as-promised": "^7.1.8",
     "@types/jsrsasign": "^10.5.12",
@@ -49,10 +50,12 @@
     "coveralls": "^3.0.2",
     "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
+    "jest": "^29.7.0",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "randomstring": "^1.1.5",
     "standard": "^17.1.0",
+    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2"
   },
   "repository": {
