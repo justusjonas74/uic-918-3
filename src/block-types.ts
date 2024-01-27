@@ -119,7 +119,8 @@ const EFS_FIELDS: FieldsType[] = [
   }
 ]
 
-export const EFS_DATA = (x: Buffer) => {
+export type IEFS_DATA = Record<number, InterpretFieldResult> 
+export const EFS_DATA = (x: Buffer) : IEFS_DATA=> {
   const lengthListDC = INT(x.subarray(25, 26))
 
   const t = [x.subarray(0, lengthListDC + 26)]
@@ -127,7 +128,7 @@ export const EFS_DATA = (x: Buffer) => {
   if (lengthListDC + 26 < x.length) {
     t.push(x.subarray(lengthListDC + 26, x.length))
   }
-  const res: Record<number, InterpretFieldResult> = {}
+  const res: IEFS_DATA = {}
   t.forEach((ticket, index) => {
     res[1 + index] = interpretField(ticket, EFS_FIELDS)
   })

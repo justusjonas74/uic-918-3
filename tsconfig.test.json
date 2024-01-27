@@ -1,7 +1,0 @@
-{
-    "extends": "./tsconfig.json",
-    "module": "commonjs",
-    "ts-node": {
-        "files": true
-      }
-    }

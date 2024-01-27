@@ -1,7 +1,7 @@
 import {unzipSync} from 'zlib'
 
 import TicketContainer, { TicketContainerType } from './TicketContainer'
-import { interpretField, myConsoleLog, parseContainers, parsingFunction } from './utils.js'
+import { interpretField, myConsoleLog, parseContainers, parsingFunction } from './utils'
 import { SupportedTypes } from './FieldsType'
 
 // Get raw data and uncompress the TicketData

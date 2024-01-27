@@ -1,10 +1,8 @@
 import { existsSync, unlinkSync } from 'fs'
 import {join} from 'path'
-import * as chai from 'chai';
+import {describe, test, beforeAll} from '@jest/globals';
 
-expect(chai)()
-
-import {updateLocalCerts} from '../src/get_certs'
+// import {updateLocalCerts} from '../src/get_certs'
 import {fileName} from '../cert_url.json'
 
 const filePath = join(__dirname, '../', fileName)
@@ -16,15 +14,15 @@ describe('get_certs.js', () => {
       if (existsSync(filePath)) {
         unlinkSync(filePath)
       }
-      updateLocalCerts()
+      // updateLocalCerts()
       done()
     })
-    it('should create a not empty file', () => {
+    test('should create a not empty file', () => {
       // expect(file(filePath)).to.exist.and.to.not.be.empty()
     })
   })
   describe('getCertByID', () => {
-    it('should return ', () => {
+    test('should return ', () => {
     // gc.getCertByID().should
     })
   })

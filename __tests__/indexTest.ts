@@ -1,7 +1,4 @@
-import * as chai from 'chai';
-import * as chaiAsPromised from 'chai-as-promised'
-chai.use(chaiAsPromised)
-expect(chai)()
+import {describe, expect, test} from '@jest/globals';
 
 import fs from 'fs'
 import {readBarcode} from '../src/index'
@@ -9,20 +6,20 @@ import {readBarcode} from '../src/index'
 describe('index.js', () => {
   describe('index.readBarcode', () => {
     describe('...when inputis a local file', () => {
-      const dummy = 'test/images/barcode-dummy2.png'
-      // const dummy3 = 'test/images/barcode-dummy3.png'
-      const dummy4 = 'test/images/CT-003.png'
-      const falseDummy = 'test/images/barcode dummy.png'
-      it('should return an object on sucess', () => {
+      const dummy = '__tests__/images/barcode-dummy2.png'
+      // const dummy3 = '__tests__/images/barcode-dummy3.png'
+      const dummy4 = '__tests__/images/CT-003.png'
+      const falseDummy = '__tests__/images/barcode dummy.png'
+      test('should return an object on sucess', () => {
         return expect(readBarcode(dummy)).toBeInstanceOf(Object);
       })
-      it('should eventually be resolved', () => {
-        return expect(readBarcode(dummy)).eventually.be.fulfilled;
+      test('should eventually be resolved', () => {
+        return expect(readBarcode(dummy)).resolves.toBeTruthy()
       })
-      it('should reject if file not found', () => {
-        return expect(readBarcode(falseDummy)).be.rejected;
+      test('should reject if file not found', () => {
+        return expect(readBarcode(falseDummy)).rejects.toEqual('error')
       })
-      it('should handle verifySignature option and resolve', async () => {
+      test('should handle verifySignature option and resolve', async () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
@@ -30,16 +27,14 @@ describe('index.js', () => {
       })
     })
     describe('...when input is an image buffer', () => {
-      const dummyBuff = fs.readFileSync('test/images/barcode-dummy2.png')
-      // const dummy3Buff = fs.readFileSync('test/images/barcode-dummy3.png')
-      const dummy4Buff = fs.readFileSync('test/images/CT-003.png')
-      it('should return an object on sucess', () => {
-        return expect(readBarcode(dummyBuff)).toBeInstanceOf(Object);
+      const dummyBuff = fs.readFileSync('__tests__/images/barcode-dummy2.png')
+      // const dummy3Buff = fs.readFileSync('__tests__/images/barcode-dummy3.png')
+      const dummy4Buff = fs.readFileSync('__tests__/images/CT-003.png')
+      test('should return an object on sucess', () => {
+        return expect(readBarcode(dummyBuff)).resolves.toBeInstanceOf(Object);
       })
-      it('should eventually be resolved', () => {
-        return expect(readBarcode(dummyBuff)).eventually.be.fulfilled;
-      })
-      it('should handle verifySignature option and resolve', async () => {
+
+      test('should handle verifySignature option and resolve', async () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
@@ -47,37 +42,37 @@ describe('index.js', () => {
       })
     })
     // describe('...when input is something else', () => {
-    //   it('should reject if input is array', () => {
+    //   test('should reject if input is array', () => {
     //     return readBarcode([1, 2, 3]).should.be.rejected
     //   })
-    //   it('should reject if input is object', () => {
+    //   test('should reject if input is object', () => {
     //     return readBarcode({ nr: 3 }).should.be.rejected
     //   })
-    //   it('should reject if input is null', () => {
+    //   test('should reject if input is null', () => {
     //     return readBarcode().should.be.rejected
     //   })
     // })
   })
   // describe('index.readPDFBarcode', () => {
   //   describe('...when input is something else', () => {
-  //     it('should reject if input is array', () => {
+  //     test('should reject if input is array', () => {
   //       return main.readPDFBarcode([1, 2, 3]).should.be.rejected
   //     })
-  //     it('should reject if input is object', () => {
+  //     test('should reject if input is object', () => {
   //       return main.readPDFBarcode({'nr': 3}).should.be.rejected
   //     })
-  //     it('should reject if input is null', () => {
+  //     test('should reject if input is null', () => {
   //       return main.readPDFBarcode().should.be.rejected
   //     })
   //   })
   //   describe('...when input is a buffer', () => {
-  //     const ticketPath = './test/pdf/ticketdump.data'
+  //     const ticketPath = './__tests__/pdf/ticketdump.data'
   //     const ticket = fs.readFileSync(ticketPath)
 
-  //     it('should be fulfilled with buffer input', () => {
+  //     test('should be fulfilled with buffer input', () => {
   //       return main.readPDFBarcode(ticket).should.be.fulfilled
   //     })
-  //     it('should be fulfilled with string input', () => {
+  //     test('should be fulfilled with string input', () => {
   //       return main.readPDFBarcode(ticketPath).should.be.fulfilled
   //     })
   //   })

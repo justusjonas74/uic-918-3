@@ -29,7 +29,7 @@ export const readBarcode = function (input:string|Buffer, options? : ReadBarcode
   }
   const opts: ReadBarcodeOptions = Object.assign({}, defaults, options)
 
-  return new Promise((resolve, reject) => {
+  return new Promise<ParsedUIC918Barcode>((resolve, reject) => {
     // fileWillExists(filePath)
     loadFileOrBuffer(input)
       .then(readZxing)

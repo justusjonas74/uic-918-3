@@ -2,7 +2,7 @@ import {describe, expect, test} from '@jest/globals';
 
 import { dummyTicket, dummyTicket2 } from './helper'
 
-import interpretBarcode from '../src/barcode-data'
+import interpretBarcode, { TicketDataContainer } from '../src/barcode-data'
 
 describe('barcode-data', () => {
   describe('barcode-data.interpret', () => {
@@ -28,10 +28,10 @@ describe('barcode-data', () => {
     })
 
     describe('on unknown data fields', () => {
-      let results
+      let results : TicketDataContainer[]
       beforeEach((done) => {
         const ticket = dummyTicket('MYID!!', '01', 'Test')
-        results = interpretBarcode(ticket).ticketContainers
+        results = interpretBarcode(ticket).ticketContainers as TicketDataContainer[]
         done()
       })
       it('should ignore unkown data fields', () => {
@@ -45,10 +45,10 @@ describe('barcode-data', () => {
       })
     })
     describe('on unknown data fieds versions but known id', () => {
-      let results
+      let results : TicketDataContainer[]
       beforeEach((done) => {
         const ticket = dummyTicket('U_HEAD', '03', 'Test')
-        results = interpretBarcode(ticket).ticketContainers
+        results = interpretBarcode(ticket).ticketContainers as TicketDataContainer[]
         done()
       })
       it('should ignore unkown versions of data fields', () => {

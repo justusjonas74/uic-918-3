@@ -161,9 +161,10 @@ const config: Config = {
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/__tests__/helper.ts"
+  ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
@@ -194,6 +195,9 @@ const config: Config = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+
+  preset: 'ts-jest',
+  testEnvironment: 'node',
 };
 
 export default config;

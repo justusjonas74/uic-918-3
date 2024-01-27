@@ -7,6 +7,7 @@
   "scripts": {
     "standard-fix": "standard --fix",
     "test": "jest",
+    "test:watch": "jest --watch",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "postinstall": "node ./updateCerts.js",
     "build": "tsc -p tsconfig.json",
@@ -41,6 +42,7 @@
     "@types/lodash": "^4.14.202",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.8",
+    "@types/randomstring": "^1.1.11",
     "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
