@@ -40,7 +40,6 @@ export function parseContainers(data: Buffer, f: parsingFunction): SupportedType
   while (remainder.length > 0) {
     const result = f(remainder)
     containers.push(result[0])
-    // if (containers.length < 10 ) {console.log(containers)};
     remainder = result[1]
   }
   return containers

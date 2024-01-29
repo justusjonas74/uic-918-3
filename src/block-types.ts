@@ -51,6 +51,7 @@ export const AUSWEIS_TYP = (x: Buffer) => {
 }
 
 export interface DC_LISTE_TYPE {
+  tagName:string;
   dc_length: number;
   typ_DC: string;
   pv_org_id: number;
@@ -58,12 +59,13 @@ export interface DC_LISTE_TYPE {
 }
 
 const DC_LISTE = (x: Buffer): DC_LISTE_TYPE => {
-  const dc_length = INT(x.subarray(1, 2))
+  const tagName = HEX(x.subarray(0, 1)) 
+  const dc_length = INT(x.subarray(1, 2)) 
   const typ_DC = HEX(x.subarray(2, 3))
-  const pv_org_id = INT(x.subarray(3, 5))
+  const pv_org_id = INT(x.subarray(3,5 ))
   const TP_RAW = splitDCList(dc_length, typ_DC, x.subarray(5, x.length))
   const TP = TP_RAW.map((item) => tarifpunkt(pv_org_id, item))
-  return { dc_length, typ_DC, pv_org_id, TP }
+  return { tagName, dc_length, typ_DC, pv_org_id, TP }
 }
 
 const EFS_FIELDS: FieldsType[] = [
@@ -76,11 +78,6 @@ const EFS_FIELDS: FieldsType[] = [
     name: 'kvp_organisations_id',
     length: 2,
     interpreterFn: ORG_ID
-  },
-  {
-    name: 'produkt_nr',
-    length: 2,
-    interpreterFn: INT
   },
   {
     name: 'efm_produkt',
@@ -138,7 +135,7 @@ export const EFS_DATA = (x: Buffer) : IEFS_DATA=> {
 function splitDCList(dcLength: number, typDC: string, data: Buffer) {
   // 0x0D 3 Byte CT, CM
   // 0x10 2 Byte Länder,SWT, QDL
-  let SEP: number
+  let SEP: number 
   if (parseInt(typDC, 16) === 0x10) {
     SEP = 2
   } else {
@@ -182,7 +179,7 @@ const interpretRCT2Block: parsingFunction = (data: Buffer) : [RCT2_BLOCK, Buffer
 }
 
 export const RCT2_BLOCKS = (x: Buffer) => {
-  return Object.assign({}, ...(parseContainers(x, interpretRCT2Block)))
+  return parseContainers(x, interpretRCT2Block) as RCT2_BLOCK[]
 }
 
 const A_BLOCK_FIELDS_V2: FieldsType[] = [

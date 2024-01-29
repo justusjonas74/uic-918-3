@@ -7,11 +7,15 @@ describe('block-types.js', () => {
   test('should return an array', () => {
     expect(Array.isArray(bt)).toBe(true)
   })
-  test('should only return objects inside the array wtesth a property of name', () => {
-    expect(bt).toHaveProperty('name')
+  test('should only return objects inside the array with a property of name', () => {
+    bt.forEach( blockType => {
+      expect(blockType).toHaveProperty('name')
+    })
   })
-  test('should only return objects inside the array wtesth a property of versions', () => {
-    expect(bt).toHaveProperty('versions')
+  test('should only return objects inside the array with a property of versions', () => {
+    bt.forEach( blockType => {
+      expect(blockType).toHaveProperty('version')
+    })
   })
   describe('Generic Types', () => {
     describe('STRING', () => {
@@ -73,7 +77,7 @@ describe('block-types.js', () => {
         expect(res['1']).toHaveProperty('berechtigungs_nr', 319263216)
       })
 
-      test('should also work wtesth mutliple tickets', () => {
+      test('should also work with mutliple tickets', () => {
         expect(res2['1']).toHaveProperty('berechtigungs_nr', 319263216)
       })
       test('should handle DC-typ 0x0d', () => {
@@ -93,16 +97,18 @@ describe('block-types.js', () => {
       test('should return an array', () => {
         expect(Array.isArray(result)).toBe(true)
       })
-      test('should return object as array testems', () => {
-        expect(result).toBeInstanceOf(Object)
+      test('should return object as array items', () => {
+        result.forEach(items=>expect(items).toBeInstanceOf(Object))
       })
-      test('should return objects inside array wtesth specific properties', () => {
-        expect(result).toHaveProperty('line')
-        expect(result).toHaveProperty('column')
-        expect(result).toHaveProperty('height')
-        expect(result).toHaveProperty('width')
-        expect(result).toHaveProperty('style')
-        expect(result).toHaveProperty('value')
+      test('should return objects inside array with specific properties', () => {
+        result.forEach(item => {
+          expect(item).toHaveProperty('line')
+          expect(item).toHaveProperty('column')
+          expect(item).toHaveProperty('height')
+          expect(item).toHaveProperty('width')
+          expect(item).toHaveProperty('style')
+          expect(item).toHaveProperty('value')
+        })
       })
       test('should parse the content of properties correctly', () => {
         expect(result[0]).toHaveProperty('line', 0)
@@ -120,7 +126,7 @@ describe('block-types.js', () => {
       test('should return an object', () => {
         expect(result).toBeInstanceOf(Object)
       })
-      test('should return an object wtesth correct properties', () => {
+      test('should return an object with correct properties', () => {
         expect(result).toHaveProperty('auftrag_count', 1)
         expect(result).toHaveProperty('sblock_amount', 16)
         expect(result).toHaveProperty('auftrag_1', {
@@ -146,7 +152,7 @@ describe('block-types.js', () => {
       test('should return an object', () => {
         expect(result).toBeInstanceOf(Object)
       })
-      test('should return an object wtesth correct properties', () => {
+      test('should return an object with correct properties', () => {
         expect(result).toHaveProperty('auftrag_count', 1)
         expect(result).toHaveProperty('sblock_amount', 16)
         expect(result).toHaveProperty('auftrag_1', {
