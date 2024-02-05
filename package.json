@@ -24,7 +24,7 @@
   "dependencies": {
     "axios": "^1.6.3",
     "enum": "^2.5.0",
-    "jsrsasign": "^10.2.0",
+    "jsrsasign": "^11.0.0",
     "lodash": "^4.17.11",
     "xml2js": "^0.6.2",
     "zxing-wasm": "^1.2.3"
