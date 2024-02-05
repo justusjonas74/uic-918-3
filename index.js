@@ -1,6 +1,5 @@
 const barcodeReader = require('./lib/barcode-reader.js')
 const interpretBarcode = require('./lib/barcode-data.js')
-const fixingZXing = require('./lib/fixingZXing')
 const { loadFileOrBuffer } = require('./lib/checkInput')
 // const pdfReader = require('./lib/pdfReader')
 // const {checkInput} = require('./lib/utils')
@@ -17,7 +16,6 @@ const verifySignature = require('./lib/check_signature').verifyTicket
 //   }
 // }
 
-const fixZXING = (res) => { return Promise.resolve(fixingZXing(res.raw)) }
 const readZxing = (filePath) => barcodeReader.ZXing(filePath)
 const interpretBarcodeFn = (res) => { return Promise.resolve(interpretBarcode(res)) }
 
@@ -39,7 +37,6 @@ const readBarcode = function (input, options = {}) {
     // fileWillExists(filePath)
     loadFileOrBuffer(input)
       .then(readZxing)
-      .then(fixZXING)
       .then(interpretBarcodeFn)
       .then(ticket => checkSignature(ticket, opts.verifySignature))
       .then((res) => resolve(res))
