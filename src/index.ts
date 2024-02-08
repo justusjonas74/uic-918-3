@@ -1,12 +1,10 @@
 import {ZXing} from './barcode-reader'
 import  interpretBarcode, { ParsedUIC918Barcode } from './barcode-data'
-import fixingZXing  from './fixingZXing'
 import { loadFileOrBuffer } from './checkInput'
 
 
 import {verifyTicket as verifySignature} from './check_signature'
 
-const fixZXING = (res:ZebraCrossingReturnType) => { return Promise.resolve(fixingZXing(res.raw)) }
 const readZxing = (filePath:string|Buffer) => ZXing(filePath)
 const interpretBarcodeFn = (res:Buffer) => { return Promise.resolve(interpretBarcode(res)) }
 
@@ -33,7 +31,6 @@ export const readBarcode = function (input:string|Buffer, options? : ReadBarcode
     // fileWillExists(filePath)
     loadFileOrBuffer(input)
       .then(readZxing)
-      .then(fixZXING)
       .then(interpretBarcodeFn)
       .then(ticket => checkSignature(ticket, opts.verifySignature))
       .then((res) => resolve(res))

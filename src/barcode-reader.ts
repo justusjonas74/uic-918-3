@@ -1,5 +1,4 @@
-//TODO: No declaration for this package...
-import zebra = require('zebra-crossing');
+import { ReaderOptions, readBarcodesFromImageFile }  from 'zxing-wasm'
 
 
 // TODO: Types are defined twice in src\zebra-crossing.d.ts. Should be defined once.
@@ -14,11 +13,12 @@ interface ReadingOptions {
   possibleFormats?: BarcodeFormats,
 }
 
-const defaultOptions : ReadingOptions = {
-  pureBarcode: true,
+const defaultOptions : ReaderOptions = {
+  // isPure: true,
   tryHarder: true
 }
 
-export function ZXing (data: string|Buffer, options:ReadingOptions = defaultOptions) {
-  return zebra.read(data, options)
+export async function ZXing (data: string|Buffer, options:ReadingOptions = defaultOptions) {
+  const [barcodeResult] = await readBarcodesFromImageFile(new Blob([data]), options)
+  return Buffer.from(barcodeResult.bytes)
 }
