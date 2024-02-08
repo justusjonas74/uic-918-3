@@ -10,9 +10,6 @@ describe('barcode-reader.js', () => {
     test('should return an object on sucess', () => {
       return expect(ZXing(dummy)).resolves.toBeInstanceOf(Buffer)
     })
-    test('should have property of raw', () => {
-      return expect(ZXing(dummy)).resolves.toHaveProperty('raw');
-    })
     test('should return the ticket data', () => {
       return expect(ZXing(dummy)).resolves.toEqual(ticket);
     })

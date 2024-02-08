@@ -13,11 +13,12 @@ export const tarifpunkt = (orgId:number, tp:number) => {
 }
 
 export const efm_produkt = (orgId:number, produktId:number) => {
-  if (KA_DATA.efmprodukte[orgId] && KA_DATA.efmprodukte[orgId][produktId]) {
-    return KA_DATA.efmprodukte[orgId][produktId]
-  } else {
-    return produktId.toString()
-  } 
+  const kvp_organisations_id = orgid(orgId)
+  const produkt_nr = KA_DATA.efmprodukte[orgId] && KA_DATA.efmprodukte[orgId][produktId] ? KA_DATA.efmprodukte[orgId][produktId] : produktId.toString()
+  return {kvp_organisations_id,produkt_nr}
+  
+  
+
 }
 
 export enum sBlockTypes {

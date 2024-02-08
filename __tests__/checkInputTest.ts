@@ -1,4 +1,4 @@
-import {describe, expect, beforeEach, test} from '@jest/globals';
+import {describe, expect, test, beforeAll} from '@jest/globals';
 
 import path  from 'path'
 import fs from 'fs'
@@ -13,27 +13,27 @@ describe('checkInput.js', () => {
     absolute_false : ""
   }
 
-  beforeEach((done) => {
-    const file = 'index.js'
+  beforeAll(() => {
+    const file = 'package.json'
     filePath.relative_true = file
     filePath.relative_false = file + '1458'
     filePath.absolute_true = path.resolve(file)
     filePath.absolute_false = path.resolve(file) + '254'
-    done()
+    // done()
   })
 
   describe('fileExists', () => {
     test('should return false if a file with relative path isn\'t found', () => {
-      expect(fileExists(filePath.relative_false)).toBe(false) // eslint-disable-line no-unused-expressions
+      expect(fileExists(filePath.relative_false)).toBe(false) 
     })
     test('should return true if a file with relative path is found', () => {
-      expect(fileExists(filePath.relative_true)).toBe(true) // eslint-disable-line no-unused-expressions
+      expect(fileExists(filePath.relative_true)).toBe(true) 
     })
     test('should return false if a file with absolute path isn\'t found', () => {
-      expect(fileExists(filePath.absolute_false)).toBe(false) // eslint-disable-line no-unused-expressions
+      expect(fileExists(filePath.absolute_false)).toBe(false) 
     })
     test('should return true if a file with absolute path is found', () => {
-      expect(fileExists(filePath.absolute_true)).toBe(true) // eslint-disable-line no-unused-expressions
+      expect(fileExists(filePath.absolute_true)).toBe(true) 
     })
   })
 
@@ -51,13 +51,13 @@ describe('checkInput.js', () => {
 
 
     test('should return true if a file with relative path is found', () => {
-      return expect(readFileAsync(filePath.relative_true)).resolves.toBe(fs.readFileSync(filePath.relative_true)); // eslint-disable-line no-unused-expressions
+      return expect(readFileAsync(filePath.relative_true)).resolves.toStrictEqual(fs.readFileSync(filePath.relative_true));
     })
     test('should return false if a file with absolute path isn\'t found', () => {
-      return expect(readFileAsync(filePath.absolute_false)).rejects.toEqual('error'); 
+      return expect(readFileAsync(filePath.absolute_false)).rejects.toThrow(); 
     })
     test('should return true if a file with absolute path is found', () => {
-      return expect(readFileAsync(filePath.absolute_true)).resolves.toBe(fs.readFileSync(filePath.absolute_true));// eslint-disable-line no-unused-expressions
+      return expect(readFileAsync(filePath.absolute_true)).resolves.toStrictEqual(fs.readFileSync(filePath.absolute_true));
     })
   })
 
@@ -65,7 +65,7 @@ describe('checkInput.js', () => {
     describe('with no optional parameters', () => {
       test('should be fulfilled with a string', () => {
        
-        return expect(loadFileOrBuffer(filePath.relative_true)).resolves.toBe(fs.readFileSync(filePath.relative_true)); // eslint-disable-line no-unused-expressions
+        return expect(loadFileOrBuffer(filePath.relative_true)).resolves.toStrictEqual(fs.readFileSync(filePath.relative_true)); // eslint-disable-line no-unused-expressions
       })
       test('should be fulfilled with a Buffer', () => {
         const buf = Buffer.from('01125684')
@@ -73,7 +73,7 @@ describe('checkInput.js', () => {
         return expect(loadFileOrBuffer(buf)).resolves.toBe(buf); // eslint-disable-line no-unused-expressions
       })
       test('should be rejected with a wrong file path', () => {
-        return expect(loadFileOrBuffer(filePath.relative_false)).rejects.toEqual('error')
+        return expect(loadFileOrBuffer(filePath.relative_false)).rejects.toThrow()
       })
     })
   })

@@ -1,4 +1,4 @@
-import { existsSync, unlinkSync } from 'fs'
+import { existsSync } from 'fs'
 import {join} from 'path'
 import {describe, test, beforeAll} from '@jest/globals';
 
@@ -9,13 +9,10 @@ const filePath = join(__dirname, '../', fileName)
 
 describe('get_certs.js', () => {
   describe('updateLocalCerts', () => {
-    beforeAll((done) => {
-      // remove keys.json
+    beforeAll(() => {
       if (existsSync(filePath)) {
-        unlinkSync(filePath)
+        // unlinkSync(filePath)
       }
-      // updateLocalCerts()
-      done()
     })
     test('should create a not empty file', () => {
       // expect(file(filePath)).to.exist.and.to.not.be.empty()

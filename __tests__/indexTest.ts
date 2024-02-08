@@ -17,13 +17,13 @@ describe('index.js', () => {
         return expect(readBarcode(dummy)).resolves.toBeTruthy()
       })
       test('should reject if file not found', () => {
-        return expect(readBarcode(falseDummy)).rejects.toEqual('error')
+        return expect(readBarcode(falseDummy)).rejects.toThrow()
       })
       test('should handle verifySignature option and resolve', async () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return expect(readBarcode(dummy4, { verifySignature: true })).toHaveProperty('isSignatureValid');
+        return expect(readBarcode(dummy4, { verifySignature: true })).resolves.toHaveProperty('isSignatureValid');
       })
     })
     describe('...when input is an image buffer', () => {
@@ -38,7 +38,7 @@ describe('index.js', () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return expect(readBarcode(dummy4Buff, { verifySignature: true })).toHaveProperty('isSignatureValid');
+        return expect(readBarcode(dummy4Buff, { verifySignature: true })).resolves.toHaveProperty('isSignatureValid');
       })
     })
     // describe('...when input is something else', () => {

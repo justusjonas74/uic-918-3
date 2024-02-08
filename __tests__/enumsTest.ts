@@ -15,15 +15,15 @@ describe('enums.sBlockTypes', () => {
 describe('id_types', () => {
   const result = id_types
   test('should return an instance of enum', () => {
-    expect(result.should).toBeInstanceOf(Object);
+    expect(result).toBeInstanceOf(Object);
   })
   // test('should not be empty', () => {
   //   result.enums.should.not.be.empty // eslint-disable-line no-unused-expressions
   // })
 })
 describe('enums.efm_produkt', () => {
-  test('should return an object', () => {
-    expect(efm_produkt(6263, 1005)).toBeInstanceOf(Object)
+  test('should return a object', () => {
+    expect(efm_produkt(6263, 1005)).toBeInstanceOf(Object);
   })
   test('should have correct property kvp_organisations_id', () => {
     expect(efm_produkt(6263, 1005)).toHaveProperty('kvp_organisations_id', '6263 (DB Regio Zentrale)')

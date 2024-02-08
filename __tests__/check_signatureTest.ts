@@ -1,9 +1,19 @@
-import {describe, expect, test} from '@jest/globals';
+import {beforeAll, describe, expect, test} from '@jest/globals';
 
 import {verifyTicket} from '../src/check_signature'
 import { ParsedUIC918Barcode, TicketDataContainer } from '../src/barcode-data';
+import {updateLocalCerts, filePath} from '../src/updateLocalCerts'
+import { existsSync } from 'node:fs';
+beforeAll(async () => {
+  if (!existsSync(filePath)) {
+    await updateLocalCerts()
+  }
+
+
+});
 
 describe('check_signature.js', () => {
+
   describe('verifyTicket()', () => {
     test('should return true if a valid signature is given', () => {
       const ticket : ParsedUIC918Barcode = {
