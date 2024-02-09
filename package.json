@@ -1,6 +1,6 @@
 {
   "name": "uic-918-3",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "build/src/index.js",
   "scripts": {
@@ -17,6 +17,10 @@
     {
       "name": "Arne Breitsprecher",
       "url": "https://github.com/arnebr"
+    },
+    {
+      "name": "Ulf Winkelvos",
+      "url": "https://github.com/uwinkelvos"
     }
   ],
   "license": "MIT",
