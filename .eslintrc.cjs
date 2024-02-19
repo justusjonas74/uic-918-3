@@ -7,10 +7,7 @@ module.exports = {
     'prettier'
   ],
   parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint',
-    'jest',
-    'prettier' ],
+  plugins: ['@typescript-eslint', 'jest', 'prettier'],
   root: true,
   env: {
     browser: false,
