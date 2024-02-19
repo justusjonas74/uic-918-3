@@ -5,10 +5,10 @@ import { loadFileOrBuffer } from './checkInput'
 
 import {verifyTicket as verifySignature} from './check_signature'
 
-const readZxing = (filePath:string|Buffer) => ZXing(filePath)
-const interpretBarcodeFn = (res:Buffer) => { return Promise.resolve(interpretBarcode(res)) }
+const readZxing = (filePath:string|Buffer) : Promise<Buffer> => ZXing(filePath)
+const interpretBarcodeFn = (res:Buffer) : Promise<ParsedUIC918Barcode>=> { return Promise.resolve(interpretBarcode(res)) }
 
-const checkSignature = async function (ticket:ParsedUIC918Barcode, verifyTicket?:boolean) {
+const checkSignature = async function (ticket:ParsedUIC918Barcode, verifyTicket?:boolean) : Promise<ParsedUIC918Barcode> {
   if (verifyTicket) {
     const isValid = await verifySignature(ticket)
     ticket.isSignatureValid = isValid
@@ -21,7 +21,7 @@ type ReadBarcodeOptions = {
 }
 
 
-export const readBarcode = function (input:string|Buffer, options? : ReadBarcodeOptions) {
+export const readBarcode = function (input:string|Buffer, options? : ReadBarcodeOptions) :Promise<ParsedUIC918Barcode> {
   const defaults = {
     verifySignature: false
   }

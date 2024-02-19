@@ -45,7 +45,7 @@ export enum BarcodeXSD {
 
 
 
-const openLocalFiles = () => {
+const openLocalFiles = () : Promise<UICKeys>=> {
   return new Promise<UICKeys>(function (resolve, reject) {
     // const filePath = path.join(__dirname, '../', fileName)
     readFile(filePath, 'utf8', function (err, data) {
@@ -59,7 +59,7 @@ const openLocalFiles = () => {
   })
 }
 
-const selectCert = (keys:UICKeys, orgId:number, keyId:number) => {
+const selectCert = (keys:UICKeys, orgId:number, keyId:number) :  Promise<Key>=> {
   return new Promise<Key>(function (resolve, reject) {
     const cert = find(keys.keys.key, { issuerCode: [orgId.toString()], id: [keyId.toString()] })
     if (cert) {
@@ -70,7 +70,7 @@ const selectCert = (keys:UICKeys, orgId:number, keyId:number) => {
   })
 }
 
-export const getCertByID = (orgId:number, keyId:number) => {
+export const getCertByID = (orgId:number, keyId:number) :  Promise<Key> => {
   return new Promise<Key>(function (resolve, reject) {
     openLocalFiles()
       .then(keys => selectCert(keys, orgId, keyId))

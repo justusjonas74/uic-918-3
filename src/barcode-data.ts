@@ -1,11 +1,11 @@
-import {unzipSync} from 'zlib'
+import { unzipSync } from 'zlib'
 
 import TicketContainer, { TicketContainerType } from './TicketContainer'
-import { interpretField, myConsoleLog, parseContainers, parsingFunction } from './utils'
+import { interpretField, interpretFieldResult, myConsoleLog, parseContainers, parsingFunction } from './utils'
 import { SupportedTypes } from './FieldsType'
 
 // Get raw data and uncompress the TicketData
-function getVersion (data:Buffer) {
+function getVersion(data: Buffer): number {
   return parseInt(data.subarray(3, 5).toString(), 10)
 }
 
@@ -16,15 +16,15 @@ export type BarcodeHeader = {
   key_id: Buffer;
 }
 
-function getHeader (data:Buffer) : BarcodeHeader {
+function getHeader(data: Buffer): BarcodeHeader {
   const umid = data.subarray(0, 3)
   const mt_version = data.subarray(3, 5)
   const rics = data.subarray(5, 9)
   const key_id = data.subarray(9, 14)
-  return {umid,mt_version,rics,key_id}
+  return { umid, mt_version, rics, key_id }
 }
 
-function getSignature (data:Buffer, version:number) {
+function getSignature(data: Buffer, version: number): Buffer {
   // TODO: Double check if `version` is the correct element to choose the length of the signature...
   // TODO: The following lines are WET code
   if (version === 1) {
@@ -34,7 +34,7 @@ function getSignature (data:Buffer, version:number) {
   }
 }
 
-function getTicketDataLength (data:Buffer, version:number) {
+function getTicketDataLength(data: Buffer, version: number): Buffer {
   if (version === 1) {
     return data.subarray(64, 68)
   } else {
@@ -42,7 +42,7 @@ function getTicketDataLength (data:Buffer, version:number) {
   }
 }
 
-function getTicketDataRaw (data:Buffer, version:number) {
+function getTicketDataRaw(data: Buffer, version: number) : Buffer {
   if (version === 1) {
     return data.subarray(68, data.length)
   } else {
@@ -50,7 +50,7 @@ function getTicketDataRaw (data:Buffer, version:number) {
   }
 }
 
-function getTicketDataUncompressed (data:Buffer) {
+function getTicketDataUncompressed(data: Buffer) : Buffer {
   if (data && data.length > 0) {
     return unzipSync(data)
   } else {
@@ -63,16 +63,16 @@ export class TicketDataContainer {
 
   id: string
   version: string
-  length:number
+  length: number
   container_data // TODO: Add a Type!
-  constructor (data:Buffer) {
+  constructor(data: Buffer) {
     this.id = data.subarray(0, 6).toString()
     this.version = data.subarray(6, 8).toString()
     this.length = parseInt(data.subarray(8, 12).toString(), 10)
     this.container_data = TicketDataContainer.parseFields(this.id, this.version, data.subarray(12, data.length))
   }
 
-  static parseFields (id:string, version:string, data:Buffer) {
+  static parseFields(id: string, version: string, data: Buffer) : Buffer | interpretFieldResult {
     const fields = getBlockTypeFieldsByIdAndVersion(id, version)
     if (fields) {
       return interpretField(data, fields.dataFields)
@@ -83,16 +83,16 @@ export class TicketDataContainer {
   }
 }
 
-const interpretTicketContainer: parsingFunction =  (data:Buffer) : [TicketDataContainer, Buffer] =>  {
+const interpretTicketContainer: parsingFunction = (data: Buffer): [TicketDataContainer, Buffer] => {
   const length = parseInt(data.subarray(8, 12).toString(), 10)
   const remainder = data.subarray(length, data.length)
   const container = new TicketDataContainer(data.subarray(0, length))
   return [container, remainder]
 }
 
-function getBlockTypeFieldsByIdAndVersion (id:string, version:string) : TicketContainerType | undefined {
-  return TicketContainer.find(ticketContainer => (ticketContainer.name === id && ticketContainer.version === version ))
-  
+function getBlockTypeFieldsByIdAndVersion(id: string, version: string): TicketContainerType | undefined {
+  return TicketContainer.find(ticketContainer => (ticketContainer.name === id && ticketContainer.version === version))
+
 }
 export type ParsedUIC918Barcode = {
   version: number;
@@ -104,7 +104,7 @@ export type ParsedUIC918Barcode = {
   ticketContainers: SupportedTypes[];
   isSignatureValid?: boolean
 }
-function parseBarcodeData(data:Buffer) {
+function parseBarcodeData(data: Buffer): ParsedUIC918Barcode {
   const version = getVersion(data)
   const header = getHeader(data)
   const signature = getSignature(data, version)
@@ -112,7 +112,7 @@ function parseBarcodeData(data:Buffer) {
   const ticketDataRaw = getTicketDataRaw(data, version)
   const ticketDataUncompressed = getTicketDataUncompressed(ticketDataRaw)
   const ticketContainers = parseContainers(ticketDataUncompressed, interpretTicketContainer)
-  return {version,header,signature,ticketDataLength,ticketDataRaw,ticketDataUncompressed,ticketContainers}
+  return { version, header, signature, ticketDataLength, ticketDataRaw, ticketDataUncompressed, ticketContainers }
 }
 
 export default parseBarcodeData

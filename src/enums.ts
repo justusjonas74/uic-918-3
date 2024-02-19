@@ -1,23 +1,29 @@
 import KA_DATA from "./ka-data"
 
-export const orgid = (orgId:number) => {
+export const orgid = (orgId: number): string => {
   return KA_DATA.org_id[orgId] || orgId.toString()
 }
 
-export const tarifpunkt = (orgId:number, tp:number) => {
+export const tarifpunkt = (orgId: number, tp: number): string => {
   if (KA_DATA.tarifpunkte[orgId] && KA_DATA.tarifpunkte[orgId][tp]) {
     return KA_DATA.tarifpunkte[orgId][tp]
   } else {
     return tp.toString()
-  } 
+  }
 }
 
-export const efm_produkt = (orgId:number, produktId:number) => {
+export type EFM_Produkt =
+  {
+    kvp_organisations_id: string;
+    produkt_nr: string;
+  }
+
+export const efm_produkt = (orgId: number, produktId: number) : EFM_Produkt => {
   const kvp_organisations_id = orgid(orgId)
   const produkt_nr = KA_DATA.efmprodukte[orgId] && KA_DATA.efmprodukte[orgId][produktId] ? KA_DATA.efmprodukte[orgId][produktId] : produktId.toString()
-  return {kvp_organisations_id,produkt_nr}
-  
-  
+  return { kvp_organisations_id, produkt_nr }
+
+
 
 }
 

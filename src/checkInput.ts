@@ -1,8 +1,8 @@
 import { PathLike, PathOrFileDescriptor, existsSync, readFile } from 'fs'
 import { isAbsolute, join } from 'path'
-import {myConsoleLog} from './utils'
+import { myConsoleLog } from './utils'
 
-const fileWithAbsolutePathExists = (filePath:PathLike) => {
+const fileWithAbsolutePathExists = (filePath: PathLike): boolean => {
   if (existsSync(filePath)) {
     return true
   } else {
@@ -11,7 +11,7 @@ const fileWithAbsolutePathExists = (filePath:PathLike) => {
   }
 }
 
-export const fileExists = (filePath:string) => {
+export const fileExists = (filePath: string):boolean => {
   if (!filePath) {
     myConsoleLog('No path passed.')
     return false
@@ -24,7 +24,7 @@ export const fileExists = (filePath:string) => {
   }
 }
 
-export const fileWillExists = (filePath:string) => {
+export const fileWillExists = (filePath: string) : Promise<string>=> {
   return new Promise<string>((resolve, reject) => {
     if (fileExists(filePath)) {
       resolve(filePath)
@@ -35,7 +35,7 @@ export const fileWillExists = (filePath:string) => {
 }
 
 // promisify fs.readFile()
-export const readFileAsync = (filename:PathOrFileDescriptor) => {
+export const readFileAsync = (filename: PathOrFileDescriptor): Promise<Buffer> => {
   return new Promise<Buffer>((resolve, reject) => {
     readFile(filename, function (err, buffer) {
       if (err) reject(err); else resolve(buffer)
@@ -43,7 +43,7 @@ export const readFileAsync = (filename:PathOrFileDescriptor) => {
   })
 }
 
-const tryToLoadFile = (input:string) => {
+const tryToLoadFile = (input: string):Promise<Buffer> => {
   return new Promise<Buffer>((resolve, reject) => {
     fileWillExists(input)
       .then(input => readFileAsync(input))
@@ -53,7 +53,7 @@ const tryToLoadFile = (input:string) => {
 }
 
 // const loadFileOrBuffer = (input, stringCallback = null, bufferCallback = null, defaultCallback = null) => {
-export const loadFileOrBuffer = (input:PathLike) => {
+export const loadFileOrBuffer = (input: PathLike): Promise<Buffer> => {
   if (typeof input === 'string') {
     // return stringCallback ? stringCallback(input) : tryToLoadFile(input)
     return tryToLoadFile(input)

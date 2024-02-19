@@ -12,7 +12,7 @@ const basePath = dirname('./cert_url.json')
 export const filePath = join(basePath, fileName)
 
 
-export const updateLocalCerts = async () => {
+export const updateLocalCerts = async () : Promise<void>=> {
   try {
     console.log(`Load public keys from ${url} ...`)
     const response = await axios.get(url)

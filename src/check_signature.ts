@@ -3,7 +3,7 @@ import * as rs from 'jsrsasign'
 import { Key, getCertByID } from './get_certs'
 import { BarcodeHeader, ParsedUIC918Barcode } from './barcode-data'
 
-function checkSignature (certPEM: rs.RSAKey | rs.KJUR.crypto.DSA | rs.KJUR.crypto.ECDSA, signature:string, message:string) {
+function checkSignature (certPEM: rs.RSAKey | rs.KJUR.crypto.DSA | rs.KJUR.crypto.ECDSA, signature:string, message:string) : boolean {
   // DSA signature validation
   const sig = new rs.KJUR.crypto.Signature({ alg: 'SHA1withDSA' })
   sig.init(certPEM)
@@ -11,7 +11,7 @@ function checkSignature (certPEM: rs.RSAKey | rs.KJUR.crypto.DSA | rs.KJUR.crypt
   return sig.verify(signature)
 }
 
-function getCertByHeader (header: BarcodeHeader) {
+function getCertByHeader (header: BarcodeHeader) : Promise<Key>{
   return new Promise<Key>(function (resolve, reject) {
     if (header) {
       const orgId = parseInt(header.rics.toString(), 10)
@@ -25,7 +25,7 @@ function getCertByHeader (header: BarcodeHeader) {
   })
 }
 
-export const verifyTicket = function (ticket: ParsedUIC918Barcode) {
+export const verifyTicket = function (ticket: ParsedUIC918Barcode) : Promise<boolean> {
   return new Promise<boolean | null>(function (resolve, reject) {
     if (ticket) {
       getCertByHeader(ticket.header)

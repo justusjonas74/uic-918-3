@@ -18,7 +18,7 @@ const defaultOptions : ReaderOptions = {
   tryHarder: true
 }
 
-export async function ZXing (data: string|Buffer, options:ReadingOptions = defaultOptions) {
+export async function ZXing (data: string|Buffer, options:ReadingOptions = defaultOptions) : Promise<Buffer> {
   const [barcodeResult] = await readBarcodesFromImageFile(new Blob([data]), options)
   return Buffer.from(barcodeResult.bytes)
 }
