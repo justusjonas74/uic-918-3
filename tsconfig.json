@@ -1,14 +1,12 @@
 {
-    "compilerOptions": {
-      "outDir": "./build",
-      "allowJs": true,
-      "target": "es5",
-      "esModuleInterop": true,
-      "noImplicitReturns": true,
-      "noImplicitAny": true,
-      "resolveJsonModule": true,
-
-    },
-    "include": ["./src/**/*"]
-    
-  }
+  "compilerOptions": {
+    "outDir": "./build",
+    "allowJs": true,
+    "target": "es5",
+    "esModuleInterop": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "resolveJsonModule": true
+  },
+  "include": ["./src/**/*"]
+}

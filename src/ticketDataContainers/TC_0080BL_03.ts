@@ -1,7 +1,7 @@
-import { TicketContainerType } from "../TicketContainer";
-import { STRING, auftraegeSBlocksV3 } from "../block-types";
+import { TicketContainerType } from '../TicketContainer';
+import { STRING, auftraegeSBlocksV3 } from '../block-types';
 
-const TC_0080BL_03 : TicketContainerType = {
+const TC_0080BL_03: TicketContainerType = {
   name: '0080BL',
   version: '03',
   dataFields: [
@@ -16,5 +16,5 @@ const TC_0080BL_03 : TicketContainerType = {
       interpreterFn: auftraegeSBlocksV3
     }
   ]
-}
-  export default TC_0080BL_03
+};
+export default TC_0080BL_03;

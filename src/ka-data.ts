@@ -178,8 +178,7 @@ const DB_ORTE: Record<number, string> = {
   8000260: '8000260 (Würzburg Hbf)',
   8000266: '8000266 (Wuppertal Hbf)',
   8010397: '8010397 (Zwickau(Sachs)Hbf)'
-}
-
+};
 
 const DB_PRODUKTE: Record<number, string> = {
   1000: '1000 (City-mobil Einzelfahrt)',
@@ -210,15 +209,15 @@ const DB_PRODUKTE: Record<number, string> = {
   1032: '1032 (Sachsen-Ticket plus Westharz)',
   3000: '3000 (In-Out-System)',
   9999: '9999 (Deutschlandticket)'
-}
+};
 
-export type OrgID = number
-export type Produktnummer = number
-export type TarifpunktNr = number
+export type OrgID = number;
+export type Produktnummer = number;
+export type TarifpunktNr = number;
 export interface VDVKAData {
-  org_id: Record<OrgID, string>,
-  efmprodukte: Record<OrgID, Record<Produktnummer, string>>,
-  tarifpunkte: Record<OrgID, Record<TarifpunktNr, string>>,
+  org_id: Record<OrgID, string>;
+  efmprodukte: Record<OrgID, Record<Produktnummer, string>>;
+  tarifpunkte: Record<OrgID, Record<TarifpunktNr, string>>;
 }
 const kaData: VDVKAData = {
   org_id: {
@@ -263,6 +262,6 @@ const kaData: VDVKAData = {
     6262: DB_ORTE,
     6263: DB_ORTE
   }
-}
+};
 
-export default kaData
+export default kaData;

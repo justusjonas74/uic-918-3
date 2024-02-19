@@ -1,8 +1,7 @@
-import { TicketContainerType } from "../TicketContainer";
-import {INT, EFS_DATA } from "../block-types";
+import { TicketContainerType } from '../TicketContainer';
+import { INT, EFS_DATA } from '../block-types';
 
-const TC_0080VU_01 : TicketContainerType = 
-{
+const TC_0080VU_01: TicketContainerType = {
   name: '0080VU',
   version: '01',
   dataFields: [
@@ -30,8 +29,8 @@ const TC_0080VU_01 : TicketContainerType =
       name: 'VDV_EFS_BLOCK',
       length: null,
       interpreterFn: EFS_DATA
-    },
+    }
   ]
-}
+};
 
-export default TC_0080VU_01
+export default TC_0080VU_01;

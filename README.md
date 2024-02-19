@@ -49,12 +49,12 @@ convert your-ticket-00x.ppm your-ticket-00x.png;
 ```javascript
 const uic = require('uic-918-3');
 
-// Input could be a string with path to image... 
-const image = '/path/to/your/file.png'; 
-// ... or a Buffer object with an image  
+// Input could be a string with path to image...
+const image = '/path/to/your/file.png';
+// ... or a Buffer object with an image
 const image_as_buffer = fs.readFileSync('/path/to/your/file.png');
 
-uic.readBarcode(image).then((ticket)=>{
+uic.readBarcode(image).then((ticket) => {
   //do something with the ticket
 });
 ```
@@ -65,27 +65,27 @@ Following options are available:
 
 ```javascript
 const options = {
-    verifySignature: true // Verify the signature included in the ticket barcode with a public key set from a Public Key Infrastructure (PKI). The PKI url is set inside './lib/cert_url.json'. Default is 'false'.
-}
+  verifySignature: true // Verify the signature included in the ticket barcode with a public key set from a Public Key Infrastructure (PKI). The PKI url is set inside './lib/cert_url.json'. Default is 'false'.
+};
 
-uic.readBarcode(file_path, options).then((ticket)=>{
-  console.log(ticket.isSignatureValid) // Returns 'true' or 'false'.
+uic.readBarcode(file_path, options).then((ticket) => {
+  console.log(ticket.isSignatureValid); // Returns 'true' or 'false'.
 });
-// 
+//
 ```
 
 ### Returning object
 
 The returning object consists of (among other things) one or more `TicketDataContainers` which hold ticket data for different purposes. The most interesting containers are:
 
-* `**U_HEAD**` The ticket header ...
-* `**U_TLAY**` A representation of the informations which are printed on the ticket.
-* `**0080BL**` A specific container on tickets from Deutsche Bahn. Consists of all relevant information which will be used for proof-of-payment checks on the train.
-* `**0080VU**` A specific container on (some) tickets from Deutsche Bahn. This container is used on products, which are also accepted by other carriers, especially (local) public transport companies. Get more information about this container [here](https://www.bahn.de/vdv-barcode).
+- `**U_HEAD**` The ticket header ...
+- `**U_TLAY**` A representation of the informations which are printed on the ticket.
+- `**0080BL**` A specific container on tickets from Deutsche Bahn. Consists of all relevant information which will be used for proof-of-payment checks on the train.
+- `**0080VU**` A specific container on (some) tickets from Deutsche Bahn. This container is used on products, which are also accepted by other carriers, especially (local) public transport companies. Get more information about this container [here](https://www.bahn.de/vdv-barcode).
 
 ## Expected Quality
 
-The *UIC 913.3* specifications aren't available for free, so the whole underlying logic is build upon third party sources, particularly the Python script [onlineticket](https://github.com/rumpeltux/onlineticket/) from Hagen Fritzsch, the [diploma thesis](https://monami.hs-mittweida.de/files/4983/WaitzRoman_Diplomarbeit.pdf) from Roman Waitz and the Wikipedia discussion about [Online-Tickets](https://de.wikipedia.org/wiki/Diskussion:Online-Ticket). Therefore results from this package (especially the parsing logic) should be taken with care.
+The _UIC 913.3_ specifications aren't available for free, so the whole underlying logic is build upon third party sources, particularly the Python script [onlineticket](https://github.com/rumpeltux/onlineticket/) from Hagen Fritzsch, the [diploma thesis](https://monami.hs-mittweida.de/files/4983/WaitzRoman_Diplomarbeit.pdf) from Roman Waitz and the Wikipedia discussion about [Online-Tickets](https://de.wikipedia.org/wiki/Diskussion:Online-Ticket). Therefore results from this package (especially the parsing logic) should be taken with care.
 Please feel free to open an issue, if you guess there's a wrong interpretation of data fields or corresponding values.
 
 ## Contributing

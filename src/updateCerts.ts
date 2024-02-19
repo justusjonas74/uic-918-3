@@ -1,3 +1,2 @@
-
 import { updateLocalCerts } from './updateLocalCerts';
-updateLocalCerts()
+updateLocalCerts();
