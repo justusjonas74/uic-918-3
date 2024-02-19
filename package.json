@@ -11,7 +11,8 @@
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -w -p tsconfig.json",
     "lint": "eslint . --ext .ts --ext .mts",
-    "prettier": "prettier --config .prettierrc --write ."
+    "prettier": "prettier --config .prettierrc --write .",
+    "prepare": "husky"
   },
   "author": "Francis Doege",
   "contributors": [
@@ -65,11 +66,6 @@
     "barcode",
     "aztec"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run prettier && npm run lint"
-    }
-  },
   "bugs": {
     "url": "https://github.com/justusjonas74/uic-918-3/issues"
   },
