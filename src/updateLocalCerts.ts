@@ -25,6 +25,11 @@ export const updateLocalCerts = async (): Promise<void> => {
       }
     });
   } catch (error) {
+    if (!axios.isAxiosError(error)) {
+      console.log(error);
+      return;
+    }
+
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
