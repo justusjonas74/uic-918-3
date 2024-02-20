@@ -30,3 +30,17 @@ jobs:
       - run: npm test
       - name: Coveralls
         uses: coverallsapp/github-action@v2
+        with:
+          flag-name: node-${{ join(matrix.*, '-') }}
+          parallel: true
+
+  finish:
+    needs: build
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@v2
+        with:
+          parallel-finished: true
+          carryforward: 'node-18.x,node-20.x,node-21.x'
