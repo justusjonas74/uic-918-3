@@ -1,12 +1,23 @@
 {
   "compilerOptions": {
+    "target": "ES6",
+    "lib": ["ES6", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "./build",
-    "allowJs": true,
-    "target": "es5",
     "esModuleInterop": true,
+    "importHelpers": true,
+    "strict": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noImplicitAny": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noImplicitThis": false,
+    "strictNullChecks": false
   },
   "include": ["./src/**/*"]
 }
