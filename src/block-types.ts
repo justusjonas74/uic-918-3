@@ -1,12 +1,5 @@
 // const utils = require('./utils.js')
-import {
-  id_types,
-  sBlockTypes,
-  orgid,
-  efm_produkt,
-  tarifpunkt,
-  EFM_Produkt
-} from './enums';
+import { id_types, sBlockTypes, orgid, efm_produkt, tarifpunkt, EFM_Produkt } from './enums';
 
 import { FieldsType, InterpreterFunctionType } from './FieldsType';
 import {
@@ -21,14 +14,10 @@ import {
 // DATA TYPES
 // ################
 
-export const STRING: InterpreterFunctionType<string> = (x: Buffer) =>
-  x.toString();
-export const HEX: InterpreterFunctionType<string> = (x: Buffer) =>
-  x.toString('hex');
-export const STR_INT: InterpreterFunctionType<number> = (x: Buffer) =>
-  parseInt(x.toString(), 10);
-export const INT: InterpreterFunctionType<number> = (x: Buffer) =>
-  x.readUIntBE(0, x.length);
+export const STRING: InterpreterFunctionType<string> = (x: Buffer) => x.toString();
+export const HEX: InterpreterFunctionType<string> = (x: Buffer) => x.toString('hex');
+export const STR_INT: InterpreterFunctionType<number> = (x: Buffer) => parseInt(x.toString(), 10);
+export const INT: InterpreterFunctionType<number> = (x: Buffer) => x.readUIntBE(0, x.length);
 export const DB_DATETIME: InterpreterFunctionType<Date> = (x: Buffer) => {
   // DDMMYYYYHHMM
   const day = STR_INT(x.subarray(0, 2));
@@ -173,9 +162,7 @@ export type RCT2_BLOCK = {
   value: string;
 };
 
-const interpretRCT2Block: parsingFunction = (
-  data: Buffer
-): [RCT2_BLOCK, Buffer] => {
+const interpretRCT2Block: parsingFunction = (data: Buffer): [RCT2_BLOCK, Buffer] => {
   const line = parseInt(data.subarray(0, 2).toString(), 10);
   const column = parseInt(data.subarray(2, 4).toString(), 10);
   const height = parseInt(data.subarray(4, 6).toString(), 10);
@@ -245,9 +232,7 @@ const A_BLOCK_FIELDS_V3: FieldsType[] = [
   }
 ];
 
-const interpretSingleSBlock: parsingFunction = (
-  data: Buffer
-): [Record<string, string>, Buffer] => {
+const interpretSingleSBlock: parsingFunction = (data: Buffer): [Record<string, string>, Buffer] => {
   const res: Record<string, string> = {};
   const type = sBlockTypes[parseInt(data.subarray(1, 4).toString(), 10)];
   const length = parseInt(data.subarray(4, 8).toString(), 10);
@@ -266,33 +251,18 @@ export const auftraegeSBlocksV3 = (x: Buffer): InterpretFieldResult => {
   return auftraegeSblocks(x, A_LENGTH, A_BLOCK_FIELDS_V3);
 };
 
-function auftraegeSblocks(
-  x: Buffer,
-  A_LENGTH: number,
-  fields: FieldsType[]
-): InterpretFieldResult {
+function auftraegeSblocks(x: Buffer, A_LENGTH: number, fields: FieldsType[]): InterpretFieldResult {
   const res: InterpretFieldResult = {};
   res.auftrag_count = parseInt(x.subarray(0, 1).toString(), 10);
   for (let i = 0; i < res.auftrag_count; i++) {
     const bez = `auftrag_${i + 1}`;
-    res[bez] = interpretField(
-      x.subarray(1 + i * A_LENGTH, (i + 1) * A_LENGTH + 1),
-      fields
-    );
+    res[bez] = interpretField(x.subarray(1 + i * A_LENGTH, (i + 1) * A_LENGTH + 1), fields);
   }
   res.sblock_amount = parseInt(
-    x
-      .subarray(
-        A_LENGTH * res.auftrag_count + 1,
-        A_LENGTH * res.auftrag_count + 3
-      )
-      .toString(),
+    x.subarray(A_LENGTH * res.auftrag_count + 1, A_LENGTH * res.auftrag_count + 3).toString(),
     10
   );
-  const sblock_containers = parseContainers(
-    x.subarray(A_LENGTH * res.auftrag_count + 3),
-    interpretSingleSBlock
-  );
+  const sblock_containers = parseContainers(x.subarray(A_LENGTH * res.auftrag_count + 3), interpretSingleSBlock);
   // res.sblocks = assignArrayToObj(sblock_containers)
   res.sblocks = Object.assign({}, ...sblock_containers);
   return res;

@@ -1,12 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 
-import {
-  efm_produkt,
-  id_types,
-  sBlockTypes,
-  orgid,
-  tarifpunkt
-} from '../src/enums';
+import { efm_produkt, id_types, sBlockTypes, orgid, tarifpunkt } from '../src/enums';
 
 describe('enums.sBlockTypes', () => {
   test('should return an instance of enum', () => {
@@ -30,29 +24,17 @@ describe('enums.efm_produkt', () => {
     expect(efm_produkt(6263, 1005)).toBeInstanceOf(Object);
   });
   test('should have correct property kvp_organisations_id', () => {
-    expect(efm_produkt(6263, 1005)).toHaveProperty(
-      'kvp_organisations_id',
-      '6263 (DB Regio Zentrale)'
-    );
+    expect(efm_produkt(6263, 1005)).toHaveProperty('kvp_organisations_id', '6263 (DB Regio Zentrale)');
   });
   test('should have correct property produkt_nr', () => {
-    expect(efm_produkt(6263, 1005)).toHaveProperty(
-      'produkt_nr',
-      '1005 (Bayern-Ticket)'
-    );
+    expect(efm_produkt(6263, 1005)).toHaveProperty('produkt_nr', '1005 (Bayern-Ticket)');
   });
   test('should ignore unknow products', () => {
-    expect(efm_produkt(6263, 1)).toHaveProperty(
-      'kvp_organisations_id',
-      '6263 (DB Regio Zentrale)'
-    );
+    expect(efm_produkt(6263, 1)).toHaveProperty('kvp_organisations_id', '6263 (DB Regio Zentrale)');
     expect(efm_produkt(6263, 1)).toHaveProperty('produkt_nr', '1');
   });
   test('should ignore unknow organisations', () => {
-    expect(efm_produkt(815, 1005)).toHaveProperty(
-      'kvp_organisations_id',
-      '815'
-    );
+    expect(efm_produkt(815, 1005)).toHaveProperty('kvp_organisations_id', '815');
     expect(efm_produkt(815, 1005)).toHaveProperty('produkt_nr', '1005');
   });
 });

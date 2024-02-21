@@ -36,8 +36,5 @@ type ZebraCrossingReturnType = {
 };
 
 declare module 'zebra-crossing' {
-  function read(
-    file: string | Buffer,
-    options: ReadingOptions
-  ): Promise<ZebraCrossingReturnType>;
+  function read(file: string | Buffer, options: ReadingOptions): Promise<ZebraCrossingReturnType>;
 }

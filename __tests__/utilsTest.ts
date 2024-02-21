@@ -1,11 +1,6 @@
 import { describe, expect, beforeEach, test } from '@jest/globals';
 
-import {
-  interpretField,
-  pad,
-  parseContainers,
-  parsingFunction
-} from '../src/utils';
+import { interpretField, pad, parseContainers, parsingFunction } from '../src/utils';
 import { FieldsType, SupportedTypes } from '../src/FieldsType';
 
 describe('utils.js', () => {
@@ -47,9 +42,7 @@ describe('utils.js', () => {
       expect(Object.keys(result)).toHaveLength(0); // eslint-disable-line no-unused-expressions
     });
     test('should parse a buffer using a given data field specification', () => {
-      const data = Buffer.from([
-        0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21
-      ]);
+      const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21]);
       const fields: FieldsType[] = [
         {
           name: 'TAG',
@@ -72,9 +65,7 @@ describe('utils.js', () => {
       expect(result.TEXT).toBe('Hello!');
     });
     test('should parse a buffer using a given data field specification', () => {
-      const data = Buffer.from([
-        0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21
-      ]);
+      const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21]);
       const fields: FieldsType[] = [
         {
           name: 'TAG',

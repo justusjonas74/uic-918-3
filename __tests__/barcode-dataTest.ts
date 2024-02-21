@@ -23,20 +23,15 @@ describe('barcode-data', () => {
       expect(interpretBarcode(ticket).version).toBe(2);
     });
     test('should return an empty array if input param is an empty buffer.', () => {
-      expect(
-        Array.isArray(interpretBarcode(Buffer.from('')).ticketContainers)
-      ).toBe(true);
-      expect(interpretBarcode(Buffer.from('')).ticketContainers).toHaveLength(
-        0
-      ); // eslint-disable-line no-unused-expressions
+      expect(Array.isArray(interpretBarcode(Buffer.from('')).ticketContainers)).toBe(true);
+      expect(interpretBarcode(Buffer.from('')).ticketContainers).toHaveLength(0); // eslint-disable-line no-unused-expressions
     });
 
     describe('on unknown data fields', () => {
       let results: TicketDataContainer[];
       beforeEach((done) => {
         const ticket = dummyTicket('MYID!!', '01', 'Test');
-        results = interpretBarcode(ticket)
-          .ticketContainers as TicketDataContainer[];
+        results = interpretBarcode(ticket).ticketContainers as TicketDataContainer[];
         done();
       });
       test('should ignore unkown data fields', () => {
@@ -53,8 +48,7 @@ describe('barcode-data', () => {
       let results: TicketDataContainer[];
       beforeEach((done) => {
         const ticket = dummyTicket('U_HEAD', '03', 'Test');
-        results = interpretBarcode(ticket)
-          .ticketContainers as TicketDataContainer[];
+        results = interpretBarcode(ticket).ticketContainers as TicketDataContainer[];
         done();
       });
       test('should ignore unkown versions of data fields', () => {

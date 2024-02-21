@@ -15,47 +15,38 @@ function checkSignature(
   return sig.verify(signature);
 }
 
-function getCertByHeader(header: BarcodeHeader): Promise<Key> {
-  return new Promise<Key>(function (resolve, reject) {
-    if (header) {
-      const orgId = parseInt(header.rics.toString(), 10);
-      const keyId = parseInt(header.key_id.toString(), 10);
-      getCertByID(orgId, keyId)
-        .then((cert) => resolve(cert))
-        .catch((err) => reject(err));
-    } else {
-      resolve(null);
-    }
-  });
+async function getCertByHeader(header: BarcodeHeader): Promise<Key | undefined> {
+  try {
+    const orgId = parseInt(header.rics.toString(), 10);
+    const keyId = parseInt(header.key_id.toString(), 10);
+    const cert = await getCertByID(orgId, keyId);
+    return cert;
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
 }
 
-export const verifyTicket = function (
-  ticket: ParsedUIC918Barcode
-): Promise<boolean> {
-  return new Promise<boolean | null>(function (resolve, reject) {
-    if (ticket) {
-      getCertByHeader(ticket.header)
-        .then((cert) => {
-          if (cert) {
-            const publicKey = rs.KEYUTIL.getKey(
-              '-----BEGIN CERTIFICATE-----\n' +
-                cert.publicKey +
-                '\n-----END CERTIFICATE-----\n'
-            );
-            resolve(
-              checkSignature(
-                publicKey,
-                ticket.signature.toString('hex'),
-                ticket.ticketDataRaw.toString('hex')
-              )
-            );
-          } else {
-            resolve(null);
-          }
-        })
-        .catch((err) => reject(err));
-    } else {
-      resolve(null);
-    }
-  });
+enum verifyTicketStatus {
+  'VALID',
+  'INVALID',
+  'UNKNOWN'
+}
+
+export const verifyTicket = async function (ticket: ParsedUIC918Barcode): Promise<verifyTicketStatus> {
+  const cert = await getCertByHeader(ticket.header);
+  if (!cert) {
+    console.log("No certificate found. Signature couldn't been proofed.");
+    return verifyTicketStatus.UNKNOWN;
+  }
+
+  const modifiedCert = '-----BEGIN CERTIFICATE-----\n' + cert.publicKey + '\n-----END CERTIFICATE-----\n';
+  const publicKey = rs.KEYUTIL.getKey(modifiedCert);
+  const isSignatureValid = checkSignature(
+    publicKey,
+    ticket.signature.toString('hex'),
+    ticket.ticketDataRaw.toString('hex')
+  );
+
+  return isSignatureValid ? verifyTicketStatus.VALID : verifyTicketStatus.INVALID;
 };

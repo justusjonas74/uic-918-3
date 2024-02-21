@@ -12,10 +12,7 @@ import { FieldsType, SupportedTypes } from './FieldsType';
 
 export type interpretFieldResult = { [index: string]: SupportedTypes };
 
-export function interpretField(
-  data: Buffer,
-  fields: FieldsType[]
-): interpretFieldResult {
+export function interpretField(data: Buffer, fields: FieldsType[]): interpretFieldResult {
   let remainder = data;
   const res: interpretFieldResult = {};
   fields.forEach((field) => {
@@ -35,10 +32,7 @@ export function interpretField(
 
 // f is a function which returns an array with a interpreted value from data and the remaining data as the second item
 export type parsingFunction = (data: Buffer) => [SupportedTypes, Buffer?];
-export function parseContainers(
-  data: Buffer,
-  f: parsingFunction
-): SupportedTypes[] {
+export function parseContainers(data: Buffer, f: parsingFunction): SupportedTypes[] {
   // f is a function which returns an array with a interpreted value from data and the remaining data as the second item
   let remainder = data;
   const containers = [];
@@ -64,4 +58,8 @@ export function pad(number: number | string, length: number): string {
     str = '0' + str;
   }
   return str;
+}
+
+export function handleError(error: Error): void {
+  console.log(error);
 }

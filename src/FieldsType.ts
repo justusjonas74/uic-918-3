@@ -12,12 +12,8 @@ export type SupportedTypes =
   | interpretFieldResult
   | TicketDataContainer; // TODO: Stupid Solution
 
-export type InterpreterFunctionType<T extends SupportedTypes> = (
-  x: Buffer
-) => T;
-export type InterpreterArrayFunctionType<T extends SupportedTypes> = (
-  x: Buffer
-) => T[];
+export type InterpreterFunctionType<T extends SupportedTypes> = (x: Buffer) => T;
+export type InterpreterArrayFunctionType<T extends SupportedTypes> = (x: Buffer) => T[];
 
 export interface FieldsType {
   length?: number;

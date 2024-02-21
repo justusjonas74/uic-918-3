@@ -35,9 +35,7 @@ export const fileWillExists = (filePath: string): Promise<string> => {
 };
 
 // promisify fs.readFile()
-export const readFileAsync = (
-  filename: PathOrFileDescriptor
-): Promise<Buffer> => {
+export const readFileAsync = (filename: PathOrFileDescriptor): Promise<Buffer> => {
   return new Promise<Buffer>((resolve, reject) => {
     readFile(filename, function (err, buffer) {
       if (err) reject(err);
@@ -65,10 +63,6 @@ export const loadFileOrBuffer = (input: PathLike): Promise<Buffer> => {
     return Promise.resolve(input);
   } else {
     // return defaultCallback ? defaultCallback(input) : Promise.reject(new Error(`Error: Input must be a Buffer (Image) or a String (path to image)`))
-    return Promise.reject(
-      new Error(
-        'Error: Input must be a Buffer (Image) or a String (path to image)'
-      )
-    );
+    return Promise.reject(new Error('Error: Input must be a Buffer (Image) or a String (path to image)'));
   }
 };

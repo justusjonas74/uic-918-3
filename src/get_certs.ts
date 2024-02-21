@@ -1,5 +1,7 @@
-import { readFile } from 'fs';
+import { PathLike, promises } from 'fs';
 import { dirname, join } from 'path';
+
+const { readFile } = promises;
 
 import { find } from 'lodash';
 
@@ -41,43 +43,34 @@ export enum BarcodeXSD {
   String = 'String'
 }
 
-const openLocalFiles = (): Promise<UICKeys> => {
-  return new Promise<UICKeys>(function (resolve, reject) {
-    // const filePath = path.join(__dirname, '../', fileName)
-    readFile(filePath, 'utf8', function (err, data) {
-      /* istanbul ignore else */
-      if (!err) {
-        resolve(JSON.parse(data));
-      } else {
-        reject(err);
-      }
-    });
-  });
+const openLocalFiles = async (filePath: PathLike): Promise<UICKeys> => {
+  try {
+    const file = await readFile(filePath, 'utf8');
+    const uicKey = JSON.parse(file);
+    return uicKey;
+  } catch (error) {
+    throw new Error(`Couldn't read file ${filePath}. ` + error);
+  }
 };
 
-const selectCert = (
-  keys: UICKeys,
-  orgId: number,
-  keyId: number
-): Promise<Key> => {
-  return new Promise<Key>(function (resolve, reject) {
-    const cert = find(keys.keys.key, {
-      issuerCode: [orgId.toString()],
-      id: [keyId.toString()]
-    });
-    if (cert) {
-      resolve(cert);
-    } else {
-      reject(Error('Not Found!'));
-    }
-  });
+const selectCert = (keys: UICKeys, ricsCode: number, keyId: number): Key | undefined => {
+  const searchPattern = {
+    issuerCode: [ricsCode.toString()],
+    id: [keyId.toString()]
+  };
+  const cert = find<Key>(keys.keys.key, searchPattern);
+  if (!cert) {
+    console.log(`Couldn't find a certificate for issuer ${ricsCode} and key number ${keyId}`);
+  }
+  return cert;
 };
 
-export const getCertByID = (orgId: number, keyId: number): Promise<Key> => {
-  return new Promise<Key>(function (resolve, reject) {
-    openLocalFiles()
-      .then((keys) => selectCert(keys, orgId, keyId))
-      .then((cert) => resolve(cert))
-      .catch((err) => reject(err));
-  });
+export const getCertByID = async (orgId: number, keyId: number): Promise<Key | undefined> => {
+  try {
+    const keys = await openLocalFiles(filePath);
+    return selectCert(keys, orgId, keyId);
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
 };

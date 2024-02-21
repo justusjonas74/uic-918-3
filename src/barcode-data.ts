@@ -1,13 +1,7 @@
 import { unzipSync } from 'zlib';
 
 import TicketContainer, { TicketContainerType } from './TicketContainer';
-import {
-  interpretField,
-  interpretFieldResult,
-  myConsoleLog,
-  parseContainers,
-  parsingFunction
-} from './utils';
+import { interpretField, interpretFieldResult, myConsoleLog, parseContainers, parsingFunction } from './utils';
 import { SupportedTypes } from './FieldsType';
 
 // Get raw data and uncompress the TicketData
@@ -74,18 +68,10 @@ export class TicketDataContainer {
     this.id = data.subarray(0, 6).toString();
     this.version = data.subarray(6, 8).toString();
     this.length = parseInt(data.subarray(8, 12).toString(), 10);
-    this.container_data = TicketDataContainer.parseFields(
-      this.id,
-      this.version,
-      data.subarray(12, data.length)
-    );
+    this.container_data = TicketDataContainer.parseFields(this.id, this.version, data.subarray(12, data.length));
   }
 
-  static parseFields(
-    id: string,
-    version: string,
-    data: Buffer
-  ): Buffer | interpretFieldResult {
+  static parseFields(id: string, version: string, data: Buffer): Buffer | interpretFieldResult {
     const fields = getBlockTypeFieldsByIdAndVersion(id, version);
     if (fields) {
       return interpretField(data, fields.dataFields);
@@ -98,23 +84,15 @@ export class TicketDataContainer {
   }
 }
 
-const interpretTicketContainer: parsingFunction = (
-  data: Buffer
-): [TicketDataContainer, Buffer] => {
+const interpretTicketContainer: parsingFunction = (data: Buffer): [TicketDataContainer, Buffer] => {
   const length = parseInt(data.subarray(8, 12).toString(), 10);
   const remainder = data.subarray(length, data.length);
   const container = new TicketDataContainer(data.subarray(0, length));
   return [container, remainder];
 };
 
-function getBlockTypeFieldsByIdAndVersion(
-  id: string,
-  version: string
-): TicketContainerType | undefined {
-  return TicketContainer.find(
-    (ticketContainer) =>
-      ticketContainer.name === id && ticketContainer.version === version
-  );
+function getBlockTypeFieldsByIdAndVersion(id: string, version: string): TicketContainerType | undefined {
+  return TicketContainer.find((ticketContainer) => ticketContainer.name === id && ticketContainer.version === version);
 }
 export type ParsedUIC918Barcode = {
   version: number;
@@ -133,10 +111,7 @@ function parseBarcodeData(data: Buffer): ParsedUIC918Barcode {
   const ticketDataLength = getTicketDataLength(data, version);
   const ticketDataRaw = getTicketDataRaw(data, version);
   const ticketDataUncompressed = getTicketDataUncompressed(ticketDataRaw);
-  const ticketContainers = parseContainers(
-    ticketDataUncompressed,
-    interpretTicketContainer
-  );
+  const ticketContainers = parseContainers(ticketDataUncompressed, interpretTicketContainer);
   return {
     version,
     header,

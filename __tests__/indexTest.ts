@@ -23,9 +23,7 @@ describe('index.js', () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return expect(
-          readBarcode(dummy4, { verifySignature: true })
-        ).resolves.toHaveProperty('isSignatureValid');
+        return expect(readBarcode(dummy4, { verifySignature: true })).resolves.toHaveProperty('isSignatureValid');
       });
     });
     describe('...when input is an image buffer', () => {
@@ -40,9 +38,7 @@ describe('index.js', () => {
         // eventually.have.deep.property('thing.foo', 'bar')
         // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
         // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return expect(
-          readBarcode(dummy4Buff, { verifySignature: true })
-        ).resolves.toHaveProperty('isSignatureValid');
+        return expect(readBarcode(dummy4Buff, { verifySignature: true })).resolves.toHaveProperty('isSignatureValid');
       });
     });
     // describe('...when input is something else', () => {

@@ -4,8 +4,7 @@ import { loadFileOrBuffer } from './checkInput';
 
 import { verifyTicket as verifySignature } from './check_signature';
 
-const readZxing = (filePath: string | Buffer): Promise<Buffer> =>
-  ZXing(filePath);
+const readZxing = (filePath: string | Buffer): Promise<Buffer> => ZXing(filePath);
 const interpretBarcodeFn = (res: Buffer): Promise<ParsedUIC918Barcode> => {
   return Promise.resolve(interpretBarcode(res));
 };

@@ -17,9 +17,7 @@ export const updateLocalCerts = async (): Promise<void> => {
     parser.parseString(response.data, function (err, result) {
       if (!err) {
         writeFileSync(filePath, JSON.stringify(result));
-        console.log(
-          `Loaded ${result.keys.key.length} public keys and saved under "${filePath}".`
-        );
+        console.log(`Loaded ${result.keys.key.length} public keys and saved under "${filePath}".`);
       } else {
         console.log(err);
       }

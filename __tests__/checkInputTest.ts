@@ -3,12 +3,7 @@ import { describe, expect, test, beforeAll } from '@jest/globals';
 import path from 'path';
 import fs from 'fs';
 
-import {
-  fileExists,
-  fileWillExists,
-  loadFileOrBuffer,
-  readFileAsync
-} from '../src/checkInput';
+import { fileExists, fileWillExists, loadFileOrBuffer, readFileAsync } from '../src/checkInput';
 
 describe('checkInput.js', () => {
   const filePath = {
@@ -44,39 +39,35 @@ describe('checkInput.js', () => {
 
   describe('fileWillExists', () => {
     test('should return true if a file with relative path is found', () => {
-      return expect(fileWillExists(filePath.relative_true)).resolves.toBe(
-        filePath.relative_true
-      );
+      return expect(fileWillExists(filePath.relative_true)).resolves.toBe(filePath.relative_true);
     });
 
     test('should return true if a file with absolute path is found', () => {
-      return expect(fileWillExists(filePath.absolute_true)).resolves.toBe(
-        filePath.absolute_true
-      );
+      return expect(fileWillExists(filePath.absolute_true)).resolves.toBe(filePath.absolute_true);
     });
   });
   describe('readFileAsync', () => {
     test('should return true if a file with relative path is found', () => {
-      return expect(
-        readFileAsync(filePath.relative_true)
-      ).resolves.toStrictEqual(fs.readFileSync(filePath.relative_true));
+      return expect(readFileAsync(filePath.relative_true)).resolves.toStrictEqual(
+        fs.readFileSync(filePath.relative_true)
+      );
     });
     test("should return false if a file with absolute path isn't found", () => {
       return expect(readFileAsync(filePath.absolute_false)).rejects.toThrow();
     });
     test('should return true if a file with absolute path is found', () => {
-      return expect(
-        readFileAsync(filePath.absolute_true)
-      ).resolves.toStrictEqual(fs.readFileSync(filePath.absolute_true));
+      return expect(readFileAsync(filePath.absolute_true)).resolves.toStrictEqual(
+        fs.readFileSync(filePath.absolute_true)
+      );
     });
   });
 
   describe('isBufferOrString', () => {
     describe('with no optional parameters', () => {
       test('should be fulfilled with a string', () => {
-        return expect(
-          loadFileOrBuffer(filePath.relative_true)
-        ).resolves.toStrictEqual(fs.readFileSync(filePath.relative_true)); // eslint-disable-line no-unused-expressions
+        return expect(loadFileOrBuffer(filePath.relative_true)).resolves.toStrictEqual(
+          fs.readFileSync(filePath.relative_true)
+        ); // eslint-disable-line no-unused-expressions
       });
       test('should be fulfilled with a Buffer', () => {
         const buf = Buffer.from('01125684');
@@ -84,9 +75,7 @@ describe('checkInput.js', () => {
         return expect(loadFileOrBuffer(buf)).resolves.toBe(buf); // eslint-disable-line no-unused-expressions
       });
       test('should be rejected with a wrong file path', () => {
-        return expect(
-          loadFileOrBuffer(filePath.relative_false)
-        ).rejects.toThrow();
+        return expect(loadFileOrBuffer(filePath.relative_false)).rejects.toThrow();
       });
     });
   });
