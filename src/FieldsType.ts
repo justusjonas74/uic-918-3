@@ -10,7 +10,7 @@ export type SupportedTypes =
   | DC_LISTE_TYPE
   | RCT2_BLOCK[]
   | interpretFieldResult
-  | TicketDataContainer; // TODO: Stupid Solution
+  | TicketDataContainer;
 
 export type InterpreterFunctionType<T extends SupportedTypes> = (x: Buffer) => T;
 export type InterpreterArrayFunctionType<T extends SupportedTypes> = (x: Buffer) => T[];

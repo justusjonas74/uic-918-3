@@ -23,8 +23,12 @@ describe('barcode-data', () => {
       expect(interpretBarcode(ticket).version).toBe(2);
     });
     test('should return an empty array if input param is an empty buffer.', () => {
-      expect(Array.isArray(interpretBarcode(Buffer.from('')).ticketContainers)).toBe(true);
-      expect(interpretBarcode(Buffer.from('')).ticketContainers).toHaveLength(0); // eslint-disable-line no-unused-expressions
+      const emptyTicket = Buffer.from(
+        '2355543031333431353030303033302e0215008beb83c5db49924a1387e99ed58fe2cc59aa8a8c021500f66f662724ca0b49a95d7f81810cbfa5696d06ed0000',
+        'hex'
+      );
+      expect(Array.isArray(interpretBarcode(emptyTicket).ticketContainers)).toBe(true);
+      expect(interpretBarcode(emptyTicket).ticketContainers).toHaveLength(0); // eslint-disable-line no-unused-expressions
     });
 
     describe('on unknown data fields', () => {
