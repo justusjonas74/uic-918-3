@@ -30,6 +30,23 @@ describe('barcode-data', () => {
       expect(Array.isArray(interpretBarcode(emptyTicket).ticketContainers)).toBe(true);
       expect(interpretBarcode(emptyTicket).ticketContainers).toHaveLength(0); // eslint-disable-line no-unused-expressions
     });
+    test('should throw an error if mt_version is not 1 or 2', () => {
+      const unsupportedTicket = Buffer.from(
+        '2355543033333431353030303033302e0215008beb83c5db49924a1387e99ed58fe2cc59aa8a8c021500f66f662724ca0b49a95d7f81810cbfa5696d06ed0000',
+        'hex'
+      );
+      try {
+        interpretBarcode(unsupportedTicket);
+        // Fail test if above expression doesn't throw anything.
+        expect(true).toBe(false);
+      } catch (e) {
+        const error: Error = e as Error;
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toBe(
+          'Barcode header contains a version of 3 (instead of 1 or 2), which is not supported by this library yet.'
+        );
+      }
+    });
 
     describe('on unknown data fields', () => {
       let results: TicketDataContainer[];
