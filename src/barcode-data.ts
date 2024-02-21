@@ -3,6 +3,7 @@ import { unzipSync } from 'zlib';
 import TicketContainer, { TicketContainerType } from './TicketContainer';
 import { interpretField, interpretFieldResult, myConsoleLog, parseContainers, parsingFunction } from './utils';
 import { SupportedTypes } from './FieldsType';
+import { TicketSignatureVerficationStatus } from './check_signature';
 
 // Get raw data and uncompress the TicketData
 function getVersion(data: Buffer): number {
@@ -102,6 +103,7 @@ export type ParsedUIC918Barcode = {
   ticketDataRaw: Buffer;
   ticketDataUncompressed: Buffer;
   ticketContainers: SupportedTypes[];
+  validityOfSignature?: TicketSignatureVerficationStatus;
   isSignatureValid?: boolean;
 };
 function parseBarcodeData(data: Buffer): ParsedUIC918Barcode {

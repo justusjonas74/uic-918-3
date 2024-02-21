@@ -27,17 +27,17 @@ async function getCertByHeader(header: BarcodeHeader): Promise<Key | undefined> 
   }
 }
 
-enum verifyTicketStatus {
-  'VALID',
-  'INVALID',
-  'UNKNOWN'
+export enum TicketSignatureVerficationStatus {
+  VALID = 'VALID',
+  INVALID = 'INVALID',
+  NOPUBLICKEY = 'Public Key not found'
 }
 
-export const verifyTicket = async function (ticket: ParsedUIC918Barcode): Promise<verifyTicketStatus> {
+export const verifyTicket = async function (ticket: ParsedUIC918Barcode): Promise<TicketSignatureVerficationStatus> {
   const cert = await getCertByHeader(ticket.header);
   if (!cert) {
     console.log("No certificate found. Signature couldn't been proofed.");
-    return verifyTicketStatus.UNKNOWN;
+    return TicketSignatureVerficationStatus.NOPUBLICKEY;
   }
 
   const modifiedCert = '-----BEGIN CERTIFICATE-----\n' + cert.publicKey + '\n-----END CERTIFICATE-----\n';
@@ -48,5 +48,5 @@ export const verifyTicket = async function (ticket: ParsedUIC918Barcode): Promis
     ticket.ticketDataRaw.toString('hex')
   );
 
-  return isSignatureValid ? verifyTicketStatus.VALID : verifyTicketStatus.INVALID;
+  return isSignatureValid ? TicketSignatureVerficationStatus.VALID : TicketSignatureVerficationStatus.INVALID;
 };

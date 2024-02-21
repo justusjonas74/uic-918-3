@@ -69,7 +69,8 @@ const options = {
 };
 
 uic.readBarcode(file_path, options).then((ticket) => {
-  console.log(ticket.isSignatureValid); // Returns 'true' or 'false'.
+  console.log(ticket.validityOfSignature); // Returns "VALID", "INVALID" or "Public Key not found"
+  // ticket.isSignatureValid is deprecated. Use validityOfSignature instead.
 });
 //
 ```

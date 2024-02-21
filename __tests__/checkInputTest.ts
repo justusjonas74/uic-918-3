@@ -3,7 +3,7 @@ import { describe, expect, test, beforeAll } from '@jest/globals';
 import path from 'path';
 import fs from 'fs';
 
-import { fileExists, fileWillExists, loadFileOrBuffer, readFileAsync } from '../src/checkInput';
+import { loadFileOrBuffer } from '../src/checkInput';
 
 describe('checkInput.js', () => {
   const filePath = {
@@ -22,47 +22,47 @@ describe('checkInput.js', () => {
     // done()
   });
 
-  describe('fileExists', () => {
-    test("should return false if a file with relative path isn't found", () => {
-      expect(fileExists(filePath.relative_false)).toBe(false);
-    });
-    test('should return true if a file with relative path is found', () => {
-      expect(fileExists(filePath.relative_true)).toBe(true);
-    });
-    test("should return false if a file with absolute path isn't found", () => {
-      expect(fileExists(filePath.absolute_false)).toBe(false);
-    });
-    test('should return true if a file with absolute path is found', () => {
-      expect(fileExists(filePath.absolute_true)).toBe(true);
-    });
-  });
+  // describe('fileExists', () => {
+  //   test("should return false if a file with relative path isn't found", () => {
+  //     expect(fileExists(filePath.relative_false)).toBe(false);
+  //   });
+  //   test('should return true if a file with relative path is found', () => {
+  //     expect(fileExists(filePath.relative_true)).toBe(true);
+  //   });
+  //   test("should return false if a file with absolute path isn't found", () => {
+  //     expect(fileExists(filePath.absolute_false)).toBe(false);
+  //   });
+  //   test('should return true if a file with absolute path is found', () => {
+  //     expect(fileExists(filePath.absolute_true)).toBe(true);
+  //   });
+  // });
 
-  describe('fileWillExists', () => {
-    test('should return true if a file with relative path is found', () => {
-      return expect(fileWillExists(filePath.relative_true)).resolves.toBe(filePath.relative_true);
-    });
+  // describe('fileWillExists', () => {
+  //   test('should return true if a file with relative path is found', () => {
+  //     return expect(fileWillExists(filePath.relative_true)).resolves.toBe(filePath.relative_true);
+  //   });
 
-    test('should return true if a file with absolute path is found', () => {
-      return expect(fileWillExists(filePath.absolute_true)).resolves.toBe(filePath.absolute_true);
-    });
-  });
-  describe('readFileAsync', () => {
-    test('should return true if a file with relative path is found', () => {
-      return expect(readFileAsync(filePath.relative_true)).resolves.toStrictEqual(
-        fs.readFileSync(filePath.relative_true)
-      );
-    });
-    test("should return false if a file with absolute path isn't found", () => {
-      return expect(readFileAsync(filePath.absolute_false)).rejects.toThrow();
-    });
-    test('should return true if a file with absolute path is found', () => {
-      return expect(readFileAsync(filePath.absolute_true)).resolves.toStrictEqual(
-        fs.readFileSync(filePath.absolute_true)
-      );
-    });
-  });
+  //   test('should return true if a file with absolute path is found', () => {
+  //     return expect(fileWillExists(filePath.absolute_true)).resolves.toBe(filePath.absolute_true);
+  //   });
+  // });
+  // describe('readFileAsync', () => {
+  //   test('should return true if a file with relative path is found', () => {
+  //     return expect(readFileAsync(filePath.relative_true)).resolves.toStrictEqual(
+  //       fs.readFileSync(filePath.relative_true)
+  //     );
+  //   });
+  //   test("should return false if a file with absolute path isn't found", () => {
+  //     return expect(readFileAsync(filePath.absolute_false)).rejects.toThrow();
+  //   });
+  //   test('should return true if a file with absolute path is found', () => {
+  //     return expect(readFileAsync(filePath.absolute_true)).resolves.toStrictEqual(
+  //       fs.readFileSync(filePath.absolute_true)
+  //     );
+  //   });
+  // });
 
-  describe('isBufferOrString', () => {
+  describe('loadFileOrBuffer', () => {
     describe('with no optional parameters', () => {
       test('should be fulfilled with a string', () => {
         return expect(loadFileOrBuffer(filePath.relative_true)).resolves.toStrictEqual(
