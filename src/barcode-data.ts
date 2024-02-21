@@ -10,6 +10,16 @@ function getVersion(data: Buffer): number {
   return parseInt(data.subarray(3, 5).toString(), 10);
 }
 
+function getLengthOfSignatureByVersion(version: number): number {
+  if (version !== 1 && version !== 2) {
+    throw new Error(
+      `Barcode header contains a version of ${version} (instead of 1 or 2), which is not supported by this library yet.`
+    );
+  }
+  const lengthOfSignature = version === 1 ? 50 : 64;
+  return lengthOfSignature;
+}
+
 export type BarcodeHeader = {
   umid: Buffer;
   mt_version: Buffer;
@@ -26,29 +36,15 @@ function getHeader(data: Buffer): BarcodeHeader {
 }
 
 function getSignature(data: Buffer, version: number): Buffer {
-  // TODO: Double check if `version` is the correct element to choose the length of the signature...
-  // TODO: The following lines are WET code
-  if (version === 1) {
-    return data.subarray(14, 64);
-  } else {
-    return data.subarray(14, 78);
-  }
+  return data.subarray(14, 14 + getLengthOfSignatureByVersion(version));
 }
 
 function getTicketDataLength(data: Buffer, version: number): Buffer {
-  if (version === 1) {
-    return data.subarray(64, 68);
-  } else {
-    return data.subarray(78, 82);
-  }
+  return data.subarray(getLengthOfSignatureByVersion(version) + 14, getLengthOfSignatureByVersion(version) + 18);
 }
 
 function getTicketDataRaw(data: Buffer, version: number): Buffer {
-  if (version === 1) {
-    return data.subarray(68, data.length);
-  } else {
-    return data.subarray(82, data.length);
-  }
+  return data.subarray(getLengthOfSignatureByVersion(version) + 18, data.length);
 }
 
 function getTicketDataUncompressed(data: Buffer): Buffer {
@@ -64,7 +60,7 @@ export class TicketDataContainer {
   id: string;
   version: string;
   length: number;
-  container_data; // TODO: Add a Type!
+  container_data: Buffer | interpretFieldResult;
   constructor(data: Buffer) {
     this.id = data.subarray(0, 6).toString();
     this.version = data.subarray(6, 8).toString();
