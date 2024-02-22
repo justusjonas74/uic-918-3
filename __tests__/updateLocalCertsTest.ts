@@ -3,9 +3,6 @@ import { join } from 'path';
 import { describe, test, beforeAll, expect } from '@jest/globals';
 import { fileName } from '../cert_url.json';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import axios, * as _others from 'axios';
-
 import { updateLocalCerts } from '../src/updateLocalCerts';
 
 const filePath = join(__dirname, '../', fileName);
