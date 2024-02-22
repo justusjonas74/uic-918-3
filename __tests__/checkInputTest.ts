@@ -63,19 +63,28 @@ describe('checkInput.js', () => {
   // });
 
   describe('loadFileOrBuffer', () => {
-    describe('with no optional parameters', () => {
+    describe('with no optional parameters - relative filepath', () => {
       test('should be fulfilled with a string', () => {
         return expect(loadFileOrBuffer(filePath.relative_true)).resolves.toStrictEqual(
           fs.readFileSync(filePath.relative_true)
-        ); // eslint-disable-line no-unused-expressions
+        );
+      });
+      test('should be fulfilled with a string - absolute filepath', () => {
+        return expect(loadFileOrBuffer(filePath.absolute_true)).resolves.toStrictEqual(
+          fs.readFileSync(filePath.absolute_true)
+        );
       });
       test('should be fulfilled with a Buffer', () => {
         const buf = Buffer.from('01125684');
 
-        return expect(loadFileOrBuffer(buf)).resolves.toBe(buf); // eslint-disable-line no-unused-expressions
+        return expect(loadFileOrBuffer(buf)).resolves.toBe(buf);
       });
       test('should be rejected with a wrong file path', () => {
         return expect(loadFileOrBuffer(filePath.relative_false)).rejects.toThrow();
+      });
+      test('should throw an error, if argument is not a Buffer or string', () => {
+        // @ts-expect-error Testing correct Error Handling in a non typesafe JS runtime
+        return expect(loadFileOrBuffer(123)).rejects.toThrow();
       });
     });
   });

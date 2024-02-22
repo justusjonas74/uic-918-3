@@ -8,7 +8,7 @@ const tryToLoadFile = async (filePath: string): Promise<Buffer> => {
   return await readFile(fullPath);
 };
 
-export const loadFileOrBuffer = async (input: PathLike): Promise<Buffer> => {
+export const loadFileOrBuffer = async (input: PathLike | Buffer): Promise<Buffer> => {
   const inputIsString = typeof input === 'string';
   const inputIsBuffer = input instanceof Buffer;
 
