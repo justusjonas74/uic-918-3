@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import * as xml2js from 'xml2js';
 
-export const parser = new xml2js.Parser();
+const parser = new xml2js.Parser();
 
 const { url, fileName } = JSON.parse(readFileSync('./cert_url.json', 'utf8'));
 const basePath = dirname('./cert_url.json');

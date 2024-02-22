@@ -65,9 +65,9 @@ const selectCert = (keys: UICKeys, ricsCode: number, keyId: number): Key | undef
   return cert;
 };
 
-export const getCertByID = async (orgId: number, keyId: number): Promise<Key | undefined> => {
+export const getCertByID = async (orgId: number, keyId: number, path: string = filePath): Promise<Key | undefined> => {
   try {
-    const keys = await openLocalFiles(filePath);
+    const keys = await openLocalFiles(path);
     return selectCert(keys, orgId, keyId);
   } catch (error) {
     console.log(error);

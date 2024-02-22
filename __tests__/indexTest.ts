@@ -1,7 +1,14 @@
-import { describe, expect, test } from '@jest/globals';
+import { beforeAll, describe, expect, test } from '@jest/globals';
 
-import fs from 'fs';
+import fs, { existsSync } from 'fs';
 import { readBarcode } from '../src/index';
+import { TicketSignatureVerficationStatus } from '../src/check_signature';
+import { filePath, updateLocalCerts } from '../src/updateLocalCerts';
+beforeAll(async () => {
+  if (!existsSync(filePath)) {
+    await updateLocalCerts();
+  }
+});
 
 describe('index.js', () => {
   describe('index.readBarcode', () => {
@@ -9,6 +16,7 @@ describe('index.js', () => {
       const dummy = '__tests__/images/barcode-dummy2.png';
       // const dummy3 = '__tests__/images/barcode-dummy3.png'
       const dummy4 = '__tests__/images/CT-003.png';
+
       const falseDummy = '__tests__/images/barcode dummy.png';
       test('should return an object on sucess', () => {
         return expect(readBarcode(dummy)).toBeInstanceOf(Object);
@@ -30,16 +38,27 @@ describe('index.js', () => {
       const dummyBuff = fs.readFileSync('__tests__/images/barcode-dummy2.png');
       // const dummy3Buff = fs.readFileSync('__tests__/images/barcode-dummy3.png')
       const dummy4Buff = fs.readFileSync('__tests__/images/CT-003.png');
-      test('should return an object on sucess', () => {
-        return expect(readBarcode(dummyBuff)).resolves.toBeInstanceOf(Object);
+      // const invalidTicket = fs.readFileSync('__tests__/images/invalidSignature.png');
+      test('should return an object on sucess', async () => {
+        const barcode = await readBarcode(dummyBuff);
+        return expect(barcode).toBeInstanceOf(Object);
       });
 
-      test('should handle verifySignature option and resolve', async () => {
-        // eventually.have.deep.property('thing.foo', 'bar')
-        // return Promise.resolve({ foo: 'bar' }).should.eventually.have.property('foo')
-        // return (Promise.resolve({isSignatureValid: true})).should.eventually.have.deep.property('isSignatureValid', true)
-        return expect(readBarcode(dummy4Buff, { verifySignature: true })).resolves.toHaveProperty('isSignatureValid');
+      test('should handle verifySignature option and resolve on valid tickets', async () => {
+        const barcode = await readBarcode(dummy4Buff, { verifySignature: true });
+        expect(barcode).toHaveProperty('isSignatureValid', true);
+        expect(barcode).toHaveProperty('validityOfSignature', TicketSignatureVerficationStatus.VALID);
       });
+      // test('should handle verifySignature option and resolve on invalid tickets', async () => {
+      //   await expect(readBarcode(invalidTicket, { verifySignature: true })).resolves.toHaveProperty(
+      //     'isSignatureValid',
+      //     false
+      //   );
+      //   await expect(readBarcode(invalidTicket, { verifySignature: true })).resolves.toHaveProperty(
+      //     'validityOfSignature',
+      //     TicketSignatureVerficationStatus.INVALID
+      //   );
+      // });
     });
     // describe('...when input is something else', () => {
     //   test('should reject if input is array', () => {

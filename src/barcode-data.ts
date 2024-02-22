@@ -3,7 +3,7 @@ import { unzipSync } from 'zlib';
 import TicketContainer, { TicketContainerType } from './TicketContainer';
 import { interpretField, interpretFieldResult, myConsoleLog, parseContainers, parsingFunction } from './utils';
 import { SupportedTypes } from './FieldsType';
-import { TicketSignatureVerficationStatus } from './check_signature';
+import { verifyTicket, TicketSignatureVerficationStatus } from './check_signature';
 
 // Get raw data and uncompress the TicketData
 function getVersion(data: Buffer): number {
@@ -102,7 +102,7 @@ export type ParsedUIC918Barcode = {
   validityOfSignature?: TicketSignatureVerficationStatus;
   isSignatureValid?: boolean;
 };
-function parseBarcodeData(data: Buffer): ParsedUIC918Barcode {
+async function parseBarcodeData(data: Buffer, verifySignature: boolean = false): Promise<ParsedUIC918Barcode> {
   const version = getVersion(data);
   const header = getHeader(data);
   const signature = getSignature(data, version);
@@ -110,7 +110,7 @@ function parseBarcodeData(data: Buffer): ParsedUIC918Barcode {
   const ticketDataRaw = getTicketDataRaw(data, version);
   const ticketDataUncompressed = getTicketDataUncompressed(ticketDataRaw);
   const ticketContainers = parseContainers(ticketDataUncompressed, interpretTicketContainer);
-  return {
+  const ticket: ParsedUIC918Barcode = {
     version,
     header,
     signature,
@@ -119,6 +119,17 @@ function parseBarcodeData(data: Buffer): ParsedUIC918Barcode {
     ticketDataUncompressed,
     ticketContainers
   };
+  if (verifySignature) {
+    const validityOfSignature = await verifyTicket(ticket);
+    ticket.validityOfSignature = validityOfSignature;
+    if (validityOfSignature === TicketSignatureVerficationStatus.VALID) {
+      ticket.isSignatureValid = true;
+    } else if (validityOfSignature === TicketSignatureVerficationStatus.INVALID) {
+      ticket.isSignatureValid = false;
+    }
+  }
+
+  return ticket;
 }
 
 export default parseBarcodeData;

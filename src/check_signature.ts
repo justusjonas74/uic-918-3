@@ -16,15 +16,10 @@ function checkSignature(
 }
 
 async function getCertByHeader(header: BarcodeHeader): Promise<Key | undefined> {
-  try {
-    const orgId = parseInt(header.rics.toString(), 10);
-    const keyId = parseInt(header.key_id.toString(), 10);
-    const cert = await getCertByID(orgId, keyId);
-    return cert;
-  } catch (err) {
-    console.log(err);
-    return undefined;
-  }
+  const orgId = parseInt(header.rics.toString(), 10);
+  const keyId = parseInt(header.key_id.toString(), 10);
+  const cert = await getCertByID(orgId, keyId);
+  return cert;
 }
 
 export enum TicketSignatureVerficationStatus {
