@@ -1,12 +1,13 @@
 # uic-918-3.js
 
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 ![Build Status](https://github.com/justusjonas74/uic-918-3/actions/workflows/node.js.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/justusjonas74/uic-918-3/badge.svg?branch=master)](https://coveralls.io/github/justusjonas74/uic-918-3?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a9c146a8fdf552dbbcc/maintainability)](https://codeclimate.com/github/justusjonas74/uic-918-3/maintainability)
 [![npm version](https://badge.fury.io/js/uic-918-3.svg)](https://badge.fury.io/js/uic-918-3)
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-A Node.js package for decoding and parsing barcodes according to the "UIC 918.3" specification, which is commonly used on Print and Mobile Tickets from public transport companies (e.g. Deutsche Bahn).
+A Node.js package written in Typescript for decoding and parsing barcodes according to the "UIC 918.3" specification, which is commonly used on Print and Mobile Tickets from public transport companies (e.g. Deutsche Bahn).
 
 ## Installation
 
@@ -24,7 +25,50 @@ cd uic-918-3
 npm install
 ```
 
-## Prepare your files
+## Usage
+
+```javascript
+import { readBarcode } from 'uic-918-3';
+
+// Input could be a string with path to image...
+const image = '/path/to/your/file.png';
+// ... or a Buffer object with an image
+const image_as_buffer = fs.readFileSync('/path/to/your/file.png');
+
+readBarcode('foo.png')
+  .then((ticket) => console.log(ticket))
+  .catch((error) => console.error(error));
+```
+
+### Options
+
+Following options are available:
+
+```javascript
+import { readBarcode } from 'uic-918-3';
+
+const image = '/path/to/your/file.png';
+const options = {
+  verifySignature: true // Verify the signature included in the ticket barcode with a public key set from a Public Key Infrastructure (PKI). The PKI url is set inside './lib/cert_url.json'. Default is 'false'.
+};
+
+uic.readBarcode(image, options).then((ticket) => {
+  console.log(ticket.validityOfSignature); // Returns "VALID", "INVALID" or "Public Key not found"
+  // ticket.isSignatureValid is deprecated. Use validityOfSignature instead.
+});
+//
+```
+
+### Returning object
+
+The returning object consists of (among other things) one or more `TicketDataContainers` which hold ticket data for different purposes. The most interesting containers are:
+
+- `**U_HEAD**` The ticket header ...
+- `**U_TLAY**` A representation of the informations which are printed on the ticket.
+- `**0080BL**` A specific container on tickets from Deutsche Bahn. Consists of all relevant information which will be used for proof-of-payment checks on the train.
+- `**0080VU**` A specific container on (some) tickets from Deutsche Bahn. This container is used on products, which are also accepted by other carriers, especially (local) public transport companies. Get more information about this container [here](https://www.bahn.de/vdv-barcode).
+
+## Optimize your files
 
 Actually the barcode reader is very dump, so the ticket you want to read, should be optimised before using this package. A better reading logic will be added in future versions.
 
@@ -43,46 +87,6 @@ pdfimages your-ticket.pdf your-ticket
 # convert .ppm/.pbm to a readable format (png)
 convert your-ticket-00x.ppm your-ticket-00x.png;
 ```
-
-## Usage
-
-```javascript
-const uic = require('uic-918-3');
-
-// Input could be a string with path to image...
-const image = '/path/to/your/file.png';
-// ... or a Buffer object with an image
-const image_as_buffer = fs.readFileSync('/path/to/your/file.png');
-
-uic.readBarcode(image).then((ticket) => {
-  //do something with the ticket
-});
-```
-
-### Options
-
-Following options are available:
-
-```javascript
-const options = {
-  verifySignature: true // Verify the signature included in the ticket barcode with a public key set from a Public Key Infrastructure (PKI). The PKI url is set inside './lib/cert_url.json'. Default is 'false'.
-};
-
-uic.readBarcode(file_path, options).then((ticket) => {
-  console.log(ticket.validityOfSignature); // Returns "VALID", "INVALID" or "Public Key not found"
-  // ticket.isSignatureValid is deprecated. Use validityOfSignature instead.
-});
-//
-```
-
-### Returning object
-
-The returning object consists of (among other things) one or more `TicketDataContainers` which hold ticket data for different purposes. The most interesting containers are:
-
-- `**U_HEAD**` The ticket header ...
-- `**U_TLAY**` A representation of the informations which are printed on the ticket.
-- `**0080BL**` A specific container on tickets from Deutsche Bahn. Consists of all relevant information which will be used for proof-of-payment checks on the train.
-- `**0080VU**` A specific container on (some) tickets from Deutsche Bahn. This container is used on products, which are also accepted by other carriers, especially (local) public transport companies. Get more information about this container [here](https://www.bahn.de/vdv-barcode).
 
 ## Expected Quality
 
