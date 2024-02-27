@@ -1,6 +1,6 @@
-import { describe, expect, beforeEach, test } from '@jest/globals';
+import { describe, expect, beforeEach, test, jest } from '@jest/globals';
 
-import { interpretField, pad, parseContainers, parsingFunction } from '../src/utils';
+import { handleError, interpretField, pad, parseContainers, parsingFunction } from '../src/utils';
 import { FieldsType, SupportedTypes } from '../src/FieldsType';
 
 describe('utils.js', () => {
@@ -125,21 +125,26 @@ describe('utils.js', () => {
     });
   });
 
-  // describe('utils.assignArrayToObj', () => {
-  //   const TEST_DATA = [
-  //     { hello: 'world' },
-  //     { thats: 's' },
-  //     { a: 'test' }
-  //   ]
-  //   const result = assignArrayToObj(TEST_DATA)
+  describe('utils.handleError', () => {
+    test('Should write Error Message to console', () => {
+      const throwErrorFunction = (): void => {
+        throw new Error('Fatal Error');
+      };
+      const logSpy = jest.spyOn(global.console, 'log');
 
-  //   test('should return an object', () => {
-  //     expect(result).toBeInstanceOf(Object)
-  //   })
-  //   test('should have all given properties', () => {
-  //     expect(result).toHaveProperty('hello', 'world')
-  //     expect(result).toHaveProperty('thats', 's')
-  //     expect(result).toHaveProperty('a', 'test')
-  //   })
-  // })
+      try {
+        throwErrorFunction();
+      } catch (err) {
+        const e = err as Error;
+        handleError(e);
+      }
+
+      expect(logSpy).toHaveBeenCalled();
+      expect(logSpy).toHaveBeenCalledTimes(1);
+      expect(logSpy).toHaveBeenCalledWith(new Error('Fatal Error'));
+      expect(logSpy.mock.calls).toContainEqual([new Error('Fatal Error')]);
+
+      logSpy.mockRestore();
+    });
+  });
 });

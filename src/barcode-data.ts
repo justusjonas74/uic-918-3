@@ -1,7 +1,7 @@
 import { unzipSync } from 'zlib';
 
 import TicketContainer, { TicketContainerType } from './TicketContainer';
-import { interpretField, interpretFieldResult, myConsoleLog, parseContainers, parsingFunction } from './utils';
+import { interpretField, interpretFieldResult, parseContainers, parsingFunction } from './utils';
 import { SupportedTypes } from './FieldsType';
 import { verifyTicket, TicketSignatureVerficationStatus } from './check_signature';
 
@@ -73,9 +73,7 @@ export class TicketDataContainer {
     if (fields) {
       return interpretField(data, fields.dataFields);
     } else {
-      myConsoleLog(
-        `ALERT: Container with id ${id} and version ${version} isn't implemented for TicketContainer ${id}.`
-      );
+      console.log(`ALERT: Container with id ${id} and version ${version} isn't implemented for TicketContainer ${id}.`);
       return data;
     }
   }

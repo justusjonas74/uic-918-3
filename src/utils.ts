@@ -44,14 +44,6 @@ export function parseContainers(data: Buffer, f: parsingFunction): SupportedType
   return containers;
 }
 
-export function myConsoleLog(str: string): void {
-  /* following if statement is never fired up during test, so should be ignored */
-  /* istanbul ignore if  */
-  if (process.env.NODE_ENV !== 'test') {
-    console.error(str);
-  }
-}
-
 export function pad(number: number | string, length: number): string {
   let str = '' + number;
   while (str.length < length) {
