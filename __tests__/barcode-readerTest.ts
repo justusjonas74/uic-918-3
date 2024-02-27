@@ -16,5 +16,9 @@ describe('barcode-reader.js', () => {
     test('should return the ticket data', () => {
       return expect(ZXing(dummy)).resolves.toEqual(ticket);
     });
+    test('should throw an error, if no barcode is found', () => {
+      const noBarcodeImage = readFileSync('./__tests__/images/no-barcode.png');
+      expect(ZXing(noBarcodeImage)).rejects.toThrowError('Could not detect a valid Aztec barcode');
+    });
   });
 });
