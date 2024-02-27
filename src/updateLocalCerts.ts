@@ -12,6 +12,8 @@ export const filePath = join(basePath, fileName);
 
 export const updateLocalCerts = async (): Promise<void> => {
   try {
+    // https://stackoverflow.com/a/70598549
+    await process.nextTick(() => {});
     console.log(`Load public keys from ${url} ...`);
     const response = await axios.get(url);
     parser.parseString(response.data, function (err, result) {
