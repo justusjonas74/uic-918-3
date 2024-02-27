@@ -126,7 +126,6 @@ async function parseBarcodeData(data: Buffer, verifySignature: boolean = false):
       ticket.isSignatureValid = false;
     }
   }
-
   return ticket;
 }
 
