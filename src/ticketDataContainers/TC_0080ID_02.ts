@@ -1,20 +1,10 @@
 import { TicketContainerType } from '../TicketContainer';
-import { AUSWEIS_TYP, STRING } from '../block-types';
+import TC_0080ID_01 from './TC_0080ID_01';
 
+const { dataFields } = TC_0080ID_01;
 const TC_0080ID_02: TicketContainerType = {
   name: '0080ID',
   version: '02',
-  dataFields: [
-    {
-      name: 'ausweis_typ',
-      length: 2,
-      interpreterFn: AUSWEIS_TYP
-    },
-    {
-      name: 'ziffer_ausweis',
-      length: 4,
-      interpreterFn: STRING
-    }
-  ]
+  dataFields
 };
 export default TC_0080ID_02;

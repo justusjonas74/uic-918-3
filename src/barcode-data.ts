@@ -102,17 +102,14 @@ export type ParsedUIC918Barcode = {
 };
 async function parseBarcodeData(data: Buffer, verifySignature: boolean = false): Promise<ParsedUIC918Barcode> {
   const version = getVersion(data);
-  const header = getHeader(data);
-  const signature = getSignature(data, version);
-  const ticketDataLength = getTicketDataLength(data, version);
   const ticketDataRaw = getTicketDataRaw(data, version);
   const ticketDataUncompressed = getTicketDataUncompressed(ticketDataRaw);
   const ticketContainers = parseContainers(ticketDataUncompressed, interpretTicketContainer);
   const ticket: ParsedUIC918Barcode = {
     version,
-    header,
-    signature,
-    ticketDataLength,
+    header: getHeader(data),
+    signature: getSignature(data, version),
+    ticketDataLength: getTicketDataLength(data, version),
     ticketDataRaw,
     ticketDataUncompressed,
     ticketContainers
