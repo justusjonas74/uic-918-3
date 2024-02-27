@@ -4,30 +4,6 @@ import { handleError, interpretField, pad, parseContainers, parsingFunction } fr
 import { FieldsType, SupportedTypes } from '../src/FieldsType';
 
 describe('utils.js', () => {
-  // 2024-01-10 seems not to be used anymore...
-  // describe('utils.stringifyBufferObj', () => {
-  //   const str = 'Hello World!'
-  //   const str2 = 'Hello World!!!!!'
-  //   const obj = {
-  //     a: Buffer.from(str),
-  //     b: 123,
-  //     c: Buffer.from(str2)
-  //   }
-  //   const result = utils.stringifyBufferObj(obj)
-  //   test('should return an object where all buffer values would be converted to string values', () => {
-  //     result.a.should.be.equal(str)
-  //     result.c.should.be.equal(str2)
-  //     result.a.should.be.a('string')
-  //     result.c.should.be.a('string')
-  //   })
-  //   test('should return an object', () => {
-  //     result.should.be.a('object')
-  //   })
-  //   test('should not change values which aren\'t strings', () => {
-  //     result.b.should.be.equal(123)
-  //   })
-  // })
-
   describe('utils.interpretField', () => {
     test('should return an object', () => {
       const data = Buffer.from('Test');
@@ -39,7 +15,7 @@ describe('utils.js', () => {
       const data = Buffer.from('Test');
       const fields: FieldsType[] = [];
       const result = interpretField(data, fields);
-      expect(Object.keys(result)).toHaveLength(0); // eslint-disable-line no-unused-expressions
+      expect(Object.keys(result)).toHaveLength(0);
     });
     test('should parse a buffer using a given data field specification', () => {
       const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21]);

@@ -1,13 +1,3 @@
-// 2024-01-10 seems not to be used anymore...
-// exports.stringifyBufferObj = function (obj) {
-//   for (const key in obj) {
-//     if (Buffer.isBuffer(obj[key])) {
-//       obj[key] = obj[key].toString()
-//     }
-//   }
-//   return obj
-// }
-
 import { FieldsType, SupportedTypes } from './FieldsType';
 
 export type interpretFieldResult = { [index: string]: SupportedTypes };

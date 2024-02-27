@@ -2,7 +2,7 @@ import { TicketContainerType } from '../TicketContainer';
 import { AUSWEIS_TYP, STRING } from '../block-types';
 
 const TC_0080ID_01: TicketContainerType = {
-  name: '0080ID', // NO SOURCE FOUND FOR THIS BLOCK.
+  name: '0080ID',
   version: '01',
   dataFields: [
     {

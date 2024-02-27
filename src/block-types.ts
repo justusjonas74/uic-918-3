@@ -1,4 +1,3 @@
-// const utils = require('./utils.js')
 import { id_types, sBlockTypes, orgid, efm_produkt, tarifpunkt, EFM_Produkt } from './enums';
 
 import { FieldsType, InterpreterFunctionType } from './FieldsType';
@@ -263,7 +262,6 @@ function auftraegeSblocks(x: Buffer, A_LENGTH: number, fields: FieldsType[]): In
     10
   );
   const sblock_containers = parseContainers(x.subarray(A_LENGTH * res.auftrag_count + 3), interpretSingleSBlock);
-  // res.sblocks = assignArrayToObj(sblock_containers)
   res.sblocks = Object.assign({}, ...sblock_containers);
   return res;
 }

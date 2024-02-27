@@ -61,7 +61,7 @@ describe('barcode-data', () => {
       test('should ignore unkown data fields', async () => {
         const parsedTicket = await interpretBarcode(ticket);
         const results: TicketDataContainer[] = parsedTicket.ticketContainers as TicketDataContainer[];
-        expect(Object.keys(results)).not.toHaveLength(0); // eslint-disable-line no-unused-expressions
+        expect(Object.keys(results)).not.toHaveLength(0);
       });
       test('should parse the unknown container id', async () => {
         const parsedTicket = await interpretBarcode(ticket);
@@ -79,7 +79,7 @@ describe('barcode-data', () => {
       test('should ignore unkown versions of data fields', async () => {
         const parsedTicket = await interpretBarcode(ticket);
         const results: TicketDataContainer[] = parsedTicket.ticketContainers as TicketDataContainer[];
-        expect(Object.keys(results)).not.toHaveLength(0); // eslint-disable-line no-unused-expressions
+        expect(Object.keys(results)).not.toHaveLength(0);
       });
       test('should parse the unknown container id', async () => {
         const parsedTicket = await interpretBarcode(ticket);

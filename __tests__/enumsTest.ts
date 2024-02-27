@@ -6,18 +6,12 @@ describe('enums.sBlockTypes', () => {
   test('should return an instance of enum', () => {
     expect(sBlockTypes).toBeInstanceOf(Object);
   });
-  // test('should not be empty', () => {
-  //   sBlockTypes.enums.should.not.be.empty // eslint-disable-line no-unused-expressions
-  // })
 });
 describe('id_types', () => {
   const result = id_types;
   test('should return an instance of enum', () => {
     expect(result).toBeInstanceOf(Object);
   });
-  // test('should not be empty', () => {
-  //   result.enums.should.not.be.empty // eslint-disable-line no-unused-expressions
-  // })
 });
 describe('enums.efm_produkt', () => {
   test('should return a object', () => {
