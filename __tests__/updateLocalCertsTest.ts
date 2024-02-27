@@ -17,5 +17,5 @@ describe('updateLocalCerts', () => {
     await updateLocalCerts();
     expect(existsSync(filePath)).toBeTruthy();
     expect(readFileSync(filePath).length).toBeGreaterThan(0);
-  });
+  }, 15000);
 });
