@@ -14,6 +14,8 @@ describe('updateLocalCerts', () => {
     }
   });
   test('should create a not empty file', async () => {
+    // https://stackoverflow.com/a/70598549
+    await process.nextTick(() => {});
     await updateLocalCerts();
     expect(existsSync(filePath)).toBeTruthy();
     expect(readFileSync(filePath).length).toBeGreaterThan(0);

@@ -12,10 +12,11 @@ export const filePath = join(basePath, fileName);
 
 export const updateLocalCerts = async (): Promise<void> => {
   try {
-    // https://stackoverflow.com/a/70598549
-    await process.nextTick(() => {});
     console.log(`Load public keys from ${url} ...`);
     const response = await axios.get(url);
+    if (response && response.status == 200) {
+      console.log(`Successfully loaded key file.`);
+    }
     parser.parseString(response.data, function (err, result) {
       if (!err) {
         writeFileSync(filePath, JSON.stringify(result));
