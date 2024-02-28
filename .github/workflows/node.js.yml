@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      max-parallel: 1
       matrix:
         node-version: [18, 20, 21]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
