@@ -4,5 +4,4 @@
 .gitignore
 coverage
 node_modules
-src
 __tests__

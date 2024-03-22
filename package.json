@@ -34,7 +34,8 @@
     "jsrsasign": "^11.0.0",
     "lodash": "^4.17.11",
     "xml2js": "^0.6.2",
-    "zxing-wasm": "^1.2.3"
+    "zxing-wasm": "^1.2.3",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
@@ -56,8 +57,7 @@
     "randomstring": "^1.1.5",
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "ts-node": "^10.9.2"
   },
   "repository": {
     "type": "git",
