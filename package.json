@@ -1,6 +1,6 @@
 {
   "name": "uic-918-3",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
@@ -8,7 +8,6 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "clean": "rimraf coverage build tmp",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "postinstall": "tsc && node build/src/updateCerts.js",
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -w -p tsconfig.json",
@@ -33,6 +32,7 @@
     "axios": "^1.6.3",
     "jsrsasign": "^11.0.0",
     "lodash": "^4.17.11",
+    "typescript": "^5.3.3",
     "xml2js": "^0.6.2",
     "zxing-wasm": "^1.2.3"
   },
@@ -45,7 +45,6 @@
     "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
-    "coveralls": "^3.1.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "^27.9.0",
@@ -56,8 +55,7 @@
     "randomstring": "^1.1.5",
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "ts-node": "^10.9.2"
   },
   "repository": {
     "type": "git",
