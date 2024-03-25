@@ -3,7 +3,7 @@ import { beforeAll, describe, expect, test } from '@jest/globals';
 import fs, { existsSync } from 'fs';
 import { readBarcode } from '../src/index';
 import { TicketSignatureVerficationStatus } from '../src/check_signature';
-import { filePath, updateLocalCerts } from '../src/updateLocalCerts';
+import { filePath, updateLocalCerts } from '../src/postinstall/updateLocalCerts';
 beforeAll(async () => {
   if (!existsSync(filePath)) {
     await updateLocalCerts();

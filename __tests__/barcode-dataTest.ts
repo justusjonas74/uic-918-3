@@ -5,7 +5,7 @@ import { dummyTicket, dummyTicket2 } from './helper';
 import interpretBarcode, { TicketDataContainer } from '../src/barcode-data';
 import { TicketSignatureVerficationStatus } from '../src/check_signature';
 import { existsSync } from 'fs';
-import { filePath, updateLocalCerts } from '../src/updateLocalCerts';
+import { filePath, updateLocalCerts } from '../src/postinstall/updateLocalCerts';
 beforeAll(async () => {
   if (!existsSync(filePath)) {
     await updateLocalCerts();

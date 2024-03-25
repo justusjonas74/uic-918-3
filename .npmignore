@@ -2,6 +2,7 @@
 .husky
 .vscode
 .gitignore
+src
 coverage
 node_modules
 __tests__

@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeAll } from '@jest/globals';
 import { getCertByID } from '../src/get_certs';
 import { existsSync } from 'fs';
-import { filePath, updateLocalCerts } from '../src/updateLocalCerts';
+import { filePath, updateLocalCerts } from '../src/postinstall/updateLocalCerts';
 
 describe('get_certs.js', () => {
   beforeAll(async () => {

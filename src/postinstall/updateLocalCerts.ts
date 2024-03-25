@@ -1,7 +1,6 @@
 import { dirname, join } from 'path';
 import { readFileSync, writeFileSync } from 'fs';
 import axios from 'axios';
-
 import * as xml2js from 'xml2js';
 
 const parser = new xml2js.Parser();

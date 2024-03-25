@@ -7,11 +7,12 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "clean": "rimraf coverage build tmp",
-    "postinstall": "tsc && node build/src/updateCerts.js",
+    "clean": "rimraf coverage build tmp postinstall",
+    "postinstall": "node postinstall/updateCerts.js",
     "build": "tsc -p tsconfig.json",
+    "build:postinstall": "tsc -p tsconfig.postinstall.json",
     "build:watch": "tsc -w -p tsconfig.json",
-    "build:release": "npm run lint && npm run clean && tsc -p tsconfig.release.json",
+    "build:release": "npm run lint && npm run clean && tsc -p tsconfig.release.json && npm run build:postinstall",
     "lint": "eslint . --ext .ts --ext .mts",
     "prettier": "prettier --config .prettierrc --write .",
     "prepare": "husky"
@@ -32,11 +33,11 @@
     "axios": "^1.6.3",
     "jsrsasign": "^11.0.0",
     "lodash": "^4.17.11",
-    "typescript": "^5.3.3",
     "xml2js": "^0.6.2",
     "zxing-wasm": "^1.2.3"
   },
   "devDependencies": {
+    "typescript": "^5.3.3",
     "@jest/globals": "^29.7.0",
     "@types/jsrsasign": "^10.5.12",
     "@types/lodash": "^4.14.202",

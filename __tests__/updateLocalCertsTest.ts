@@ -3,7 +3,7 @@ import { join } from 'path';
 import { describe, test, beforeAll, expect } from '@jest/globals';
 import { fileName } from '../cert_url.json';
 
-import { updateLocalCerts } from '../src/updateLocalCerts';
+import { updateLocalCerts } from '../src/postinstall/updateLocalCerts';
 
 const filePath = join(__dirname, '../', fileName);
 
