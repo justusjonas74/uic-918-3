@@ -1,7 +1,7 @@
-import { describe, expect, beforeEach, test, jest } from '@jest/globals';
+import { describe, vi, expect, beforeEach, test } from 'vitest';
 
-import { handleError, interpretField, pad, parseContainers, parsingFunction } from '../src/utils';
-import { FieldsType, SupportedTypes } from '../src/FieldsType';
+import { handleError, interpretField, pad, parseContainers, parsingFunction } from '../../src/utils';
+import { FieldsType, SupportedTypes } from '../../src/FieldsType';
 
 describe('utils.js', () => {
   describe('utils.interpretField', () => {
@@ -16,29 +16,6 @@ describe('utils.js', () => {
       const fields: FieldsType[] = [];
       const result = interpretField(data, fields);
       expect(Object.keys(result)).toHaveLength(0);
-    });
-    test('should parse a buffer using a given data field specification', () => {
-      const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21]);
-      const fields: FieldsType[] = [
-        {
-          name: 'TAG',
-          length: 2,
-          interpreterFn: (x) => x.toString('hex')
-        },
-        {
-          name: 'LENGTH',
-          length: 1
-        },
-        {
-          name: 'TEXT',
-          length: undefined,
-          interpreterFn: (x) => x.toString()
-        }
-      ];
-      const result = interpretField(data, fields);
-      expect(result.TAG).toBe('1414');
-      expect(result.LENGTH).toEqual(Buffer.from('06', 'hex'));
-      expect(result.TEXT).toBe('Hello!');
     });
     test('should parse a buffer using a given data field specification', () => {
       const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21]);
@@ -67,7 +44,7 @@ describe('utils.js', () => {
 
   describe('utils.parseContainers', () => {
     let results: SupportedTypes[];
-    beforeEach((done) => {
+    beforeEach(async () => {
       const data = Buffer.from('Test');
       const parsingFunction: parsingFunction = (buf: Buffer) => {
         const firstElement = buf.subarray(0, 1).toString();
@@ -75,7 +52,6 @@ describe('utils.js', () => {
         return [firstElement, secondElement];
       };
       results = parseContainers(data, parsingFunction);
-      done();
     });
     test('should return an array', () => {
       expect(Array.isArray(results)).toBe(true);
@@ -106,7 +82,7 @@ describe('utils.js', () => {
       const throwErrorFunction = (): void => {
         throw new Error('Fatal Error');
       };
-      const logSpy = jest.spyOn(global.console, 'log');
+      const logSpy = vi.spyOn(global.console, 'log');
 
       try {
         throwErrorFunction();

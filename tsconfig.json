@@ -18,7 +18,8 @@
     "resolveJsonModule": true,
     "noImplicitThis": false,
     "strictNullChecks": false,
-    "declaration": true
+    "declaration": true,
+    "isolatedModules": true
   },
-  "include": ["./src/**/*"]
+  "include": ["src", "__tests__"]
 }

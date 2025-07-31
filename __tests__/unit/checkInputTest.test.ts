@@ -1,9 +1,9 @@
-import { describe, expect, test, beforeAll } from '@jest/globals';
+import { describe, expect, test, beforeAll } from 'vitest';
 
 import path from 'path';
 import fs from 'fs';
 
-import { loadFileOrBuffer } from '../src/checkInput';
+import { loadFileOrBuffer } from '../../src/checkInput';
 
 describe('checkInput.js', () => {
   const filePath = {

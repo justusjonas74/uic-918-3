@@ -1,8 +1,8 @@
-import { beforeAll, describe, expect, test } from '@jest/globals';
+import { beforeAll, describe, expect, test } from 'vitest';
 
-import { TicketSignatureVerficationStatus, verifyTicket } from '../src/check_signature';
-import { ParsedUIC918Barcode, TicketDataContainer } from '../src/barcode-data';
-import { updateLocalCerts, filePath } from '../src/postinstall/updateLocalCerts';
+import { TicketSignatureVerficationStatus, verifyTicket } from '../../src/check_signature';
+import { ParsedUIC918Barcode, TicketDataContainer } from '../../src/barcode-data';
+import { updateLocalCerts, filePath } from '../../src/postinstall/updateLocalCerts';
 import { existsSync } from 'node:fs';
 beforeAll(async () => {
   if (!existsSync(filePath)) {

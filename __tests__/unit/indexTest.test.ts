@@ -1,9 +1,9 @@
-import { beforeAll, describe, expect, test } from '@jest/globals';
+import { beforeAll, describe, expect, test } from 'vitest';
 
 import fs, { existsSync } from 'fs';
-import { readBarcode } from '../src/index';
-import { TicketSignatureVerficationStatus } from '../src/check_signature';
-import { filePath, updateLocalCerts } from '../src/postinstall/updateLocalCerts';
+import { readBarcode } from '../../src/index';
+import { TicketSignatureVerficationStatus } from '../../src/check_signature';
+import { filePath, updateLocalCerts } from '../../src/postinstall/updateLocalCerts';
 beforeAll(async () => {
   if (!existsSync(filePath)) {
     await updateLocalCerts();
@@ -13,11 +13,11 @@ beforeAll(async () => {
 describe('index.js', () => {
   describe('index.readBarcode', () => {
     describe('...when inputis a local file', () => {
-      const dummy = '__tests__/images/barcode-dummy2.png';
-      // const dummy3 = '__tests__/images/barcode-dummy3.png'
-      const dummy4 = '__tests__/images/CT-003.png';
+      const dummy = '__tests__/unit/images/barcode-dummy2.png';
+      // const dummy3 = '__tests__/interfacemages/barcode-dummy3.png'
+      const dummy4 = '__tests__/unit/images/CT-003.png';
 
-      const falseDummy = '__tests__/images/barcode dummy.png';
+      const falseDummy = '__tests__/unit/images/barcode dummy.png';
       test('should return an object on sucess', () => {
         return expect(readBarcode(dummy)).toBeInstanceOf(Object);
       });
@@ -32,8 +32,8 @@ describe('index.js', () => {
       });
     });
     describe('...when input is an image buffer', () => {
-      const dummyBuff = fs.readFileSync('__tests__/images/barcode-dummy2.png');
-      const dummy4Buff = fs.readFileSync('__tests__/images/CT-003.png');
+      const dummyBuff = fs.readFileSync('__tests__/unit/images/barcode-dummy2.png');
+      const dummy4Buff = fs.readFileSync('__tests__/unit/images/CT-003.png');
       test('should return an object on sucess', async () => {
         const barcode = await readBarcode(dummyBuff);
         return expect(barcode).toBeInstanceOf(Object);

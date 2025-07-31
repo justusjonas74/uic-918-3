@@ -1,7 +1,7 @@
-import { describe, expect, test, beforeAll } from '@jest/globals';
-import bt from '../src/TicketContainer';
-import { interpretFieldResult } from '../src/utils';
-import { IEFS_DATA, RCT2_BLOCK } from '../src/block-types';
+import { describe, expect, test, beforeAll } from 'vitest';
+import bt from '../../src/TicketContainer';
+import { interpretFieldResult } from '../../src/utils';
+import { IEFS_DATA, RCT2_BLOCK } from '../../src/block-types';
 
 describe('block-types.js', () => {
   test('should return an array', () => {
@@ -64,7 +64,7 @@ describe('block-types.js', () => {
       let res: IEFS_DATA;
       let res2: IEFS_DATA;
       let resDc10: IEFS_DATA;
-      beforeAll((done) => {
+      beforeAll(async () => {
         const fn = bt.find((container) => container.name == '0080VU' && container.version == '01')?.dataFields[4]
           .interpreterFn;
         const testBuf = Buffer.from('130791f0187407d018763821000138221800000000130791f008dc060d18767a131c', 'hex');
@@ -76,7 +76,7 @@ describe('block-types.js', () => {
         res = fn!(testBuf) as IEFS_DATA;
         res2 = fn!(doubleTestBuf) as IEFS_DATA;
         resDc10 = fn!(testBufDc10) as IEFS_DATA;
-        done();
+        // done();
       });
       test('should return an object', () => {
         expect(res).toBeInstanceOf(Object);
