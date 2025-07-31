@@ -15,7 +15,7 @@ describe('index.js', () => {
     describe('...when inputis a local file', () => {
       const dummy = '__tests__/unit/images/barcode-dummy2.png';
       // const dummy3 = '__tests__/interfacemages/barcode-dummy3.png'
-      const dummy4 = '__tests__/unit/images/CT-003.png';
+      const dummy4 = '__tests__/unit/images/DTicket_1080_007.PNG';
 
       const falseDummy = '__tests__/unit/images/barcode dummy.png';
       test('should return an object on sucess', () => {
