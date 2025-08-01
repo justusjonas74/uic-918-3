@@ -24,8 +24,7 @@
     "build:watch": "tsc -w -p tsconfig.json",
     "build:release": "npm run lint && npm run clean && tsc -p tsconfig.release.json && npm run build:postinstall",
     "lint": "eslint .",
-    "prettier": "prettier --config .prettierrc --write .",
-    "prepare": "husky"
+    "prettier": "prettier --config .prettierrc --write ."
   },
   "author": "Francis Doege",
   "contributors": [
@@ -61,7 +60,6 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.1.3",
     "globals": "^16.3.0",
-    "husky": "^9.0.11",
     "prettier": "^3.2.5",
     "randomstring": "^1.1.5",
     "rimraf": "^6.0.1",
