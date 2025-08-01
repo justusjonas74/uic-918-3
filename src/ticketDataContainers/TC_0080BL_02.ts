@@ -1,5 +1,5 @@
-import { TicketContainerType } from '../TicketContainer';
-import { STRING, auftraegeSBlocksV2 } from '../block-types';
+import { TicketContainerType } from '../TicketContainer.js';
+import { STRING, auftraegeSBlocksV2 } from '../block-types.js';
 
 const TC_0080BL_02: TicketContainerType = {
   name: '0080BL',

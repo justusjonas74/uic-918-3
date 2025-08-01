@@ -1,7 +1,7 @@
 import { describe, vi, expect, beforeEach, test } from 'vitest';
 
-import { handleError, interpretField, pad, parseContainers, parsingFunction } from '../../src/utils';
-import { FieldsType, SupportedTypes } from '../../src/FieldsType';
+import { handleError, interpretField, pad, parseContainers, parsingFunction } from '../../src/utils.js';
+import { FieldsType, SupportedTypes } from '../../src/FieldsType.js';
 
 describe('utils.js', () => {
   describe('utils.interpretField', () => {

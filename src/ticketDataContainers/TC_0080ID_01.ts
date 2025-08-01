@@ -1,5 +1,5 @@
-import { TicketContainerType } from '../TicketContainer';
-import { AUSWEIS_TYP, STRING } from '../block-types';
+import { TicketContainerType } from '../TicketContainer.js';
+import { AUSWEIS_TYP, STRING } from '../block-types.js';
 
 const TC_0080ID_01: TicketContainerType = {
   name: '0080ID',

@@ -1,6 +1,6 @@
-import { TicketDataContainer } from './barcode-data';
-import { DC_LISTE_TYPE, RCT2_BLOCK } from './block-types';
-import { interpretFieldResult } from './utils';
+import { TicketDataContainer } from './barcode-data.js';
+import { DC_LISTE_TYPE, RCT2_BLOCK } from './block-types.js';
+import { interpretFieldResult } from './utils.js';
 
 export type SupportedTypes =
   | Date

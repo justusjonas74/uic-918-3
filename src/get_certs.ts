@@ -5,9 +5,9 @@ const { readFile } = promises;
 
 import { find } from 'lodash';
 
-import { fileName } from '../cert_url.json';
+import cert_url from '../cert_url.json';
 const basePath = dirname(require.resolve('../cert_url.json'));
-const filePath = join(basePath, fileName);
+const filePath = join(basePath, cert_url.fileName);
 
 export interface UICKeys {
   keys: Keys;

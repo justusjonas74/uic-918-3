@@ -1,5 +1,5 @@
-import { TicketContainerType } from '../TicketContainer';
-import { RCT2_BLOCKS, STRING, STR_INT } from '../block-types';
+import { TicketContainerType } from '../TicketContainer.js';
+import { RCT2_BLOCKS, STRING, STR_INT } from '../block-types.js';
 
 const TC_U_TLAY_01: TicketContainerType = {
   name: 'U_TLAY',

@@ -1,6 +1,6 @@
-import { ZXing } from './barcode-reader';
-import interpretBarcode, { ParsedUIC918Barcode } from './barcode-data';
-import { loadFileOrBuffer } from './checkInput';
+import { ZXing } from './barcode-reader.js';
+import interpretBarcode, { ParsedUIC918Barcode } from './barcode-data.js';
+import { loadFileOrBuffer } from './checkInput.js';
 
 type ReadBarcodeOptions = {
   verifySignature?: boolean;
@@ -21,4 +21,4 @@ export const readBarcode = async function (
   return ticket;
 };
 
-export { default as interpretBarcode } from './barcode-data';
+export { default as interpretBarcode } from './barcode-data.js';

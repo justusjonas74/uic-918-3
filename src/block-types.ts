@@ -1,13 +1,13 @@
-import { id_types, sBlockTypes, orgid, efm_produkt, tarifpunkt, EFM_Produkt } from './enums';
+import { id_types, sBlockTypes, orgid, efm_produkt, tarifpunkt, EFM_Produkt } from './enums.js';
 
-import { FieldsType, InterpreterFunctionType } from './FieldsType';
+import { FieldsType, InterpreterFunctionType } from './FieldsType.js';
 import {
   interpretField,
   interpretFieldResult as InterpretFieldResult,
   pad,
   parseContainers,
   parsingFunction
-} from './utils';
+} from './utils.js';
 
 // ################
 // DATA TYPES

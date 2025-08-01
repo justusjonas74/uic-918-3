@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { ZXing } from '../../src/barcode-reader';
+import { ZXing } from '../../src/barcode-reader.js';
 
 import { describe, expect, test } from 'vitest';
 

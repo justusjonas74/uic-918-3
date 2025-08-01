@@ -3,7 +3,16 @@
   "version": "1.0.5",
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "build/src/index.js",
+  "type": "module",
   "types": "build/src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/src/index.js"
+    }
+  },
+  "bin": {
+    "uic918": "./build/src/cli.js"
+  },
   "scripts": {
     "clean": "rimraf coverage build tmp postinstall",
     "test": "vitest run unit --config __tests__/vitest.config.ts",

@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeAll } from 'vitest';
-import { getCertByID } from '../../src/get_certs';
+import { getCertByID } from '../../src/get_certs.js';
 import { existsSync } from 'fs';
-import { filePath, updateLocalCerts } from '../../src/postinstall/updateLocalCerts';
+import { filePath, updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
 
 describe('get_certs.js', () => {
   beforeAll(async () => {

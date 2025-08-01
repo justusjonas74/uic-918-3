@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { efm_produkt, id_types, sBlockTypes, orgid, tarifpunkt } from '../../src/enums';
+import { efm_produkt, id_types, sBlockTypes, orgid, tarifpunkt } from '../../src/enums.js';
 
 describe('enums.sBlockTypes', () => {
   test('should return an instance of enum', () => {

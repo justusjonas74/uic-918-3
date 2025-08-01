@@ -1,7 +1,7 @@
 import { describe, expect, test, beforeAll } from 'vitest';
-import bt from '../../src/TicketContainer';
-import { interpretFieldResult } from '../../src/utils';
-import { IEFS_DATA, RCT2_BLOCK } from '../../src/block-types';
+import bt from '../../src/TicketContainer.js';
+import { interpretFieldResult } from '../../src/utils.js';
+import { IEFS_DATA, RCT2_BLOCK } from '../../src/block-types.js';
 
 describe('block-types.js', () => {
   test('should return an array', () => {

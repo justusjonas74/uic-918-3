@@ -1,2 +1,2 @@
-import { updateLocalCerts } from './updateLocalCerts';
+import { updateLocalCerts } from './updateLocalCerts.js';
 updateLocalCerts();

@@ -1,9 +1,9 @@
 import { beforeAll, describe, expect, test } from 'vitest';
 
 import fs, { existsSync } from 'fs';
-import { readBarcode } from '../../src/index';
-import { TicketSignatureVerficationStatus } from '../../src/check_signature';
-import { filePath, updateLocalCerts } from '../../src/postinstall/updateLocalCerts';
+import { readBarcode } from '../../src/index.js';
+import { TicketSignatureVerficationStatus } from '../../src/check_signature.js';
+import { filePath, updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
 beforeAll(async () => {
   if (!existsSync(filePath)) {
     await updateLocalCerts();

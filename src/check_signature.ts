@@ -1,7 +1,7 @@
-import * as rs from 'jsrsasign';
+import rs from 'jsrsasign';
 
-import { Key, getCertByID } from './get_certs';
-import { BarcodeHeader, ParsedUIC918Barcode } from './barcode-data';
+import { Key, getCertByID } from './get_certs.js';
+import { BarcodeHeader, ParsedUIC918Barcode } from './barcode-data.js';
 
 function checkSignature(
   certPEM: rs.RSAKey | rs.KJUR.crypto.DSA | rs.KJUR.crypto.ECDSA,

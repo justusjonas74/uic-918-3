@@ -1,5 +1,5 @@
-import { TicketContainerType } from '../TicketContainer';
-import { INT, EFS_DATA } from '../block-types';
+import { TicketContainerType } from '../TicketContainer.js';
+import { INT, EFS_DATA } from '../block-types.js';
 
 const TC_0080VU_01: TicketContainerType = {
   name: '0080VU',

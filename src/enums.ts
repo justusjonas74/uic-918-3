@@ -1,4 +1,4 @@
-import KA_DATA from './ka-data';
+import KA_DATA from './ka-data.js';
 
 export const orgid = (orgId: number): string => {
   return KA_DATA.org_id[orgId] || orgId.toString();

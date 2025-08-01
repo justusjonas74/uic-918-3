@@ -1,5 +1,5 @@
-import { TicketContainerType } from '../TicketContainer';
-import { DB_DATETIME, HEX, STRING } from '../block-types';
+import { TicketContainerType } from '../TicketContainer.js';
+import { DB_DATETIME, HEX, STRING } from '../block-types.js';
 
 const TC_U_HEAD_01: TicketContainerType = {
   name: 'U_HEAD',

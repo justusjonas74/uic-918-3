@@ -1,11 +1,11 @@
 import { existsSync, unlinkSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { describe, test, beforeAll, expect } from 'vitest';
-import { fileName } from '../../cert_url.json';
+import cert_url from '../../cert_url.json';
 
-import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts';
+import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
 
-const filePath = join(__dirname, '../../', fileName);
+const filePath = join(__dirname, '../../', cert_url.fileName);
 
 describe('updateLocalCerts', () => {
   beforeAll(() => {

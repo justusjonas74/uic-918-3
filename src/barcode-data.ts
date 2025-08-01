@@ -1,9 +1,9 @@
 import { unzipSync } from 'zlib';
 
-import TicketContainer, { TicketContainerType } from './TicketContainer';
-import { interpretField, interpretFieldResult, parseContainers, parsingFunction } from './utils';
-import { SupportedTypes } from './FieldsType';
-import { verifyTicket, TicketSignatureVerficationStatus } from './check_signature';
+import TicketContainer, { TicketContainerType } from './TicketContainer.js';
+import { interpretField, interpretFieldResult, parseContainers, parsingFunction } from './utils.js';
+import { SupportedTypes } from './FieldsType.js';
+import { verifyTicket, TicketSignatureVerficationStatus } from './check_signature.js';
 
 // Get raw data and uncompress the TicketData
 function getVersion(data: Buffer): number {

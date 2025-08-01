@@ -1,13 +1,13 @@
-import { FieldsType } from './FieldsType';
+import { FieldsType } from './FieldsType.js';
 
-import TC_U_HEAD_01 from './ticketDataContainers/TC_U_HEAD_01';
-import TC_0080VU_01 from './ticketDataContainers/TC_0080VU_01';
-import TC_1180AI_01 from './ticketDataContainers/TC_1180AI_01';
-import TC_0080BL_02 from './ticketDataContainers/TC_0080BL_02';
-import TC_0080BL_03 from './ticketDataContainers/TC_0080BL_03';
-import TC_0080ID_01 from './ticketDataContainers/TC_0080ID_01';
-import TC_0080ID_02 from './ticketDataContainers/TC_0080ID_02';
-import TC_U_TLAY_01 from './ticketDataContainers/TC_U_TLAY_01';
+import TC_U_HEAD_01 from './ticketDataContainers/TC_U_HEAD_01.js';
+import TC_0080VU_01 from './ticketDataContainers/TC_0080VU_01.js';
+import TC_1180AI_01 from './ticketDataContainers/TC_1180AI_01.js';
+import TC_0080BL_02 from './ticketDataContainers/TC_0080BL_02.js';
+import TC_0080BL_03 from './ticketDataContainers/TC_0080BL_03.js';
+import TC_0080ID_01 from './ticketDataContainers/TC_0080ID_01.js';
+import TC_0080ID_02 from './ticketDataContainers/TC_0080ID_02.js';
+import TC_U_TLAY_01 from './ticketDataContainers/TC_U_TLAY_01.js';
 
 type TicketContainerTypeVersions = '01' | '02' | '03';
 

@@ -1,4 +1,4 @@
-import { FieldsType, SupportedTypes } from './FieldsType';
+import { FieldsType, SupportedTypes } from './FieldsType.js';
 
 export type interpretFieldResult = { [index: string]: SupportedTypes };
 
