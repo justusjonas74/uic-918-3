@@ -33,7 +33,7 @@ describe('index.js', () => {
     });
     describe('...when input is an image buffer', () => {
       const dummyBuff = fs.readFileSync('__tests__/unit/images/barcode-dummy2.png');
-      const dummy4Buff = fs.readFileSync('__tests__/unit/images/CT-003.png');
+      const dummy4Buff = fs.readFileSync('__tests__/unit/images/DTicket_1080_007.PNG');
       test('should return an object on sucess', async () => {
         const barcode = await readBarcode(dummyBuff);
         return expect(barcode).toBeInstanceOf(Object);
