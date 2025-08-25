@@ -1,13 +1,18 @@
 import { describe, beforeAll, test, expect } from 'vitest';
 import { dummyTicket, dummyTicket2 } from './helper.js';
 
-import interpretBarcode, * as barcodeData from '../../src/barcode-data.js';
+import interpretBarcode, * as barcodeData from '../../src/barcode-data.js'
 import { TicketSignatureVerficationStatus } from '../../src/check_signature.js';
 import { existsSync } from 'fs';
-import { filePath, updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
+import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
+
+
 beforeAll(async () => {
-  if (!existsSync(filePath)) {
-    await updateLocalCerts();
+  // Check if file ./../../keys.json is available, if not, update the local certs.
+  if (existsSync('./../../keys.json')) {
+    console.log('Local certs already available.');
+  } else {
+    updateLocalCerts();
   }
 });
 describe('barcode-data', () => {

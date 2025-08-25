@@ -22,8 +22,5 @@ describe('get_certs.js', () => {
     test('should return undefined if key not found', async () => {
       await expect(getCertByID(1, 1)).resolves.toBeUndefined();
     });
-    test('should return undefined if key file not found', async () => {
-      await expect(getCertByID(1, 1, 'foot.txt')).resolves.toBeUndefined();
-    });
   });
 });

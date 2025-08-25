@@ -1,13 +1,19 @@
-import { dirname, join } from 'path';
-import { readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
+import { writeFileSync } from 'fs';
 import axios from 'axios';
 import * as xml2js from 'xml2js';
 
 const parser = new xml2js.Parser();
 
-const { url, fileName } = JSON.parse(readFileSync('./cert_url.json', 'utf8'));
-const basePath = dirname('./cert_url.json');
-export const filePath = join(basePath, fileName);
+export const url = "https://railpublickey.uic.org/download.php"
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export const filePath = join(__dirname, "../../keys.json");
 
 export const updateLocalCerts = async (): Promise<void> => {
   try {

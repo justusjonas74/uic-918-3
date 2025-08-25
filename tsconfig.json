@@ -1,8 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-    "types": ["node", "@types/emscripten"],
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "types": [
+      "node",
+      "@types/emscripten"
+    ],
     "module": "node16",
     "moduleResolution": "node16",
     "allowSyntheticDefaultImports": true,
@@ -23,5 +29,8 @@
     "declaration": true,
     "isolatedModules": true
   },
-  "include": ["src", "__tests__"]
+  "include": [
+    "src",
+    "__tests__"
+  ],
 }

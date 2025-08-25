@@ -1,13 +1,13 @@
-import { PathLike, promises } from 'fs';
+import { promises } from 'fs';
+import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
+import { fileName } from './certs_url.js';
 const { readFile } = promises;
 
-import { find } from 'lodash';
+import pkg from 'lodash';
+const { find } = pkg;
 
-import cert_url from '../cert_url.json';
-const basePath = dirname(require.resolve('../cert_url.json'));
-const filePath = join(basePath, cert_url.fileName);
 
 export interface UICKeys {
   keys: Keys;
@@ -43,7 +43,10 @@ export enum BarcodeXSD {
   String = 'String'
 }
 
-const openLocalFiles = async (filePath: PathLike): Promise<UICKeys> => {
+const loadKeysFromKeyJSONFile = async (): Promise<UICKeys> => {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const filePath = join(__dirname, '../', fileName);
   try {
     const file = await readFile(filePath, 'utf8');
     const uicKey = JSON.parse(file);
@@ -65,9 +68,9 @@ const selectCert = (keys: UICKeys, ricsCode: number, keyId: number): Key | undef
   return cert;
 };
 
-export const getCertByID = async (orgId: number, keyId: number, path: string = filePath): Promise<Key | undefined> => {
+export const getCertByID = async (orgId: number, keyId: number): Promise<Key | undefined> => {
   try {
-    const keys = await openLocalFiles(path);
+    const keys = await loadKeysFromKeyJSONFile();
     return selectCert(keys, orgId, keyId);
   } catch (error) {
     console.log(error);
