@@ -32,10 +32,10 @@ program
 program.command('image')
   .description('Parse an image file (png, jpeg, ...)')
   .argument('<pathToFile>', 'path of image file(s) to parse')
-  .option('-s, --signature', 'verify the barcode signature')
+  .option('-s, --verifySignature', 'verify the barcode signature')
   .action((pathToFile, options) => {
     drawIntro();
-    const verifySignature = options.signature
+    const verifySignature = options.verifySignature
     const opts = verifySignature ? { verifySignature: true } : {}
     interpretBarcode(pathToFile, opts);
   })

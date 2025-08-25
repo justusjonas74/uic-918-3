@@ -14,7 +14,11 @@ A Node.js package written in Typescript for decoding and parsing barcodes accord
 To install the latest released version:
 
 ```bash
+# Install as a dependency
 npm install uic-918-3
+
+# Install as a CLI tool
+npm install -g uic-918-3
 ```
 
 Or checkout the master branch on GitHub:
@@ -25,7 +29,17 @@ cd uic-918-3
 npm install
 ```
 
-## Usage
+## Usage (CLI)
+
+```bash
+# Parse a ticket barcode from an image file:
+uic918 image path/to/your/file.png
+
+# To check the signature included in the ticket barcode:
+uic918 image --verifySignature path/to/your/file.png
+```
+
+## Usage (Library)
 
 ```javascript
 import { readBarcode } from 'uic-918-3';
