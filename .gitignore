@@ -3,6 +3,7 @@ samples/
 keys.json
 .DS_Store
 build/
+postinstall/
 
 # https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore
 # Logs
