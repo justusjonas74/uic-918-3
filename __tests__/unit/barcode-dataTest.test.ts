@@ -12,7 +12,8 @@ beforeAll(async () => {
   if (existsSync('./../../keys.json')) {
     console.log('Local certs already available.');
   } else {
-    updateLocalCerts();
+    console.log('Local certs not available, updating now...');
+    await updateLocalCerts();
   }
 });
 describe('barcode-data', () => {
