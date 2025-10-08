@@ -12,7 +12,7 @@ describe('updateLocalCerts', () => {
     }
   });
   test('should create a not empty file', async () => {
-    await updateLocalCerts();
+    await updateLocalCerts(filePath);
     expect(existsSync(filePath)).toBeTruthy();
     expect(readFileSync(filePath).length).toBeGreaterThan(0);
   }, 120000);

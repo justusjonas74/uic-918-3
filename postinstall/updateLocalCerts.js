@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-export const filePath = join(__dirname, "../../keys.json");
+export const filePath = join(__dirname, "../keys.json");
 export const updateLocalCerts = async () => {
     try {
         console.log(`Load public keys from ${url} ...`);

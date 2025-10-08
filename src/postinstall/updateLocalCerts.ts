@@ -13,10 +13,11 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export const filePath = join(__dirname, "../../keys.json");
+export const filePath = join(__dirname, "../keys.json");
 
-export const updateLocalCerts = async (): Promise<void> => {
+export const updateLocalCerts = async (customFilePath?: string): Promise<void> => {
   try {
+    const updatedFilePath = customFilePath || filePath;
     console.log(`Load public keys from ${url} ...`);
     const response = await axios.get(url);
     if (response && response.status == 200) {
@@ -24,7 +25,7 @@ export const updateLocalCerts = async (): Promise<void> => {
     }
     parser.parseString(response.data, function (err, result) {
       if (!err) {
-        writeFileSync(filePath, JSON.stringify(result));
+        writeFileSync(updatedFilePath, JSON.stringify(result));
         console.log(`Loaded ${result.keys.key.length} public keys and saved under "${filePath}".`);
       } else {
         console.log(err);
