@@ -3,13 +3,16 @@ import { beforeAll, describe, expect, test } from 'vitest';
 import fs, { existsSync } from 'fs';
 import { readBarcode } from '../../src/index.js';
 import { TicketSignatureVerficationStatus } from '../../src/check_signature.js';
-import { filePath, updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
+import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
+
+import { join } from 'path';
+
+const filePath = join(__dirname, '../../keys.json');
 beforeAll(async () => {
   if (!existsSync(filePath)) {
-    await updateLocalCerts();
+    await updateLocalCerts(filePath);
   }
 });
-
 describe('index.js', () => {
   describe('index.readBarcode', () => {
     describe('...when inputis a local file', () => {

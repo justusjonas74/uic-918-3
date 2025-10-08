@@ -1,12 +1,15 @@
 import { describe, test, expect, beforeAll } from 'vitest';
 import { getCertByID } from '../../src/get_certs.js';
 import { existsSync } from 'fs';
-import { filePath, updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
+import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
+import { join } from 'path';
 
 describe('get_certs.js', () => {
+
+  const filePath = join(__dirname, '../../keys.json');
   beforeAll(async () => {
     if (!existsSync(filePath)) {
-      await updateLocalCerts();
+      await updateLocalCerts(filePath);
     }
   });
   describe('getCertByID', () => {
