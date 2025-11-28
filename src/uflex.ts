@@ -12,7 +12,11 @@ import type {
 
 type JsonRecord = Record<string, unknown>;
 
-type EmscriptenCwrap = (ident: string, returnType: string | null, argTypes: string[]) => (...args: number[]) => number;
+type EmscriptenCwrap = (
+  ident: string,
+  returnType: string | null,
+  argTypes: string[]
+) => ((...args: number[]) => number) | ((...args: number[]) => void);
 
 type UFlexModule = {
   cwrap: EmscriptenCwrap;
@@ -140,9 +144,12 @@ async function loadModule(): Promise<UFlexModule> {
 }
 
 function createDecoder(module: UFlexModule): WasmDecoder {
-  const decode = module.cwrap('decode_uflex', 'number', ['number', 'number']);
-  const readError = module.cwrap('uflex_last_error', 'number', []);
-  const release = module.cwrap('free_buffer', null, ['number']);
+  const decode = module.cwrap('decode_uflex', 'number', ['number', 'number']) as (
+    pointer: number,
+    length: number
+  ) => number;
+  const readError = module.cwrap('uflex_last_error', 'number', []) as () => number;
+  const release = module.cwrap('free_buffer', null, ['number']) as (pointer: number) => void;
   return { decode, readError, release };
 }
 
