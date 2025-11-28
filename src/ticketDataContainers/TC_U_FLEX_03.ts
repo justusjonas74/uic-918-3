@@ -3,8 +3,8 @@ import { parseUFLEX } from '../uflex.js';
 // import { RCT2_BLOCKS, STRING, STR_INT } from '../block-types.js';
 
 const TC_U_FLEX_03: TicketContainerType = {
-  name: 'U_TLAY',
-  version: '01',
+  name: 'U_FLEX',
+  version: '03',
   dataFields: [
     {
       name: 'FCB_Container',
