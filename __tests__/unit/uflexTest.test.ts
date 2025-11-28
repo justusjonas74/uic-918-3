@@ -74,14 +74,21 @@ function createMemory(): Memory {
     writeString,
     readString,
     allocateString,
-    setError: (value: string) => {
+    setError: (value: string): void => {
       errorPtr = allocateString(value);
     },
-    getErrorPtr: () => errorPtr
+    getErrorPtr: (): number => errorPtr
   };
 }
 
-function createMockModule(payload: string, options?: ModuleOptions) {
+function createMockModule(payload: string, options?: ModuleOptions): {
+  cwrap: (ident: string) => (() => number) | ((ptr: number) => void) | (() => number);
+  lengthBytesUTF8: (value: string) => number;
+  stringToUTF8: (value: string, ptr: number, max: number) => void;
+  UTF8ToString: (ptr: number) => string;
+  _malloc: (size: number) => number;
+  _free: (ptr: number) => void;
+} {
   const memory = createMemory();
 
   const decodeImpl = (): number => {
@@ -99,7 +106,7 @@ function createMockModule(payload: string, options?: ModuleOptions) {
   };
 
   return {
-    cwrap: (ident: string) => {
+    cwrap: (ident: string): (() => number) | ((ptr: number) => void) | (() => number) => {
       if (ident === 'decode_uflex') {
         return decodeImpl;
       }
@@ -111,11 +118,11 @@ function createMockModule(payload: string, options?: ModuleOptions) {
       }
       throw new Error(`Unbekannte Funktion ${ident}`);
     },
-    lengthBytesUTF8: (value: string) => encoder.encode(value).length,
-    stringToUTF8: (value: string, ptr: number, max: number) => memory.writeString(value, ptr, max),
-    UTF8ToString: (ptr: number) => memory.readString(ptr),
-    _malloc: (size: number) => memory.malloc(size),
-    _free: (ptr: number) => memory.free(ptr)
+    lengthBytesUTF8: (value: string): number => encoder.encode(value).length,
+    stringToUTF8: (value: string, ptr: number, max: number): void => memory.writeString(value, ptr, max),
+    UTF8ToString: (ptr: number): string => memory.readString(ptr),
+    _malloc: (size: number): number => memory.malloc(size),
+    _free: (ptr: number): void => memory.free(ptr)
   };
 }
 

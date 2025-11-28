@@ -9,7 +9,7 @@ import tseslint from 'typescript-eslint';
 // You should change it to your needs following the documentation.
 export default tseslint.config(
   {
-    ignores: ['postinstall/', '**/build/**', '**/tmp/**', '**/coverage/**']
+    ignores: ['postinstall/', '**/build/**', '**/tmp/**', '**/coverage/**', 'wasm/**']
   },
   eslint.configs.recommended,
   eslintConfigPrettier,
