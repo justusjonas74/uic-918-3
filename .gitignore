@@ -4,6 +4,7 @@ keys.json
 .DS_Store
 build/
 postinstall/
+native/u_flex/*.asn
 
 # https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore
 # Logs

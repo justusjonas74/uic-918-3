@@ -82,6 +82,31 @@ The returning object consists of (among other things) one or more `TicketDataCon
 - `**0080BL**` A specific container on tickets from Deutsche Bahn. Consists of all relevant information which will be used for proof-of-payment checks on the train.
 - `**0080VU**` A specific container on (some) tickets from Deutsche Bahn. This container is used on products, which are also accepted by other carriers, especially (local) public transport companies. Get more information about this container [here](https://www.bahn.de/vdv-barcode).
 
+### U_FLEX via WebAssembly
+
+Experimental support for the new U_FLEX container is provided through a WebAssembly decoder that is generated from the official ASN.1 schema. The workflow is:
+
+1. Install the native toolchain once on your machine (tested with `asn1c >= 0.9.29`, `emscripten >= 3.1`). On macOS that could look like:
+   ```bash
+   brew install asn1c emscripten
+   ```
+2. Build the decoder artifacts (downloads the schema if necessary, runs `asn1c`, and compiles the C bridge with Emscripten):
+   ```bash
+   npm run build:uflex-wasm
+   ```
+   The resulting `wasm/u_flex_decoder.{js,wasm}` files are bundled automatically with the npm package.
+3. Use the high-level API:
+   ```ts
+   import { parseUFLEX, type UFLEXTicket } from 'uic-918-3';
+
+   const ticket: UFLEXTicket = await parseUFLEX(hexPayloadFromBarcode);
+   console.log(ticket.issuingDetail.issuingYear, ticket.travelerDetail?.traveler?.length);
+   ```
+
+The native decoder serializes the ASN.1 structure as canonical XER (XML), so even ältere `asn1c`-Versionen ohne JER-Unterstützung funktionieren. `parseUFLEX` nutzt `xml2js`, wandelt den XML-String in ein typsicheres `UFLEXTicket`-Objekt und erledigt alle notwendigen Typkonvertierungen (Zahlen, Booleans, Arrays) automatisch.
+
+If the WASM artifacts are missing, `parseUFLEX` throws an actionable error instructing you to run the build step. The decoded structure is strongly typed via the `UFLEXTicket` interface so you can rely on `issuingDetail`, traveler metadata, and transport documents being available in a predictable shape.
+
 ## Optimize your files
 
 Actually the barcode reader is very dump, so the ticket you want to read, should be optimised before using this package. A better reading logic will be added in future versions.

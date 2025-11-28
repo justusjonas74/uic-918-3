@@ -61,17 +61,29 @@ export class TicketDataContainer {
   version: string;
   length: number;
   container_data: Buffer | interpretFieldResult;
+  private _data: Buffer;
+  private _initialized: boolean = false;
+
   constructor(data: Buffer) {
     this.id = data.subarray(0, 6).toString();
     this.version = data.subarray(6, 8).toString();
     this.length = parseInt(data.subarray(8, 12).toString(), 10);
-    this.container_data = TicketDataContainer.parseFields(this.id, this.version, data.subarray(12, data.length));
+    this._data = data.subarray(12, data.length);
+    this.container_data = this._data;
   }
 
-  static parseFields(id: string, version: string, data: Buffer): Buffer | interpretFieldResult {
+  async initialize(): Promise<void> {
+    if (this._initialized) {
+      return;
+    }
+    this.container_data = await TicketDataContainer.parseFields(this.id, this.version, this._data);
+    this._initialized = true;
+  }
+
+  static async parseFields(id: string, version: string, data: Buffer): Promise<Buffer | interpretFieldResult> {
     const fields = getBlockTypeFieldsByIdAndVersion(id, version);
     if (fields) {
-      return interpretField(data, fields.dataFields);
+      return await interpretField(data, fields.dataFields);
     } else {
       console.log(`ALERT: Container with id ${id} and version ${version} isn't implemented for TicketContainer ${id}.`);
       return data;
@@ -105,6 +117,14 @@ async function parseBarcodeData(data: Buffer, verifySignature: boolean = false):
   const ticketDataRaw = getTicketDataRaw(data, version);
   const ticketDataUncompressed = getTicketDataUncompressed(ticketDataRaw);
   const ticketContainers = parseContainers(ticketDataUncompressed, interpretTicketContainer);
+  
+  // Initialize all TicketDataContainer instances
+  for (const container of ticketContainers) {
+    if (container instanceof TicketDataContainer) {
+      await container.initialize();
+    }
+  }
+  
   const ticket: ParsedUIC918Barcode = {
     version,
     header: getHeader(data),
