@@ -32,7 +32,7 @@ jobs:
         uses: pyodide/setup-emsdk@v15
         with:
           version: 'latest'
-          actions-cache-folder: '~/.emscripten-cache-node-${{ matrix.node-version }}'
+          actions-cache-folder: 'emscripten-cache-node-${{ matrix.node-version }}'
       - run: npm ci
       - name: Build WASM files
         run: npm run build:uflex-wasm || echo "WASM build failed, continuing with tests (may use mocks)"
