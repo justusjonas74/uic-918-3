@@ -22,9 +22,9 @@
     "build": "tsc -p tsconfig.json",
     "build:postinstall": "tsc -p tsconfig.postinstall.json",
     "build:watch": "tsc -w -p tsconfig.json",
-    "build:release": "npm run lint && npm run clean && tsc -p tsconfig.release.json && npm run build:postinstall",
+    "build:release": "npm run lint && npm run clean && npm run build:uflex-wasm && tsc -p tsconfig.release.json && npm run build:postinstall",
     "build:uflex-wasm": "bash ./native/u_flex/build-wasm.sh",
-    "prepublishOnly": "npm run build:release && npm run build:uflex-wasm",
+    "prepublishOnly": "npm run build:release",
     "lint": "eslint .",
     "prettier": "prettier --config .prettierrc --write ."
   },
