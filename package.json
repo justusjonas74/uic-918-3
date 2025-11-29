@@ -31,7 +31,7 @@
   "files": [
     "build",
     "wasm",
-    "native/u_flex"
+    "postinstall"
   ],
   "author": "Francis Doege",
   "contributors": [
