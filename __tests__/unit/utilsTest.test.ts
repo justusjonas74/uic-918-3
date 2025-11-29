@@ -5,19 +5,19 @@ import { FieldsType, SupportedTypes } from '../../src/FieldsType.js';
 
 describe('utils.js', () => {
   describe('utils.interpretField', () => {
-    test('should return an object', () => {
+    test('should return an object', async () => {
       const data = Buffer.from('Test');
       const fields: FieldsType[] = [];
-      const result = interpretField(data, fields);
+      const result = await interpretField(data, fields);
       expect(result).toBeInstanceOf(Object);
     });
-    test('should return an empty object if fields is an empty arry', () => {
+    test('should return an empty object if fields is an empty arry', async () => {
       const data = Buffer.from('Test');
       const fields: FieldsType[] = [];
-      const result = interpretField(data, fields);
+      const result = await interpretField(data, fields);
       expect(Object.keys(result)).toHaveLength(0);
     });
-    test('should parse a buffer using a given data field specification', () => {
+    test('should parse a buffer using a given data field specification', async () => {
       const data = Buffer.from([0x14, 0x14, 0x06, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21]);
       const fields: FieldsType[] = [
         {
@@ -35,7 +35,7 @@ describe('utils.js', () => {
           interpreterFn: (x: Buffer) => x.toString()
         }
       ];
-      const result = interpretField(data, fields);
+      const result = await interpretField(data, fields);
       expect(result.TAG).toBe('1414');
       expect(result.LENGTH).toEqual(Buffer.from('06', 'hex'));
       expect(result.TEXT).toBe('Hello!');

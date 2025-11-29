@@ -22,3 +22,6 @@ export const readBarcode = async function (
 };
 
 export { default as interpretBarcode } from './barcode-data.js';
+export { parseUFLEX } from './uflex.js';
+export type { UFLEXTicket } from './types/UFLEXTicket.js';
+export type { ParsedUIC918Barcode } from './barcode-data.js';

@@ -19,11 +19,11 @@ export const STR_INT: InterpreterFunctionType<number> = (x: Buffer) => parseInt(
 export const INT: InterpreterFunctionType<number> = (x: Buffer) => x.readUIntBE(0, x.length);
 export const DB_DATETIME: InterpreterFunctionType<Date> = (x: Buffer) => {
   // DDMMYYYYHHMM
-  const day = STR_INT(x.subarray(0, 2));
-  const month = STR_INT(x.subarray(2, 4)) - 1;
-  const year = STR_INT(x.subarray(4, 8));
-  const hour = STR_INT(x.subarray(8, 10));
-  const minute = STR_INT(x.subarray(10, 12));
+  const day = STR_INT(x.subarray(0, 2)) as number;
+  const month = (STR_INT(x.subarray(2, 4)) as number) - 1;
+  const year = STR_INT(x.subarray(4, 8)) as number;
+  const hour = STR_INT(x.subarray(8, 10)) as number;
+  const minute = STR_INT(x.subarray(10, 12)) as number;
   return new Date(year, month, day, hour, minute);
 };
 const KA_DATETIME: InterpreterFunctionType<Date> = (x: Buffer) => {
@@ -39,17 +39,17 @@ const KA_DATETIME: InterpreterFunctionType<Date> = (x: Buffer) => {
 };
 
 const ORG_ID = (x: Buffer): string => {
-  const id = INT(x);
+  const id = INT(x) as number;
   return orgid(id);
 };
 
 const EFM_PRODUKT = (x: Buffer): EFM_Produkt => {
-  const orgId = INT(x.subarray(2, 4));
-  const produktNr = INT(x.subarray(0, 2));
+  const orgId = INT(x.subarray(2, 4)) as number;
+  const produktNr = INT(x.subarray(0, 2)) as number;
   return efm_produkt(orgId, produktNr);
 };
 export const AUSWEIS_TYP = (x: Buffer): string => {
-  const number = STR_INT(x);
+  const number = STR_INT(x) as number;
   return id_types[number];
 };
 
@@ -62,10 +62,10 @@ export interface DC_LISTE_TYPE {
 }
 
 const DC_LISTE = (x: Buffer): DC_LISTE_TYPE => {
-  const tagName = HEX(x.subarray(0, 1));
-  const dc_length = INT(x.subarray(1, 2));
-  const typ_DC = HEX(x.subarray(2, 3));
-  const pv_org_id = INT(x.subarray(3, 5));
+  const tagName = HEX(x.subarray(0, 1)) as string;
+  const dc_length = INT(x.subarray(1, 2)) as number;
+  const typ_DC = HEX(x.subarray(2, 3)) as string;
+  const pv_org_id = INT(x.subarray(3, 5)) as number;
   const TP_RAW = splitDCList(dc_length, typ_DC, x.subarray(5, x.length));
   const TP = TP_RAW.map((item) => tarifpunkt(pv_org_id, item));
   return { tagName, dc_length, typ_DC, pv_org_id, TP };
@@ -120,8 +120,8 @@ const EFS_FIELDS: FieldsType[] = [
 ];
 
 export type IEFS_DATA = Record<number, InterpretFieldResult>;
-export const EFS_DATA = (x: Buffer): IEFS_DATA => {
-  const lengthListDC = INT(x.subarray(25, 26));
+export const EFS_DATA = async (x: Buffer): Promise<IEFS_DATA> => {
+  const lengthListDC = INT(x.subarray(25, 26)) as number;
 
   const t = [x.subarray(0, lengthListDC + 26)];
 
@@ -129,9 +129,10 @@ export const EFS_DATA = (x: Buffer): IEFS_DATA => {
     t.push(x.subarray(lengthListDC + 26, x.length));
   }
   const res: IEFS_DATA = {};
-  t.forEach((ticket, index) => {
-    res[1 + index] = interpretField(ticket, EFS_FIELDS);
-  });
+  for (let index = 0; index < t.length; index++) {
+    const ticket = t[index];
+    res[1 + index] = await interpretField(ticket, EFS_FIELDS);
+  }
   return res;
 };
 
@@ -145,9 +146,9 @@ function splitDCList(dcLength: number, typDC: string, data: Buffer): number[] {
     SEP = 3;
   }
   const amount = (dcLength - 3) / SEP;
-  const res = [];
+  const res: number[] = [];
   for (let i = 0; i < amount; i++) {
-    res.push(INT(data.subarray(i * SEP, i * SEP + SEP)));
+    res.push(INT(data.subarray(i * SEP, i * SEP + SEP)) as number);
   }
   return res;
 }
@@ -240,22 +241,22 @@ const interpretSingleSBlock: parsingFunction = (data: Buffer): [Record<string, s
   return [res, rem];
 };
 
-export const auftraegeSBlocksV2 = (x: Buffer): InterpretFieldResult => {
+export const auftraegeSBlocksV2 = async (x: Buffer): Promise<InterpretFieldResult> => {
   const A_LENGTH = 11 + 11 + 8 + 8 + 8;
-  return auftraegeSblocks(x, A_LENGTH, A_BLOCK_FIELDS_V2);
+  return await auftraegeSblocks(x, A_LENGTH, A_BLOCK_FIELDS_V2);
 };
 
-export const auftraegeSBlocksV3 = (x: Buffer): InterpretFieldResult => {
+export const auftraegeSBlocksV3 = async (x: Buffer): Promise<InterpretFieldResult> => {
   const A_LENGTH = 10 + 8 + 8;
-  return auftraegeSblocks(x, A_LENGTH, A_BLOCK_FIELDS_V3);
+  return await auftraegeSblocks(x, A_LENGTH, A_BLOCK_FIELDS_V3);
 };
 
-function auftraegeSblocks(x: Buffer, A_LENGTH: number, fields: FieldsType[]): InterpretFieldResult {
+async function auftraegeSblocks(x: Buffer, A_LENGTH: number, fields: FieldsType[]): Promise<InterpretFieldResult> {
   const res: InterpretFieldResult = {};
   res.auftrag_count = parseInt(x.subarray(0, 1).toString(), 10);
   for (let i = 0; i < res.auftrag_count; i++) {
     const bez = `auftrag_${i + 1}`;
-    res[bez] = interpretField(x.subarray(1 + i * A_LENGTH, (i + 1) * A_LENGTH + 1), fields);
+    res[bez] = await interpretField(x.subarray(1 + i * A_LENGTH, (i + 1) * A_LENGTH + 1), fields);
   }
   res.sblock_amount = parseInt(
     x.subarray(A_LENGTH * res.auftrag_count + 1, A_LENGTH * res.auftrag_count + 3).toString(),

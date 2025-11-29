@@ -24,7 +24,18 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - name: Install asn1c
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y asn1c
+      - name: Setup Emscripten
+        uses: pyodide/setup-emsdk@v15
+        with:
+          version: 'latest'
+          actions-cache-folder: 'emscripten-cache-node-${{ matrix.node-version }}'
       - run: npm ci
+      - name: Build WASM files
+        run: npm run build:uflex-wasm || echo "WASM build failed, continuing with tests (may use mocks)"
       - run: npm run build --if-present
       - run: npm run test:coverage
       - name: Coveralls

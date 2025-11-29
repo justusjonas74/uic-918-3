@@ -1,6 +1,6 @@
 {
   "name": "uic-918-3",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Package for decoding and parsing barcodes according to UIC-918.3 specification, which are used commonly on public transport online tickets.",
   "main": "./build/index.js",
   "type": "module",
@@ -23,9 +23,16 @@
     "build:postinstall": "tsc -p tsconfig.postinstall.json",
     "build:watch": "tsc -w -p tsconfig.json",
     "build:release": "npm run lint && npm run clean && tsc -p tsconfig.release.json && npm run build:postinstall",
+    "build:uflex-wasm": "bash ./native/u_flex/build-wasm.sh",
+    "prepublishOnly": "npm run build:release && npm run build:uflex-wasm",
     "lint": "eslint .",
     "prettier": "prettier --config .prettierrc --write ."
   },
+  "files": [
+    "build",
+    "wasm",
+    "native/u_flex"
+  ],
   "author": "Francis Doege",
   "contributors": [
     {

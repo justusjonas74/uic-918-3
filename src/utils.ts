@@ -2,21 +2,23 @@ import { FieldsType, SupportedTypes } from './FieldsType.js';
 
 export type interpretFieldResult = { [index: string]: SupportedTypes };
 
-export function interpretField(data: Buffer, fields: FieldsType[]): interpretFieldResult {
+export async function interpretField(data: Buffer, fields: FieldsType[]): Promise<interpretFieldResult> {
   let remainder = data;
   const res: interpretFieldResult = {};
-  fields.forEach((field) => {
+  for (const field of fields) {
     const { name, interpreterFn, length } = field;
     const interpreterFnDefault = (x: Buffer): Buffer => x;
     const interpretFunction = interpreterFn || interpreterFnDefault;
 
     if (length) {
-      res[name] = interpretFunction(remainder.subarray(0, length));
+      const result = interpretFunction(remainder.subarray(0, length));
+      res[name] = result instanceof Promise ? await result : result;
       remainder = remainder.subarray(length);
     } else {
-      res[name] = interpretFunction(remainder);
+      const result = interpretFunction(remainder);
+      res[name] = result instanceof Promise ? await result : result;
     }
-  });
+  }
   return res;
 }
 
