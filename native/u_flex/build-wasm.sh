@@ -94,8 +94,15 @@ echo "Kompiliere WASM mit Emscripten…"
 emcc \
   -I. \
   -s ALLOW_MEMORY_GROWTH=1 \
+  -s MODULARIZE=1 \
+  -s EXPORT_ES6=1 \
+  -s USE_ES6_IMPORT_META=1 \
+  -s ENVIRONMENT='web,node,worker' \
   -s EXPORTED_FUNCTIONS='["_decode_uflex","_free_buffer","_uflex_last_error","_malloc","_free"]' \
   -s EXPORTED_RUNTIME_METHODS='["cwrap","lengthBytesUTF8","stringToUTF8","UTF8ToString"]' \
+  -s WASM_ASYNC_COMPILATION=1 \
+  -s SINGLE_FILE=0 \
+  --no-entry \
   decoder.c decoder_xer.c ${SRC_FILES} \
   -o u_flex_decoder.js
 

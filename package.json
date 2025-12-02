@@ -7,8 +7,14 @@
   "types": "./build/index.d.ts",
   "exports": {
     ".": {
-      "import": "./build/index.js"
-    }
+      "import": "./build/index.js",
+      "types": "./build/index.d.ts"
+    },
+    "./wasm/u_flex_decoder.js": {
+      "import": "./wasm/u_flex_decoder.js",
+      "types": "./wasm/u_flex_decoder.d.ts"
+    },
+    "./wasm/*.wasm": "./wasm/*.wasm"
   },
   "bin": {
     "uic918": "./build/cli.js"

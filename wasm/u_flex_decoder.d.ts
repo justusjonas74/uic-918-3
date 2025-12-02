@@ -1,4 +1,8 @@
-type EmscriptenCwrap = (ident: string, returnType: string | null, argTypes: string[]) => (...args: number[]) => number;
+type EmscriptenCwrap = (
+  ident: string,
+  returnType: string | null,
+  argTypes: string[]
+) => ((...args: number[]) => number) | ((...args: number[]) => void);
 
 type UFlexModule = {
   cwrap: EmscriptenCwrap;
@@ -9,7 +13,12 @@ type UFlexModule = {
   _free: (ptr: number) => void;
 };
 
-declare const factory: (opts?: Record<string, unknown>) => Promise<UFlexModule>;
+type ModuleOptions = {
+  locateFile?: (path: string, scriptDirectory?: string) => string;
+  [key: string]: unknown;
+};
+
+declare const factory: (opts?: ModuleOptions) => Promise<UFlexModule>;
 
 export default factory;
 

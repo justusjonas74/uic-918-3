@@ -33,7 +33,10 @@ type WasmDecoder = {
   release: (pointer: number) => void;
 };
 
-type ModuleFactory = () => Promise<UFlexModule>;
+type ModuleFactory = (opts?: {
+  locateFile?: (path: string, scriptDirectory?: string) => string;
+  [key: string]: unknown;
+}) => Promise<UFlexModule>;
 
 let modulePromise: Promise<UFlexModule> | null = null;
 let moduleFactoryOverride: ModuleFactory | null = null;
@@ -43,95 +46,76 @@ export function __setUFlexModuleFactory(factory: ModuleFactory | null): void {
   modulePromise = null;
 }
 
+function getWasmPath(): string {
+  // Versuche den WASM-Pfad zu bestimmen
+  try {
+    const wasmUrl = new URL('../wasm/u_flex_decoder.wasm', import.meta.url);
+
+    // In Browser-Umgebungen verwenden wir die href (URL)
+    const isBrowser = typeof window !== 'undefined';
+    const isWorker = typeof globalThis !== 'undefined' && 'importScripts' in globalThis;
+
+    if (isBrowser || isWorker) {
+      return wasmUrl.href;
+    }
+
+    // In Node.js verwenden wir den Dateipfad
+    // Für file:// URLs extrahieren wir den Pfad
+    if (wasmUrl.protocol === 'file:') {
+      return wasmUrl.pathname;
+    }
+
+    return wasmUrl.href;
+  } catch {
+    // Fallback: Relativer Pfad (Bundler sollten dies auflösen)
+    return '../wasm/u_flex_decoder.wasm';
+  }
+}
+
 async function resolveFactory(): Promise<ModuleFactory> {
   if (moduleFactoryOverride) {
     return moduleFactoryOverride;
   }
 
-  // Das WASM-Modul wurde nicht im MODULARIZE-Modus kompiliert,
-  // daher exportiert es das Module-Objekt direkt
-  // Versuche es als ES-Modul zu importieren
-  let wasmModule: unknown;
+  // Das WASM-Modul wurde im MODULARIZE-Modus kompiliert,
+  // daher exportiert es eine Factory-Funktion
+  let factoryModule: unknown;
+
   try {
-    const factoryModule = await import('../wasm/u_flex_decoder.js');
-    // Das Modul könnte als default export, named export oder direktes Objekt exportiert werden
-    wasmModule = factoryModule?.default ?? factoryModule;
+    factoryModule = await import('../wasm/u_flex_decoder.js');
   } catch (error) {
-    // Falls der Import fehlschlägt, versuche es als CommonJS-Modul zu laden
-    try {
-      const { createRequire } = await import('module');
-      const require = createRequire(import.meta.url);
-      wasmModule = require('../wasm/u_flex_decoder.js');
-    } catch {
-      throw new Error(
-        `WASM-Decoder-Datei konnte nicht geladen werden: ${(error as Error).message}. Bitte "npm run build:uflex-wasm" ausführen.`
-      );
-    }
+    throw new Error(
+      `WASM-Decoder-Datei konnte nicht geladen werden: ${(error as Error).message}. Bitte "npm run build:uflex-wasm" ausführen.`
+    );
   }
 
-  // Das Modul exportiert das Module-Objekt direkt
-  // Wir müssen es in eine Factory-Funktion wrappen
-  if (!wasmModule || typeof wasmModule !== 'object') {
-    throw new Error('WASM-Decoder-Datei wurde nicht gebaut. Bitte "npm run build:uflex-wasm" ausführen.');
+  // Mit MODULARIZE und EXPORT_ES6 wird das Modul als default export exportiert
+  const factory = ((factoryModule as { default?: unknown })?.default ?? factoryModule) as ModuleFactory;
+
+  if (typeof factory !== 'function') {
+    throw new Error(
+      'WASM-Modul wurde nicht im modularen Format kompiliert. Bitte "npm run build:uflex-wasm" ausführen, um das Modul mit MODULARIZE=1 neu zu bauen.'
+    );
   }
 
-  // Das Module-Objekt wird asynchron initialisiert
-  // Wir wrappen es in eine Factory-Funktion, die auf die Initialisierung wartet
-  return async () => {
-    const module = wasmModule as {
-      cwrap?: unknown;
-      onRuntimeInitialized?: () => void;
-      calledRun?: boolean;
+  // Wrappe die Factory, um automatisch den WASM-Pfad zu konfigurieren
+  return async (opts?: Parameters<ModuleFactory>[0]): Promise<UFlexModule> => {
+    const wasmPath = getWasmPath();
+    const moduleOptions = {
+      locateFile: (path: string): string => {
+        if (path.endsWith('.wasm')) {
+          return wasmPath;
+        }
+        // Falls eine benutzerdefinierte locateFile-Funktion bereitgestellt wurde
+        if (opts?.locateFile) {
+          return opts.locateFile(path);
+        }
+        return path;
+      },
+      ...opts
     };
 
-    // Da das Modul beim Import sofort initialisiert wird (createWasm() und run() werden sofort aufgerufen),
-    // müssen wir sicherstellen, dass onRuntimeInitialized aufgerufen wurde
-    return new Promise<UFlexModule>((resolve, reject) => {
-      let resolved = false;
-      const timeout = setTimeout(() => {
-        if (!resolved) {
-          resolved = true;
-          reject(new Error('WASM-Modul-Initialisierung hat zu lange gedauert.'));
-        }
-      }, 5000); // 5 Sekunden Timeout
-
-      // Prüfe, ob run() bereits aufgerufen wurde (calledRun ist gesetzt)
-      // und ob onRuntimeInitialized bereits aufgerufen wurde
-      const isAlreadyInitialized = module.calledRun === true && typeof module.cwrap === 'function';
-
-      if (isAlreadyInitialized) {
-        // Modul ist bereits initialisiert
-        resolved = true;
-        clearTimeout(timeout);
-        // Kurze Verzögerung, um sicherzustellen, dass alles bereit ist
-        setTimeout(() => {
-          resolve(module as UFlexModule);
-        }, 50);
-        return;
-      }
-
-      // Setze onRuntimeInitialized Callback
-      const originalCallback = module.onRuntimeInitialized;
-      module.onRuntimeInitialized = (): void => {
-        // Rufe den ursprünglichen Callback auf
-        if (originalCallback) {
-          try {
-            originalCallback();
-          } catch {
-            // Ignoriere Fehler im ursprünglichen Callback
-          }
-        }
-
-        // Warte kurz, um sicherzustellen, dass alles initialisiert ist
-        setTimeout(() => {
-          if (!resolved && typeof module.cwrap === 'function') {
-            resolved = true;
-            clearTimeout(timeout);
-            resolve(module as UFlexModule);
-          }
-        }, 50);
-      };
-    });
+    return factory(moduleOptions);
   };
 }
 
