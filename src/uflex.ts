@@ -1,4 +1,5 @@
 import { parseStringPromise } from 'xml2js';
+import { fileURLToPath } from 'url';
 
 import type {
   ControlDetail,
@@ -56,13 +57,14 @@ function getWasmPath(): string {
     const isWorker = typeof globalThis !== 'undefined' && 'importScripts' in globalThis;
 
     if (isBrowser || isWorker) {
+      // VITE transformiert import.meta.url - die URL sollte bereits korrekt sein
       return wasmUrl.href;
     }
 
     // In Node.js verwenden wir den Dateipfad
     // Für file:// URLs extrahieren wir den Pfad
     if (wasmUrl.protocol === 'file:') {
-      return wasmUrl.pathname;
+      return fileURLToPath(wasmUrl);
     }
 
     return wasmUrl.href;

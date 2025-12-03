@@ -102,6 +102,8 @@ emcc \
   -s EXPORTED_RUNTIME_METHODS='["cwrap","lengthBytesUTF8","stringToUTF8","UTF8ToString"]' \
   -s WASM_ASYNC_COMPILATION=1 \
   -s SINGLE_FILE=0 \
+  -s EXPORT_NAME='Module' \
+  -s ASSERTIONS=0 \
   --no-entry \
   decoder.c decoder_xer.c ${SRC_FILES} \
   -o u_flex_decoder.js
