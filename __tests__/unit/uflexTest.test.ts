@@ -167,7 +167,7 @@ describe('parseUFLEX', () => {
     `;
 
     const module = createMockModule(xmlPayload);
-    __setUFlexModuleFactory(() => Promise.resolve(module));
+    __setUFlexModuleFactory(async () => Promise.resolve(module));
 
     const result = await parseUFLEX('0011');
 
@@ -179,7 +179,7 @@ describe('parseUFLEX', () => {
 
   test('reicht Fehlermeldungen aus dem Decoder durch', async () => {
     const module = createMockModule('{}', { fail: true, error: 'kaputt' });
-    __setUFlexModuleFactory(() => Promise.resolve(module));
+    __setUFlexModuleFactory(async () => Promise.resolve(module));
 
     await expect(parseUFLEX('FFEEDD')).rejects.toThrow(/kaputt/);
   });
