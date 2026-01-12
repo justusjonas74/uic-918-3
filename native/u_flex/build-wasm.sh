@@ -73,11 +73,11 @@ rm -f "${BUILD_DIR}"/*-sample.c "${BUILD_DIR}"/*-example.c "${BUILD_DIR}"/conver
 support_sources=("${SUPPORT_DIR}"/*.c)
 support_headers=("${SUPPORT_DIR}"/*.h)
 
-if compgen -G "${SUPPORT_DIR}/*.c" > /dev/null; then
+if compgen -G "${SUPPORT_DIR}/*.c" >/dev/null; then
   cp "${support_sources[@]}" "${BUILD_DIR}"
 fi
 
-if compgen -G "${SUPPORT_DIR}/*.h" > /dev/null; then
+if compgen -G "${SUPPORT_DIR}/*.h" >/dev/null; then
   cp "${support_headers[@]}" "${BUILD_DIR}"
 fi
 
@@ -86,20 +86,29 @@ rm -f "${BUILD_DIR}"/*-sample.c "${BUILD_DIR}"/*-example.c "${BUILD_DIR}"/conver
 
 rm -f "${BUILD_DIR}/decoder_json.c" "${BUILD_DIR}/decoder_json.h"
 
-pushd "${BUILD_DIR}" > /dev/null
+pushd "${BUILD_DIR}" >/dev/null
 
 SRC_FILES=$(find . -maxdepth 1 -name '*.c' ! -name 'decoder.c' ! -name 'decoder_xer.c' -print | tr '\n' ' ')
 
 echo "Kompiliere WASM mit Emscripten…"
+
 emcc \
   -I. \
   -s ALLOW_MEMORY_GROWTH=1 \
+  -s MODULARIZE=1 \
+  -s EXPORT_ES6=1 \
+  -s USE_ES6_IMPORT_META=1 \
+  -s ENVIRONMENT='web,node,worker' \
   -s EXPORTED_FUNCTIONS='["_decode_uflex","_free_buffer","_uflex_last_error","_malloc","_free"]' \
   -s EXPORTED_RUNTIME_METHODS='["cwrap","lengthBytesUTF8","stringToUTF8","UTF8ToString"]' \
+  -s WASM_ASYNC_COMPILATION=1 \
+  -s SINGLE_FILE=0 \
+  -s EXPORT_NAME='Module' \
+  -s ASSERTIONS=0 \
+  --no-entry \
   decoder.c decoder_xer.c ${SRC_FILES} \
   -o u_flex_decoder.js
-
-popd > /dev/null
+popd >/dev/null
 
 mv "${BUILD_DIR}/u_flex_decoder.js" "${DIST_DIR}/u_flex_decoder.js"
 mv "${BUILD_DIR}/u_flex_decoder.wasm" "${DIST_DIR}/u_flex_decoder.wasm"
