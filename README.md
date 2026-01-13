@@ -86,6 +86,40 @@ The returning object consists of (among other things) one or more `TicketDataCon
 
 Experimental support for the new U_FLEX container is provided through a WebAssembly decoder that is generated from the official ASN.1 schema. The workflow is:
 
+#### VITE/React Integration
+
+This package is optimized for VITE and modern bundlers. The WASM module is built with:
+- `MODULARIZE=1` - Factory function for better bundler integration
+- `EXPORT_ES6=1` - ES6 module exports
+- Multi-environment support (web, node, worker)
+
+**For VITE projects:**
+
+1. Install the package:
+   ```bash
+   npm install uic-918-3
+   ```
+
+2. The package automatically handles WASM file paths in VITE. No additional configuration needed!
+
+3. Use it in your React/VITE app:
+   ```tsx
+   import { parseUFLEX } from 'uic-918-3';
+   
+   // The WASM module will be automatically loaded and initialized
+   const ticket = await parseUFLEX(hexString);
+   ```
+
+**If you encounter issues with WASM loading in VITE:**
+
+- The package uses `import.meta.url` for path resolution, which VITE transforms correctly during build
+- WASM files are automatically copied to the dist directory during build
+- If needed, you can manually configure the WASM path using the `__setUFlexModuleFactory` function
+
+#### Building the WASM Module
+
+To build the WASM module from source:
+
 1. Install the native toolchain once on your machine (tested with `asn1c >= 0.9.29`, `emscripten >= 3.1`). On macOS that could look like:
    ```bash
    brew install asn1c emscripten
