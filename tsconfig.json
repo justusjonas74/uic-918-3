@@ -9,8 +9,8 @@
       "node",
       "@types/emscripten"
     ],
-    "module": "node16",
-    "moduleResolution": "node16",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "outDir": "./build",
     "esModuleInterop": true,

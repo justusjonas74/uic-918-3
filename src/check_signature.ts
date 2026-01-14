@@ -17,7 +17,7 @@ function checkSignature(
 
 async function getCertByHeader(header: BarcodeHeader): Promise<Key | undefined> {
   const orgId = parseInt(header.rics.toString(), 10);
-  const keyId = parseInt(header.key_id.toString(), 10);
+  const keyId = String(Number(header.key_id.toString()));
   const cert = await getCertByID(orgId, keyId);
   return cert;
 }
