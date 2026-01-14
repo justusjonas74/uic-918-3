@@ -103,7 +103,7 @@ Experimental support for the new U_FLEX container is provided through a WebAssem
    console.log(ticket.issuingDetail.issuingYear, ticket.travelerDetail?.traveler?.length);
    ```
 
-The native decoder serializes the ASN.1 structure as canonical XER (XML), so even ältere `asn1c`-Versionen ohne JER-Unterstützung funktionieren. `parseUFLEX` nutzt `xml2js`, wandelt den XML-String in ein typsicheres `UFLEXTicket`-Objekt und erledigt alle notwendigen Typkonvertierungen (Zahlen, Booleans, Arrays) automatisch.
+The native decoder serializes the ASN.1 structure as canonical XER (XML), so even older `asn1c` versions without JER support will work. `parseUFLEX` uses `xml2js`, converts the XML string into a type-safe `UFLEXTicket` object, and automatically handles all necessary type conversions (numbers, booleans, arrays).
 
 If the WASM artifacts are missing, `parseUFLEX` throws an actionable error instructing you to run the build step. The decoded structure is strongly typed via the `UFLEXTicket` interface so you can rely on `issuingDetail`, traveler metadata, and transport documents being available in a predictable shape.
 
