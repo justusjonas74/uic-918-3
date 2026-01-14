@@ -56,10 +56,10 @@ const loadKeysFromKeyJSONFile = async (): Promise<UICKeys> => {
   }
 };
 
-const selectCert = (keys: UICKeys, ricsCode: number, keyId: number): Key | undefined => {
+const selectCert = (keys: UICKeys, ricsCode: number, keyId: string): Key | undefined => {
   const searchPattern = {
     issuerCode: [ricsCode.toString()],
-    id: [keyId.toString()]
+    id: [keyId]
   };
   const cert = find<Key>(keys.keys.key, searchPattern);
   if (!cert) {
@@ -68,10 +68,11 @@ const selectCert = (keys: UICKeys, ricsCode: number, keyId: number): Key | undef
   return cert;
 };
 
-export const getCertByID = async (orgId: number, keyId: number): Promise<Key | undefined> => {
+export const getCertByID = async (orgId: number, keyId: string): Promise<Key | undefined> => {
   try {
     const keys = await loadKeysFromKeyJSONFile();
-    return selectCert(keys, orgId, keyId);
+    const cert = selectCert(keys, orgId, keyId);
+    return cert
   } catch (error) {
     console.log(error);
     return undefined;
