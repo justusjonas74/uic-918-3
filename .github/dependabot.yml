@@ -1,0 +1,22 @@
+version: 2
+  
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"                # adjust if needed
+    schedule:
+      interval: "weekly"          # or "monthly"
+
+    # Ignore major updates
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+    # Group all minor & patch updates into one PR
+    groups:
+      all-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
