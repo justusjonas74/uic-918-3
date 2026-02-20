@@ -1,24 +1,16 @@
 {
-    "name": "Node.js with asn1c and Emscripten",
-    "image": "mcr.microsoft.com/devcontainers/javascript-node:20-ubuntu",
-    "features": {
-        "ghcr.io/devcontainers/features/github-cli:1": {},
-        "ghcr.io/devcontainers/features/nix:1": {
-            "version": "nix-2.18"
-        }
-    },
-    "postCreateCommand": "bash .devcontainer/setup.sh",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "ms-vscode.vscode-typescript-next",
-                "dbaeumer.vscode-eslint"
-            ]
-        }
-    },
-    "forwardPorts": [
-        3000,
-        8000,
-        8080
-    ]
+  "name": "node-asn1c-emscripten",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.cpptools"
+      ]
+    }
+  },
+  "postCreateCommand": "node -v && npm -v && asn1c -h && emcc -v"
 }
