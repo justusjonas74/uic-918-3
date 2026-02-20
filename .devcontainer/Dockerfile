@@ -25,3 +25,7 @@ ENV PATH="$EMSDK:$EMSDK/upstream/emscripten:$PATH"
 
 # Source emsdk environment automatically
 RUN echo 'source /opt/emsdk/emsdk_env.sh > /dev/null 2>&1' >> /etc/bash.bashrc
+
+# Setup
+RUN npm install
+RUN npm run build:uflex-wasm
