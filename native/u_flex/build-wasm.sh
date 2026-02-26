@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SCHEMA_URL="https://raw.githubusercontent.com/UnionInternationalCheminsdeFer/UIC-barcode/refs/heads/master/misc/uicRailTicketData_v3.0.5.asn"
+# SCHEMA_URL="https://raw.githubusercontent.com/UnionInternationalCheminsdeFer/UIC-barcode/refs/heads/master/misc/uicRailTicketData_v3.0.5.asn"
+SCHEMA_URL="https://raw.githubusercontent.com/UnionInternationalCheminsdeFer/UIC-barcode/refs/heads/master/asn-specs/uicRailTicketData_v3.0.5.asn"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 WORK_DIR="${ROOT_DIR}/native/u_flex"
