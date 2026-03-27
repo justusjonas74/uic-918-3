@@ -69,12 +69,10 @@ describe('index.js', () => {
         const uflexContainer = barcode.ticketContainers.find(
           (container: unknown) =>
             container instanceof TicketDataContainer && container.id === 'U_FLEX' && container.version === '03'
-        );
-        expect(uflexContainer).toBeDefined();
-        if (uflexContainer instanceof TicketDataContainer) {
-          expect(uflexContainer.id).toBe('U_FLEX');
-          expect(uflexContainer.version).toBe('03');
-        }
+        ) as TicketDataContainer;
+        expect(uflexContainer).toBeInstanceOf(TicketDataContainer);
+        expect(uflexContainer.id).toBe('U_FLEX');
+        expect(uflexContainer.version).toBe('03');
       });
 
       test('should have container data in U_FLEX container', async () => {
@@ -84,15 +82,11 @@ describe('index.js', () => {
             container instanceof TicketDataContainer && container.id === 'U_FLEX' && container.version === '03'
         ) as TicketDataContainer | undefined;
         expect(uflexContainer).toBeDefined();
-        if (uflexContainer) {
-          // Da TC_U_FLEX_03 falsch konfiguriert ist (name='U_TLAY' statt 'U_FLEX'),
-          // wird container_data als Buffer zurückgegeben, nicht als interpretiertes Objekt
-          expect(uflexContainer.container_data).toBeDefined();
-          // container_data sollte ein Buffer sein, wenn der Container nicht richtig geparst wird
-          if (uflexContainer.container_data instanceof Buffer) {
-            expect(uflexContainer.container_data.length).toBeGreaterThan(0);
-          }
-        }
+        expect(uflexContainer?.container_data).toBeDefined();
+
+        const data = uflexContainer?.container_data;
+        const hasData = data instanceof Buffer ? data.length > 0 : Object.keys(data as object).length > 0;
+        expect(hasData).toBe(true);
       });
 
       test('should parse barcode header correctly', async () => {
@@ -139,12 +133,13 @@ describe('index.js', () => {
             container instanceof TicketDataContainer && container.id === 'U_FLEX' && container.version === '03'
         ) as TicketDataContainer | undefined;
         expect(uflexContainer).toBeDefined();
-        if (uflexContainer && uflexContainer.container_data instanceof Buffer) {
-          // Der Container enthält rohe Hex-Daten, die manuell mit parseUFLEX geparst werden können
-          const hexData = uflexContainer.container_data.toString('hex');
-          expect(hexData.length).toBeGreaterThan(0);
-          // Diese Daten könnten mit parseUFLEX geparst werden, wenn der Container richtig konfiguriert wäre
-        }
+
+        const data = uflexContainer?.container_data;
+        expect(data).toBeDefined();
+        // Der Container enthält rohe Hex-Daten, die manuell mit parseUFLEX geparst werden können
+        // oder ist bereits geparst, wenn der Container richtig konfiguriert ist
+        const length = data instanceof Buffer ? data.length : Object.keys(data as object).length;
+        expect(length).toBeGreaterThan(0);
       });
     });
   });

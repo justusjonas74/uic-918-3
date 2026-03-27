@@ -373,9 +373,9 @@ describe('parseUFLEX', () => {
       await expect(parseUFLEX('INVALID')).rejects.toThrow(/UPER-Dekodierung fehlgeschlagen/);
     });
 
-    test.skip('kann den Testdatensatz mit echtem WASM-Decoder parsen (wenn verfügbar)', async () => {
+    test.todo('kann den Testdatensatz mit echtem WASM-Decoder parsen (wenn verfügbar)', async () => {
       // Dieser Test wird übersprungen, da er den echten WASM-Decoder benötigt
-      // Um ihn zu aktivieren, entferne .skip und stelle sicher, dass der WASM-Decoder gebaut wurde
+      // Um ihn zu aktivieren, entferne .todo und stelle sicher, dass der WASM-Decoder gebaut wurde
       // Setze Factory zurück, um echten Decoder zu verwenden
       __setUFlexModuleFactory(null);
 
@@ -389,15 +389,10 @@ describe('parseUFLEX', () => {
         expect(result.raw).toBeDefined();
 
         // Wenn TravelerDetail vorhanden ist, sollte es Maximilian Mustermann enthalten
-        if (result.travelerDetail?.traveler?.[0]) {
-          const traveler = result.travelerDetail.traveler[0];
-          if (traveler.firstName) {
-            expect(traveler.firstName).toContain('Maximilian');
-          }
-          if (traveler.lastName) {
-            expect(traveler.lastName).toContain('Mustermann');
-          }
-        }
+        const traveler = result.travelerDetail?.traveler?.[0];
+        expect(traveler).toBeDefined();
+        expect(traveler?.firstName).toContain('Maximilian');
+        expect(traveler?.lastName).toContain('Mustermann');
       } catch (error) {
         const errorMessage = (error as Error).message;
         // Wenn WASM-Decoder nicht verfügbar ist oder ein anderer Fehler auftritt, wird dieser Test übersprungen
