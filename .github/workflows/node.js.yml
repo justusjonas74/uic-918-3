@@ -59,7 +59,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Build WASM files
         run: pnpm run build:uflex-wasm || echo "WASM build failed, continuing with tests (may use mocks)"
-      - run: pnpm run build --if-present
+      - run: pnpm run --if-present build
       - run: pnpm run test:coverage
       - name: Coveralls
         uses: coverallsapp/github-action@v2
