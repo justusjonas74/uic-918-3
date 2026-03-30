@@ -26,7 +26,10 @@ Or checkout the master branch on GitHub:
 ```bash
 git clone https://github.com/justusjonas74/uic-918-3.git
 cd uic-918-3
-npm install
+
+# If you have Nix and direnv installed, the environment will be set up automatically.
+# Otherwise, ensure you have node, pnpm, emscripten, and asn1c installed.
+pnpm install
 ```
 
 ## Usage (CLI)
@@ -92,7 +95,7 @@ Experimental support for the new U_FLEX container is provided through a WebAssem
    ```
 2. Build the decoder artifacts (downloads the schema if necessary, runs `asn1c`, and compiles the C bridge with Emscripten):
    ```bash
-   npm run build:uflex-wasm
+   pnpm run build:uflex-wasm
    ```
    The resulting `wasm/u_flex_decoder.{js,wasm}` files are bundled automatically with the npm package.
 3. Use the high-level API:
