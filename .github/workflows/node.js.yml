@@ -5,11 +5,30 @@ name: Node.js CI
 
 on:
   push:
-    branches: ['master', 'main']
+    branches: [ "master", "main" ]
   pull_request:
+    branches: [ "master", "main" ]
 
 jobs:
-  build:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm run lint
+
+  build-and-test:
+    needs: lint
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,11 +38,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: 'pnpm'
       - name: Install asn1c
         run: |
           sudo apt-get update
@@ -33,11 +56,11 @@ jobs:
         with:
           version: 'latest'
           actions-cache-folder: 'emscripten-cache-node-${{ matrix.node-version }}'
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
       - name: Build WASM files
-        run: npm run build:uflex-wasm || echo "WASM build failed, continuing with tests (may use mocks)"
-      - run: npm run build --if-present
-      - run: npm run test:coverage
+        run: pnpm run build:uflex-wasm || echo "WASM build failed, continuing with tests (may use mocks)"
+      - run: pnpm run --if-present build
+      - run: pnpm run test:coverage
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         with:
@@ -45,7 +68,7 @@ jobs:
           parallel: true
 
   finish:
-    needs: build
+    needs: build-and-test
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
@@ -53,4 +76,4 @@ jobs:
         uses: coverallsapp/github-action@v2
         with:
           parallel-finished: true
-          carryforward: 'node-20.x,node-22.x,node-24.x'
+          carryforward: 'node-20,node-22,node-24'

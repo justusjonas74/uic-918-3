@@ -1,3 +1,6 @@
+# Nix/direnv
+.direnv/
+
 # CUSTOM
 samples/
 keys.json
