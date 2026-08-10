@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, test } from 'vitest';
 
-import { TicketSignatureVerficationStatus, verifyTicket } from '../../src/check_signature.js';
+import { TicketSignatureVerficationStatus, verifyTicket, mapSignatureAlgorithm } from '../../src/check_signature.js';
 import { ParsedUIC918Barcode, TicketDataContainer } from '../../src/barcode-data.js';
 import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
 import { existsSync } from 'node:fs';
@@ -80,6 +80,37 @@ describe('check_signature.js', () => {
         ticketDataUncompressed: Buffer.from('')
       };
       return expect(verifyTicket(ticket)).resolves.toBe(TicketSignatureVerficationStatus.NOPUBLICKEY);
+    });
+  });
+
+  describe('mapSignatureAlgorithm()', () => {
+    test('should map SHA256withDSA correctly', () => {
+      expect(mapSignatureAlgorithm('SHA256withDSA')).toBe('SHA256withDSA');
+      expect(mapSignatureAlgorithm('SHA256withDSA(2048,256)')).toBe('SHA256withDSA');
+    });
+
+    test('should map SHA1withDSA correctly', () => {
+      expect(mapSignatureAlgorithm('SHA1withDSA')).toBe('SHA1withDSA');
+      expect(mapSignatureAlgorithm('SHA1withDSA(1024,160)')).toBe('SHA1withDSA');
+      expect(mapSignatureAlgorithm('SHA1-DSA (1024,160)')).toBe('SHA1withDSA');
+      expect(mapSignatureAlgorithm('SHA1-DSA (1024)')).toBe('SHA1withDSA');
+      expect(mapSignatureAlgorithm('DSA1024')).toBe('SHA1withDSA');
+      expect(mapSignatureAlgorithm('DSA_SHA1 (1024)')).toBe('SHA1withDSA');
+    });
+
+    test('should map ECDSA correctly', () => {
+      expect(mapSignatureAlgorithm('SHA256withECDSA')).toBe('SHA256withECDSA');
+    });
+
+    test('should map SHA224withDSA correctly', () => {
+      expect(mapSignatureAlgorithm('SHA224withDSA')).toBe('SHA224withDSA');
+      expect(mapSignatureAlgorithm('SHA224withDSA(2048,224)')).toBe('SHA224withDSA');
+    });
+
+    test('should fallback to SHA1withDSA on empty or unknown algs', () => {
+      expect(mapSignatureAlgorithm('')).toBe('SHA1withDSA');
+      expect(mapSignatureAlgorithm(undefined as any)).toBe('SHA1withDSA');
+      expect(mapSignatureAlgorithm('UNKNOWN')).toBe('SHA1withDSA');
     });
   });
 });
