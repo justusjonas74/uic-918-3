@@ -109,7 +109,7 @@ describe('check_signature.js', () => {
 
     test('should fallback to SHA1withDSA on empty or unknown algs', () => {
       expect(mapSignatureAlgorithm('')).toBe('SHA1withDSA');
-      expect(mapSignatureAlgorithm(undefined as any)).toBe('SHA1withDSA');
+      expect(mapSignatureAlgorithm(undefined as unknown as string)).toBe('SHA1withDSA');
       expect(mapSignatureAlgorithm('UNKNOWN')).toBe('SHA1withDSA');
     });
   });
