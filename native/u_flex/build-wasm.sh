@@ -37,6 +37,7 @@ fi
 
 echo "Generiere C-Typen via asn1c…"
 rm -rf "${ASN_OUTPUT_DIR:?}"/*
+rm -rf "${BUILD_DIR:?}"/*
 
 FLAG_MATRIX=(
   "-fcompound-names -gen-PER -no-gen-example"
