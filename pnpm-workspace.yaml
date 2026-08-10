@@ -1,3 +1,7 @@
+packages:
+  - "."
+  - "web"
 allowBuilds:
   esbuild: true
   unrs-resolver: true
+
