@@ -26,6 +26,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Lint
         run: pnpm run lint
+      - name: Lint Web
+        run: pnpm --filter web run lint
 
   build-and-test:
     needs: lint
@@ -60,6 +62,8 @@ jobs:
       - name: Build WASM files
         run: pnpm run build:uflex-wasm || echo "WASM build failed, continuing with tests (may use mocks)"
       - run: pnpm run --if-present build
+      - name: Build Web
+        run: pnpm --filter web run build
       - run: pnpm run test:coverage
       - name: Coveralls
         uses: coverallsapp/github-action@v2
