@@ -8,7 +8,7 @@ ENV TZ=Europe/Berlin
 FROM base AS deps
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml tsconfig.json pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml tsconfig*.json pnpm-workspace.yaml ./
 COPY web/package.json web/tsconfig.json web/next.config.ts ./web/
 
 RUN pnpm install --ignore-scripts
@@ -19,7 +19,7 @@ WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/web/node_modules ./web/node_modules
-COPY package.json pnpm-lock.yaml tsconfig.json pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml tsconfig*.json pnpm-workspace.yaml ./
 COPY web/package.json web/tsconfig.json web/next.config.ts ./web/
 COPY src ./src
 COPY wasm ./wasm
