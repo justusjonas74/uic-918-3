@@ -41,6 +41,44 @@ export function mapSignatureAlgorithm(alg: string): string {
   return 'SHA1withDSA';
 }
 
+export function ensureDerSignature(sigHex: string): string {
+  // If it already starts with '30' (ASN.1 DER Sequence), it is already DER encoded.
+  if (sigHex.startsWith('30')) {
+    return sigHex;
+  }
+  
+  const rawSig = Buffer.from(sigHex, 'hex');
+  const halfLen = rawSig.length / 2;
+  const r = rawSig.subarray(0, halfLen);
+  const s = rawSig.subarray(halfLen);
+
+  function encodeInteger(bytes: Buffer): Buffer {
+    let start = 0;
+    while (start < bytes.length - 1 && bytes[start] === 0) {
+      start++;
+    }
+    let val = bytes.subarray(start);
+    if (val[0] >= 0x80) {
+      val = Buffer.concat([Buffer.from([0x00]), val]);
+    }
+    return Buffer.concat([
+      Buffer.from([0x02, val.length]),
+      val
+    ]);
+  }
+
+  const rDer = encodeInteger(r);
+  const sDer = encodeInteger(s);
+
+  const derBuffer = Buffer.concat([
+    Buffer.from([0x30, rDer.length + sDer.length]),
+    rDer,
+    sDer
+  ]);
+  
+  return derBuffer.toString('hex');
+}
+
 function checkSignature(
   certPEM: rs.RSAKey | rs.KJUR.crypto.DSA | rs.KJUR.crypto.ECDSA,
   signature: string,
@@ -82,7 +120,7 @@ export const verifyTicket = async function (ticket: ParsedUIC918Barcode): Promis
 
   const isSignatureValid = checkSignature(
     publicKey,
-    ticket.signature.toString('hex'),
+    ensureDerSignature(ticket.signature.toString('hex')),
     ticket.ticketDataRaw.toString('hex'),
     alg
   );
