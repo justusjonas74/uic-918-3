@@ -5,6 +5,7 @@ const program = new Command();
 
 import chalk from 'chalk';
 import interpretBarcode from './cli-logic.js';
+import { addCertificate } from './add_certificate.js';
 
 // Get the version from package.json
 import { readFileSync } from 'fs';
@@ -38,7 +39,23 @@ program.command('image')
     const verifySignature = options.verifySignature
     const opts = verifySignature ? { verifySignature: true } : {}
     interpretBarcode(pathToFile, opts);
-  })
+  });
+
+const certCmd = program.command('certificate').description('Certificate management');
+certCmd.command('add')
+  .description('Add one or more certificates (PEM) to keys.json')
+  .argument('<paths...>', 'path of certificate file(s) or directory to add')
+  .action((paths) => {
+    try {
+      addCertificate(paths);
+      console.log(chalk.green('Success: Certificate(s) added successfully.'));
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.error(chalk.red(`Error: ${msg}`));
+      process.exit(1);
+    }
+  });
+
 function drawIntro(): void {
   //  clear();
 
