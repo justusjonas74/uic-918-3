@@ -46,6 +46,12 @@ uic918 certificate add foo.pem
 uic918 certificate add /home/foo/foo.pem
 uic918 certificate add foo.pem bar.pem
 uic918 certificate add ./folder-with-pem-files/
+
+# List all certificates inside keys.json:
+uic918 certificate list
+
+# Show detailed information for a specific certificate:
+uic918 certificate show 1080:8
 ```
 
 ## Usage (Library)
