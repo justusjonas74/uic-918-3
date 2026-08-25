@@ -40,6 +40,18 @@ uic918 image path/to/your/file.png
 
 # To check the signature included in the ticket barcode:
 uic918 image --verifySignature path/to/your/file.png
+
+# Import one or more custom certificates (PEM format) into keys.json:
+uic918 certificate add foo.pem
+uic918 certificate add /home/foo/foo.pem
+uic918 certificate add foo.pem bar.pem
+uic918 certificate add ./folder-with-pem-files/
+
+# List all certificates inside keys.json:
+uic918 certificate list
+
+# Show detailed information for a specific certificate:
+uic918 certificate show 1080:8
 ```
 
 ## Usage (Library)
@@ -56,6 +68,28 @@ readBarcode('foo.png')
   .then((ticket) => console.log(ticket))
   .catch((error) => console.error(error));
 ```
+
+### Importing Custom Certificates
+
+You can import custom certificates programmatically using the exported `addCertificate` function. It supports file paths, directories, raw PEM string contents, or buffers:
+
+```javascript
+import { addCertificate } from 'uic-918-3';
+
+// Import a single certificate by file path:
+addCertificate('path/to/foo.pem');
+
+// Import multiple certificates by file path:
+addCertificate(['path/to/foo.pem', 'path/to/bar.pem']);
+
+// Import raw PEM content (as string or Buffer):
+const pemContent = fs.readFileSync('path/to/foo.pem', 'utf-8');
+const pemBuffer = fs.readFileSync('path/to/bar.pem');
+addCertificate([pemContent, pemBuffer]);
+```
+
+Manually imported certificates will be preserved in `keys.json` when the postinstall script runs or updates central certificates.
+
 
 ### Options
 
