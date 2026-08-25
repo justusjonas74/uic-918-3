@@ -246,3 +246,55 @@ export function addCertificate(
 
   return addedKeys.length;
 }
+
+export function listCertificates(customKeysPath?: string): any[] {
+  const targetPath = customKeysPath || keysJsonPath;
+  if (!existsSync(targetPath)) {
+    return [];
+  }
+  let keysData: any;
+  try {
+    keysData = JSON.parse(readFileSync(targetPath, 'utf8'));
+  } catch {
+    return [];
+  }
+  if (!keysData.keys || !Array.isArray(keysData.keys.key)) {
+    return [];
+  }
+  return keysData.keys.key;
+}
+
+export function showCertificate(selector: string, customKeysPath?: string): any {
+  const targetPath = customKeysPath || keysJsonPath;
+  if (!existsSync(targetPath)) {
+    throw new Error(`keys.json not found at ${targetPath}`);
+  }
+  let keysData: any;
+  try {
+    keysData = JSON.parse(readFileSync(targetPath, 'utf8'));
+  } catch (e: any) {
+    throw new Error(`Failed to parse keys.json: ${e.message}`);
+  }
+  if (!keysData.keys || !Array.isArray(keysData.keys.key)) {
+    throw new Error('No certificates found.');
+  }
+
+  const parts = selector.split(':');
+  if (parts.length !== 2) {
+    throw new Error('Invalid selector format. Expected <issuerCode>:<keyId> (e.g. 1080:8)');
+  }
+  const [rics, keyId] = parts;
+  const finalRics = /^\d+$/.test(rics) ? String(parseInt(rics, 10)) : rics;
+  const finalKeyId = /^\d+$/.test(keyId) ? String(parseInt(keyId, 10)) : keyId;
+
+  const key = keysData.keys.key.find((k: any) => 
+    k.issuerCode.includes(finalRics) && k.id.includes(finalKeyId)
+  );
+
+  if (!key) {
+    throw new Error(`Certificate not found for selector "${selector}".`);
+  }
+
+  return key;
+}
+
