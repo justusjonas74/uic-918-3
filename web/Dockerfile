@@ -26,9 +26,12 @@ COPY wasm ./wasm
 COPY keys.json ./keys.json
 COPY web/app ./web/app
 COPY web/public ./web/public
+COPY certs ./certs
 
 # Build the parent library first
 RUN pnpm run build
+# Add certificates from certs folder to keys.json if any exist
+RUN if [ -d certs ] && ls certs/*.pem 1>/dev/null 2>&1; then pnpm exec uic918 certificate add certs; fi
 # Build the Next.js web application
 RUN cd web && pnpm run build
 
@@ -51,6 +54,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/web/.next/static ./web/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/keys.json ./keys.json
 COPY --from=builder --chown=nextjs:nodejs /app/keys.json ./node_modules/uic-918-3/keys.json
+COPY --from=builder --chown=nextjs:nodejs /app/certs ./certs
 
 USER nextjs
 EXPOSE 3000

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import Link from 'next/link';
 import {
   Upload,
   Binary,
@@ -15,7 +16,8 @@ import {
   Check,
   FileCode,
   ArrowRight,
-  RefreshCw
+  RefreshCw,
+  Award
 } from 'lucide-react';
 
 interface Container {
@@ -561,6 +563,12 @@ export default function Home() {
         <p style={{ marginTop: '0.5rem', fontSize: '1.1rem', fontWeight: 700 }}>
           [ WEB-APP ZUM ENTSCHLÜSSELN VON BAHN-TICKETS ]
         </p>
+        <div style={{ marginTop: '1.25rem', display: 'flex', justifyContent: 'center' }}>
+          <Link href="/certs" className="brutal-btn brutal-btn-teal" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+            <Award size={16} />
+            Zertifikate verwalten
+          </Link>
+        </div>
       </header>
 
       {/* Main Responsive Grid */}
