@@ -5,6 +5,7 @@ import { addCertificate } from '../../src/add_certificate.js';
 import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
 
 const tempKeysPath = join(__dirname, '../../tmp-keys-test.json');
+const certsDir = join(__dirname, 'certs');
 
 interface TestKey {
   issuerCode: string[];
@@ -31,7 +32,7 @@ describe('addCertificate', () => {
       unlinkSync(missingKeysPath);
     }
     try {
-      const certPath = '/home/francis/uic-certs/008000201.pem';
+      const certPath = join(certsDir, '008000201.pem');
       addCertificate(certPath, missingKeysPath);
       expect(existsSync(missingKeysPath)).toBe(true);
       const keysData = JSON.parse(readFileSync(missingKeysPath, 'utf8'));
@@ -46,7 +47,7 @@ describe('addCertificate', () => {
   });
 
   test('should successfully add a certificate by file path', () => {
-    const certPath = '/home/francis/uic-certs/008000201.pem';
+    const certPath = join(certsDir, '008000201.pem');
     addCertificate(certPath, tempKeysPath);
 
     const keysData = JSON.parse(readFileSync(tempKeysPath, 'utf8'));
@@ -60,14 +61,14 @@ describe('addCertificate', () => {
   });
 
   test('should throw an error when adding a duplicate certificate', () => {
-    const certPath = '/home/francis/uic-certs/008000201.pem';
+    const certPath = join(certsDir, '008000201.pem');
     expect(() => addCertificate(certPath, tempKeysPath)).toThrow(/already exists/);
   });
 
   test('should successfully add multiple certificates by paths', () => {
     const certPaths = [
-      '/home/francis/uic-certs/108000008.pem',
-      '/home/francis/uic-certs/3076AM013.pem'
+      join(certsDir, '108000008.pem'),
+      join(certsDir, '3076AM013.pem')
     ];
     addCertificate(certPaths, tempKeysPath);
 
@@ -88,8 +89,8 @@ describe('addCertificate', () => {
 
   test('should successfully add certificates by PEM string and Buffer content', () => {
     // 3634DTV01 has RICS:3634 and KeyId:DTV01 embedded in DN
-    const dtv01Content = readFileSync('/home/francis/uic-certs/3634DTV01.pem', 'utf8');
-    const dtv01Buffer = readFileSync('/home/francis/uic-certs/3634DTV01.pem');
+    const dtv01Content = readFileSync(join(certsDir, '3634DTV01.pem'), 'utf8');
+    const dtv01Buffer = readFileSync(join(certsDir, '3634DTV01.pem'));
 
     // Add string content
     addCertificate(dtv01Content, tempKeysPath);
@@ -106,7 +107,7 @@ describe('addCertificate', () => {
 
   test('should throw error when raw PEM doesn\'t contain embedded RICS/KeyId', () => {
     // 537926001 does not have RICS/KeyId embedded in DN
-    const content = readFileSync('/home/francis/uic-certs/537926001.pem', 'utf8');
+    const content = readFileSync(join(certsDir, '537926001.pem'), 'utf8');
     expect(() => addCertificate(content, tempKeysPath)).toThrow(/Failed to determine RICS code/);
   });
 
@@ -118,8 +119,8 @@ describe('addCertificate', () => {
     }
     
     // Copy 537926001.pem and 3076TR001.pem into it
-    const file1 = readFileSync('/home/francis/uic-certs/537926001.pem');
-    const file2 = readFileSync('/home/francis/uic-certs/3076TR001.pem');
+    const file1 = readFileSync(join(certsDir, '537926001.pem'));
+    const file2 = readFileSync(join(certsDir, '3076TR001.pem'));
     
     writeFileSync(join(tempDir, '537926001.pem'), file1);
     writeFileSync(join(tempDir, '3076TR001.pem'), file2);
