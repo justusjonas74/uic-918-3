@@ -31,7 +31,7 @@ COPY certs ./certs
 # Build the parent library first
 RUN pnpm run build
 # Add certificates from certs folder to keys.json if any exist
-RUN if [ -d certs ] && ls certs/*.pem 1>/dev/null 2>&1; then pnpm exec uic918 certificate add certs; fi
+RUN if [ -d certs ] && ls certs/*.pem 1>/dev/null 2>&1; then node build/cli.js certificate add certs || true; fi
 # Build the Next.js web application
 RUN cd web && pnpm run build
 
