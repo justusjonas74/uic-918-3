@@ -109,123 +109,138 @@ export function addCertificate(
   }
 
   const addedKeys: any[] = [];
+  const errors: { file?: string; message: string }[] = [];
 
   for (const pemObj of pemContents) {
-    const pemStr = pemObj.content.trim();
-    if (!pemStr.includes('-----BEGIN CERTIFICATE-----') || !pemStr.includes('-----END CERTIFICATE-----')) {
-      throw new Error('Invalid certificate: missing PEM headers');
-    }
-
-    const x = new rs.X509();
     try {
-      x.readCertPEM(pemStr);
-    } catch (e: any) {
-      throw new Error(`Invalid certificate: failed to parse PEM. ${e.message}`);
-    }
+      const pemStr = pemObj.content.trim();
+      if (!pemStr.includes('-----BEGIN CERTIFICATE-----') || !pemStr.includes('-----END CERTIFICATE-----')) {
+        throw new Error('Invalid certificate: missing PEM headers');
+      }
 
-    const publicKeyBase64 = pemStr
-      .replace(/-----BEGIN CERTIFICATE-----/, '')
-      .replace(/-----END CERTIFICATE-----/, '')
-      .replace(/\s+/g, '');
+      const x = new rs.X509();
+      try {
+        x.readCertPEM(pemStr);
+      } catch (e: any) {
+        throw new Error(`Invalid certificate: failed to parse PEM. ${e.message}`);
+      }
 
-    let rics: string | undefined;
-    let keyId: string | undefined;
+      const publicKeyBase64 = pemStr
+        .replace(/-----BEGIN CERTIFICATE-----/, '')
+        .replace(/-----END CERTIFICATE-----/, '')
+        .replace(/\s+/g, '');
 
-    const subject = x.getSubject();
-    if (subject && Array.isArray(subject.array)) {
-      for (const rdn of subject.array) {
-        if (Array.isArray(rdn)) {
-          for (const attr of rdn) {
-            if (attr && attr.value) {
-              const valStr = String(attr.value);
-              const ricsMatch = valStr.match(/RICS:(\d+)/i);
-              if (ricsMatch) {
-                rics = ricsMatch[1];
-              }
-              const keyIdMatch = valStr.match(/KeyId:([A-Za-z0-9]+)/i);
-              if (keyIdMatch) {
-                keyId = keyIdMatch[1];
+      let rics: string | undefined;
+      let keyId: string | undefined;
+
+      const subject = x.getSubject();
+      if (subject && Array.isArray(subject.array)) {
+        for (const rdn of subject.array) {
+          if (Array.isArray(rdn)) {
+            for (const attr of rdn) {
+              if (attr && attr.value) {
+                const valStr = String(attr.value);
+                const ricsMatch = valStr.match(/RICS:(\d+)/i);
+                if (ricsMatch) {
+                  rics = ricsMatch[1];
+                }
+                const keyIdMatch = valStr.match(/KeyId:([A-Za-z0-9]+)/i);
+                if (keyIdMatch) {
+                  keyId = keyIdMatch[1];
+                }
               }
             }
           }
         }
       }
-    }
 
-    if (pemObj.filePath) {
-      const filename = basename(pemObj.filePath, '.pem');
-      if (filename.length === 9) {
-        const fileRics = filename.slice(0, 4);
-        const fileKeyId = filename.slice(4);
-        if (/^\d+$/.test(fileRics)) {
-          if (!rics) {
-            rics = fileRics;
-          }
-          if (!keyId) {
-            keyId = fileKeyId;
+      if (pemObj.filePath) {
+        const filename = basename(pemObj.filePath, '.pem');
+        if (filename.length === 9) {
+          const fileRics = filename.slice(0, 4);
+          const fileKeyId = filename.slice(4);
+          if (/^\d+$/.test(fileRics)) {
+            if (!rics) {
+              rics = fileRics;
+            }
+            if (!keyId) {
+              keyId = fileKeyId;
+            }
           }
         }
       }
+
+      if (!rics || !keyId) {
+        throw new Error(
+          `Failed to determine RICS code and/or Key ID for certificate. Please ensure the certificate embeds RICS/KeyId or the filename follows the 9-character naming convention (e.g. 008000201.pem).`
+        );
+      }
+
+      const finalRics = /^\d+$/.test(rics) ? String(parseInt(rics, 10)) : rics;
+      const finalKeyId = /^\d+$/.test(keyId) ? String(parseInt(keyId, 10)) : keyId;
+
+      const isDuplicateInJSON = keysData.keys.key.some((k: any) => {
+        const hasSameRicsAndId = k.issuerCode.includes(finalRics) && k.id.includes(finalKeyId);
+        const hasSamePubKey = k.publicKey.includes(publicKeyBase64);
+        return hasSameRicsAndId || hasSamePubKey;
+      });
+
+      const isDuplicateInBatch = addedKeys.some((k: any) => {
+        const hasSameRicsAndId = k.issuerCode.includes(finalRics) && k.id.includes(finalKeyId);
+        const hasSamePubKey = k.publicKey.includes(publicKeyBase64);
+        return hasSameRicsAndId || hasSamePubKey;
+      });
+
+      if (isDuplicateInJSON || isDuplicateInBatch) {
+        throw new Error(
+          `Certificate with RICS ${finalRics} and Key ID ${finalKeyId} already exists in keys.json.`
+        );
+      }
+
+      const startDate = parseASN1Date(x.getNotBefore());
+      const endDate = parseASN1Date(x.getNotAfter());
+
+      const o = getSubjectAttribute(x, 'O');
+      const cn = getSubjectAttribute(x, 'CN');
+      const issuerName = o || cn || 'Custom Issuer';
+
+      const sigAlg = x.getSignatureAlgorithmField();
+
+      const newKey = {
+        issuerName: [issuerName],
+        issuerCode: [finalRics],
+        versionType: ['FCB'],
+        signatureAlgorithm: [sigAlg],
+        id: [finalKeyId],
+        publicKey: [publicKeyBase64],
+        barcodeVersion: ['3'],
+        startDate: [startDate],
+        endDate: [endDate],
+        barcodeXsd: [''],
+        allowedProductOwnerCodes: [] as any[],
+        keyForged: [''],
+        commentForEncryptionType: [''],
+        isCustom: [true]
+      };
+
+      addedKeys.push(newKey);
+    } catch (e: any) {
+      errors.push({
+        file: pemObj.filePath,
+        message: e.message
+      });
     }
-
-    if (!rics || !keyId) {
-      throw new Error(
-        `Failed to determine RICS code and/or Key ID for certificate${
-          pemObj.filePath ? ` at ${pemObj.filePath}` : ''
-        }. Please ensure the certificate embeds RICS/KeyId or the filename follows the 9-character naming convention (e.g. 008000201.pem).`
-      );
-    }
-
-    const finalRics = /^\d+$/.test(rics) ? String(parseInt(rics, 10)) : rics;
-    const finalKeyId = /^\d+$/.test(keyId) ? String(parseInt(keyId, 10)) : keyId;
-
-    const isDuplicateInJSON = keysData.keys.key.some((k: any) => {
-      const hasSameRicsAndId = k.issuerCode.includes(finalRics) && k.id.includes(finalKeyId);
-      const hasSamePubKey = k.publicKey.includes(publicKeyBase64);
-      return hasSameRicsAndId || hasSamePubKey;
-    });
-
-    const isDuplicateInBatch = addedKeys.some((k: any) => {
-      const hasSameRicsAndId = k.issuerCode.includes(finalRics) && k.id.includes(finalKeyId);
-      const hasSamePubKey = k.publicKey.includes(publicKeyBase64);
-      return hasSameRicsAndId || hasSamePubKey;
-    });
-
-    if (isDuplicateInJSON || isDuplicateInBatch) {
-      throw new Error(
-        `Certificate with RICS ${finalRics} and Key ID ${finalKeyId} already exists in keys.json.`
-      );
-    }
-
-    const startDate = parseASN1Date(x.getNotBefore());
-    const endDate = parseASN1Date(x.getNotAfter());
-
-    const o = getSubjectAttribute(x, 'O');
-    const cn = getSubjectAttribute(x, 'CN');
-    const issuerName = o || cn || 'Custom Issuer';
-
-    const sigAlg = x.getSignatureAlgorithmField();
-
-    const newKey = {
-      issuerName: [issuerName],
-      issuerCode: [finalRics],
-      versionType: ['FCB'],
-      signatureAlgorithm: [sigAlg],
-      id: [finalKeyId],
-      publicKey: [publicKeyBase64],
-      barcodeVersion: ['3'],
-      startDate: [startDate],
-      endDate: [endDate],
-      barcodeXsd: [''],
-      allowedProductOwnerCodes: [] as any[],
-      keyForged: [''],
-      commentForEncryptionType: [''],
-      isCustom: [true]
-    };
-
-    addedKeys.push(newKey);
   }
 
-  keysData.keys.key = [...keysData.keys.key, ...addedKeys];
-  writeFileSync(targetPath, JSON.stringify(keysData));
+  if (addedKeys.length > 0) {
+    keysData.keys.key = [...keysData.keys.key, ...addedKeys];
+    writeFileSync(targetPath, JSON.stringify(keysData));
+  }
+
+  if (errors.length > 0) {
+    const errorDetails = errors.map(err => 
+      `${err.file ? `[${basename(err.file)}] ` : ''}${err.message}`
+    ).join('\n');
+    throw new Error(`Some certificates could not be imported:\n${errorDetails}`);
+  }
 }
