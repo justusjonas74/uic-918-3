@@ -1,10 +1,30 @@
 version: 2
   
 updates:
-  - package-ecosystem: "pnpm"
-    directory: "/"                # adjust if needed
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: "weekly"          # or "monthly"
+      interval: "weekly"
+
+    # Ignore major updates
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+    # Group all minor & patch updates into one PR
+    groups:
+      all-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "npm"
+    directory: "/web"
+    schedule:
+      interval: "weekly"
 
     # Ignore major updates
     ignore:

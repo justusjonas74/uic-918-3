@@ -1,0 +1,196 @@
+:root {
+  --bg-cream: #f4f0e6;
+  --bg-white: #ffffff;
+  --accent-yellow: #ffe600;
+  --accent-teal: #00f5d4;
+  --accent-pink: #ff2a85;
+  --accent-green: #39ff14;
+  --text-black: #000000;
+  --border-thick: 4px solid #000000;
+  --border-thin: 2px solid #000000;
+  --shadow-flat: 4px 4px 0px 0px #000000;
+  --shadow-flat-large: 8px 8px 0px 0px #000000;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: var(--bg-cream);
+  color: var(--text-black);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  line-height: 1.5;
+}
+
+/* Neo-Brutalist Cards */
+.brutal-card {
+  background-color: var(--bg-white);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-flat-large);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.brutal-card-header {
+  border-bottom: var(--border-thick);
+  margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+  padding: 1rem 1.5rem;
+  background-color: var(--accent-yellow);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Neo-Brutalist Buttons */
+.brutal-btn {
+  background-color: var(--accent-yellow);
+  color: var(--text-black);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-flat);
+  font-weight: 900;
+  text-transform: uppercase;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  font-family: inherit;
+}
+
+.brutal-btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #000000;
+}
+
+.brutal-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px 0px #000000;
+}
+
+.brutal-btn-teal {
+  background-color: var(--accent-teal);
+}
+
+.brutal-btn-pink {
+  background-color: var(--accent-pink);
+  color: #ffffff;
+}
+
+/* Form inputs */
+.brutal-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: var(--border-thick);
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  background-color: var(--bg-white);
+  box-shadow: var(--shadow-flat);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.brutal-input:focus {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #000000;
+  background-color: #fffff6;
+}
+
+/* Monospace Code Codeblock */
+.brutal-code {
+  background-color: #27272a;
+  color: #f4f4f5;
+  padding: 1rem;
+  border: var(--border-thick);
+  overflow-x: auto;
+  font-size: 0.875rem;
+  max-height: 400px;
+}
+
+/* Tabs */
+.brutal-tab-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: -4px; /* Align with card border */
+  z-index: 10;
+  position: relative;
+}
+
+.brutal-tab {
+  background-color: var(--bg-white);
+  border: var(--border-thick);
+  border-bottom: none;
+  padding: 0.5rem 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.brutal-tab.active {
+  background-color: var(--accent-teal);
+  transform: translateY(-2px);
+}
+
+/* Grids and Layout Utilities */
+.brutal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .brutal-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Badges and Labels */
+.brutal-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border: var(--border-thin);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.brutal-badge-yellow { background-color: var(--accent-yellow); }
+.brutal-badge-teal { background-color: var(--accent-teal); }
+.brutal-badge-pink { background-color: var(--accent-pink); }
+.brutal-badge-green { background-color: var(--accent-green); }
+
+.signature-status {
+  padding: 1rem;
+  border: var(--border-thick);
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
+  box-shadow: var(--shadow-flat);
+  margin-bottom: 1.5rem;
+}
+
+.status-valid {
+  background-color: var(--accent-green);
+  color: #000000;
+}
+
+.status-invalid {
+  background-color: var(--accent-pink);
+  color: #ffffff;
+}
+
+.status-unknown {
+  background-color: var(--accent-yellow);
+  color: #000000;
+}

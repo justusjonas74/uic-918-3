@@ -4,6 +4,8 @@
 # CUSTOM
 samples/
 keys.json
+certs/*
+!certs/.gitkeep
 .DS_Store
 build/
 #postinstall/

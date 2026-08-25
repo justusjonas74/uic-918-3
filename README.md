@@ -164,6 +164,32 @@ pdfimages your-ticket.pdf your-ticket
 convert your-ticket-00x.ppm your-ticket-00x.png;
 ```
 
+## Web Interface / Web Application
+
+This branch introduces a web-based user interface for parsing ticket barcodes and verifying their signatures, built with Next.js.
+
+### Running with Docker Compose (Recommended)
+
+To build and run the web application containerized:
+
+```bash
+docker compose up -d --build
+```
+
+The application will be available at [http://localhost:8089](http://localhost:8089).
+
+### Local Development
+
+To run the web application locally without Docker:
+
+```bash
+# From the root directory:
+pnpm install
+pnpm --filter web dev
+```
+
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
+
 ## Expected Quality
 
 The _UIC 913.3_ specifications aren't available for free, so the whole underlying logic is build upon third party sources, particularly the Python script [onlineticket](https://github.com/rumpeltux/onlineticket/) from Hagen Fritzsch, the [diploma thesis](https://monami.hs-mittweida.de/files/4983/WaitzRoman_Diplomarbeit.pdf) from Roman Waitz and the Wikipedia discussion about [Online-Tickets](https://de.wikipedia.org/wiki/Diskussion:Online-Ticket). Therefore results from this package (especially the parsing logic) should be taken with care.
