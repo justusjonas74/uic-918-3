@@ -93,15 +93,13 @@ export function addCertificate(
     throw new Error('No certificates found to add.');
   }
 
-  if (!existsSync(targetPath)) {
-    throw new Error(`keys.json not found at ${targetPath}`);
-  }
-  
-  let keysData: any;
-  try {
-    keysData = JSON.parse(readFileSync(targetPath, 'utf8'));
-  } catch (e: any) {
-    throw new Error(`Failed to parse keys.json: ${e.message}`);
+  let keysData: any = { keys: { key: [] } };
+  if (existsSync(targetPath)) {
+    try {
+      keysData = JSON.parse(readFileSync(targetPath, 'utf8'));
+    } catch (e: any) {
+      throw new Error(`Failed to parse keys.json: ${e.message}`);
+    }
   }
 
   if (!keysData.keys || !Array.isArray(keysData.keys.key)) {

@@ -25,6 +25,26 @@ describe('addCertificate', () => {
     }
   });
 
+  test('should create a new keys.json file if it does not exist', () => {
+    const missingKeysPath = join(__dirname, '../../tmp-missing-keys.json');
+    if (existsSync(missingKeysPath)) {
+      unlinkSync(missingKeysPath);
+    }
+    try {
+      const certPath = '/home/francis/uic-certs/008000201.pem';
+      addCertificate(certPath, missingKeysPath);
+      expect(existsSync(missingKeysPath)).toBe(true);
+      const keysData = JSON.parse(readFileSync(missingKeysPath, 'utf8'));
+      expect(keysData.keys.key.length).toBe(1);
+      const key = keysData.keys.key[0] as TestKey;
+      expect(key.issuerCode[0]).toBe('80');
+    } finally {
+      if (existsSync(missingKeysPath)) {
+        unlinkSync(missingKeysPath);
+      }
+    }
+  });
+
   test('should successfully add a certificate by file path', () => {
     const certPath = '/home/francis/uic-certs/008000201.pem';
     addCertificate(certPath, tempKeysPath);

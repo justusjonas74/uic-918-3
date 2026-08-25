@@ -55,7 +55,7 @@ certCmd.command('add')
       }
     } catch (error: unknown) {
       if (error && typeof error === 'object' && 'addedCount' in error) {
-        const addedCount = (error as any).addedCount;
+        const addedCount = (error as { addedCount: number }).addedCount;
         if (addedCount > 0) {
           console.log(chalk.green(`Success: ${addedCount} certificate(s) added successfully.`));
         }
