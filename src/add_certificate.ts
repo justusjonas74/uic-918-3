@@ -52,7 +52,7 @@ function parseASN1Date(timeStr: string): string {
 export function addCertificate(
   input: string | Buffer | Array<string | Buffer>,
   customKeysPath?: string
-): void {
+): number {
   const targetPath = customKeysPath || keysJsonPath;
   const inputs = Array.isArray(input) ? input : [input];
   const pemContents: { content: string; filePath?: string }[] = [];
@@ -241,6 +241,10 @@ export function addCertificate(
     const errorDetails = errors.map(err => 
       `${err.file ? `[${basename(err.file)}] ` : ''}${err.message}`
     ).join('\n');
-    throw new Error(`Some certificates could not be imported:\n${errorDetails}`);
+    const err = new Error(`Some certificates could not be imported:\n${errorDetails}`);
+    (err as any).addedCount = addedKeys.length;
+    throw err;
   }
+
+  return addedKeys.length;
 }

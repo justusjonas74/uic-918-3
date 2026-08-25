@@ -47,11 +47,21 @@ certCmd.command('add')
   .argument('<paths...>', 'path of certificate file(s) or directory to add')
   .action((paths) => {
     try {
-      addCertificate(paths);
-      console.log(chalk.green('Success: Certificate(s) added successfully.'));
+      const addedCount = addCertificate(paths);
+      if (addedCount > 0) {
+        console.log(chalk.green(`Success: ${addedCount} certificate(s) added successfully.`));
+      } else {
+        console.log(chalk.yellow('No new certificates were added.'));
+      }
     } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'addedCount' in error) {
+        const addedCount = (error as any).addedCount;
+        if (addedCount > 0) {
+          console.log(chalk.green(`Success: ${addedCount} certificate(s) added successfully.`));
+        }
+      }
       const msg = error instanceof Error ? error.message : String(error);
-      console.error(chalk.red(`Error: ${msg}`));
+      console.error(chalk.red(msg));
       process.exit(1);
     }
   });
