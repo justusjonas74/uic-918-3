@@ -1,10 +1,13 @@
 version: 2
-  
+
 updates:
   - package-ecosystem: "pnpm"
-    directory: "/"                # adjust if needed
+    directory: "/"
     schedule:
-      interval: "weekly"          # or "monthly"
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Berlin"
 
     # Ignore major updates
     ignore:
@@ -15,8 +18,29 @@ updates:
     # Group all minor & patch updates into one PR
     groups:
       all-minor-and-patch:
+        applies-to: version-updates
         patterns:
           - "*"
         update-types:
           - "minor"
           - "patch"
+      security-minor-and-patch:
+        applies-to: security-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+

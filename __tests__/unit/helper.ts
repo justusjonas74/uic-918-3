@@ -1,4 +1,21 @@
 import { deflateSync } from 'zlib';
+import { existsSync } from 'fs';
+import { join } from 'path';
+import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
+import { addCertificate } from '../../src/add_certificate.js';
+
+export const ensureTestCerts = async (filePath: string): Promise<void> => {
+  if (!existsSync(filePath)) {
+    await updateLocalCerts(filePath);
+  }
+  for (const certFile of ['108000007.pem', '108000008.pem']) {
+    try {
+      addCertificate(join(__dirname, 'certs', certFile), filePath);
+    } catch {
+      // Ignore if certificate is already present in keys.json
+    }
+  }
+};
 
 function pad(num: string | number, size: number): string {
   let s = num + '';

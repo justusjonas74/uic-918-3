@@ -1,16 +1,18 @@
 import { beforeAll, describe, expect, test } from 'vitest';
 
-import { TicketSignatureVerficationStatus, verifyTicket, mapSignatureAlgorithm, ensureDerSignature } from '../../src/check_signature.js';
+import {
+  TicketSignatureVerficationStatus,
+  verifyTicket,
+  mapSignatureAlgorithm,
+  ensureDerSignature
+} from '../../src/check_signature.js';
 import { ParsedUIC918Barcode, TicketDataContainer } from '../../src/barcode-data.js';
-import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
-import { existsSync } from 'node:fs';
+import { ensureTestCerts } from './helper.js';
 import { join } from 'path';
 
 const filePath = join(__dirname, '../../keys.json');
 beforeAll(async () => {
-  if (!existsSync(filePath)) {
-    await updateLocalCerts(filePath);
-  }
+  await ensureTestCerts(filePath);
 });
 
 describe('check_signature.js', () => {
@@ -122,14 +124,17 @@ describe('check_signature.js', () => {
 
     test('should convert raw signatures to DER format', () => {
       // 64-byte raw signature (128 hex chars)
-      const rawSig = '63f0c86ae346a253ea81ba8b5b7f138f8d951a8a679aa1d7919061779ff7a6ab005eb35d0444f1972f64763f07c659d0cce80ab36f2ac3493e990cb4dffa2671';
-      const expectedDer = '3043022063f0c86ae346a253ea81ba8b5b7f138f8d951a8a679aa1d7919061779ff7a6ab021f5eb35d0444f1972f64763f07c659d0cce80ab36f2ac3493e990cb4dffa2671';
+      const rawSig =
+        '63f0c86ae346a253ea81ba8b5b7f138f8d951a8a679aa1d7919061779ff7a6ab005eb35d0444f1972f64763f07c659d0cce80ab36f2ac3493e990cb4dffa2671';
+      const expectedDer =
+        '3043022063f0c86ae346a253ea81ba8b5b7f138f8d951a8a679aa1d7919061779ff7a6ab021f5eb35d0444f1972f64763f07c659d0cce80ab36f2ac3493e990cb4dffa2671';
       expect(ensureDerSignature(rawSig)).toBe(expectedDer);
     });
 
     test('should handle integers with MSB >= 0x80 by prefixing 0x00', () => {
       // 64-byte raw signature where r starts with 0x85
-      const rawSig = '85f0c86ae346a253ea81ba8b5b7f138f8d951a8a679aa1d7919061779ff7a6ab005eb35d0444f1972f64763f07c659d0cce80ab36f2ac3493e990cb4dffa2671';
+      const rawSig =
+        '85f0c86ae346a253ea81ba8b5b7f138f8d951a8a679aa1d7919061779ff7a6ab005eb35d0444f1972f64763f07c659d0cce80ab36f2ac3493e990cb4dffa2671';
       const resultHex = ensureDerSignature(rawSig);
       // Result should start with 30 (sequence) followed by length, and then r integer 02 21 (length 33) 00 85...
       expect(resultHex.substring(4, 10)).toBe('022100');

@@ -1,22 +1,14 @@
 import { describe, beforeAll, test, expect } from 'vitest';
-import { dummyTicket, dummyTicket2 } from './helper.js';
+import { dummyTicket, dummyTicket2, ensureTestCerts } from './helper.js';
 
-import interpretBarcode, * as barcodeData from '../../src/barcode-data.js'
+import interpretBarcode, * as barcodeData from '../../src/barcode-data.js';
 import { TicketSignatureVerficationStatus } from '../../src/check_signature.js';
-import { existsSync } from 'fs';
-import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
 
 import { join } from 'path';
 
 const filePath = join(__dirname, '../../keys.json');
 beforeAll(async () => {
-  // Check if file ./../../keys.json is available, if not, update the local certs.
-  if (existsSync(filePath)) {
-    console.log('Local certs already available.');
-  } else {
-    console.log('Local certs not available, updating now...');
-    await updateLocalCerts(filePath);
-  }
+  await ensureTestCerts(filePath);
 });
 describe('barcode-data', () => {
   describe('barcode-data.interpret', () => {
@@ -59,17 +51,20 @@ describe('barcode-data', () => {
       const ticket = dummyTicket('MYID!!', '01', 'Test');
       test('should ignore unkown data fields', async () => {
         const parsedTicket = await interpretBarcode(ticket);
-        const results: barcodeData.TicketDataContainer[] = parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
+        const results: barcodeData.TicketDataContainer[] =
+          parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
         expect(Object.keys(results)).not.toHaveLength(0);
       });
       test('should parse the unknown container id', async () => {
         const parsedTicket = await interpretBarcode(ticket);
-        const results: barcodeData.TicketDataContainer[] = parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
+        const results: barcodeData.TicketDataContainer[] =
+          parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
         expect(results[0].id).toBe('MYID!!');
       });
       test('should not touch/parse the container data', async () => {
         const parsedTicket = await interpretBarcode(ticket);
-        const results: barcodeData.TicketDataContainer[] = parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
+        const results: barcodeData.TicketDataContainer[] =
+          parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
         expect(results[0].container_data).toEqual(Buffer.from('Test'));
       });
     });
@@ -77,17 +72,20 @@ describe('barcode-data', () => {
       const ticket = dummyTicket('U_HEAD', '03', 'Test');
       test('should ignore unkown versions of data fields', async () => {
         const parsedTicket = await interpretBarcode(ticket);
-        const results: barcodeData.TicketDataContainer[] = parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
+        const results: barcodeData.TicketDataContainer[] =
+          parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
         expect(Object.keys(results)).not.toHaveLength(0);
       });
       test('should parse the unknown container id', async () => {
         const parsedTicket = await interpretBarcode(ticket);
-        const results: barcodeData.TicketDataContainer[] = parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
+        const results: barcodeData.TicketDataContainer[] =
+          parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
         expect(results[0].id).toBe('U_HEAD');
       });
       test('should not touch/parse the container data', async () => {
         const parsedTicket = await interpretBarcode(ticket);
-        const results: barcodeData.TicketDataContainer[] = parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
+        const results: barcodeData.TicketDataContainer[] =
+          parsedTicket.ticketContainers as barcodeData.TicketDataContainer[];
         expect(results[0].container_data).toEqual(Buffer.from('Test'));
       });
     });

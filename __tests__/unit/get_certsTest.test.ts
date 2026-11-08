@@ -1,17 +1,12 @@
 import { describe, test, expect, beforeAll } from 'vitest';
 import { getCertByID } from '../../src/get_certs.js';
-import { existsSync } from 'fs';
-import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
+import { ensureTestCerts } from './helper.js';
 import { join } from 'path';
 
 describe('get_certs.js', () => {
-
   const filePath = join(__dirname, '../../keys.json');
   beforeAll(async () => {
-    if (!existsSync(filePath)) {
-      console.log('keys.json not found, updating local certs...');
-      await updateLocalCerts(filePath);
-    }
+    await ensureTestCerts(filePath);
   });
   describe('getCertByID', () => {
     test('should return a certificate if key is found', async () => {

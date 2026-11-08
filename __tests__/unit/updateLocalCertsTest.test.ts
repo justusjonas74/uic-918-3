@@ -1,12 +1,17 @@
 import { existsSync, unlinkSync, readFileSync } from 'fs';
 import { join } from 'path';
-import { describe, test, beforeAll, expect } from 'vitest';
+import { describe, test, beforeAll, afterAll, expect } from 'vitest';
 
 import { updateLocalCerts } from '../../src/postinstall/updateLocalCerts.js';
-const filePath = join(__dirname, '../../keys.json');
+const filePath = join(__dirname, '../../tmp-update-local-certs.json');
 
 describe('updateLocalCerts', () => {
   beforeAll(() => {
+    if (existsSync(filePath)) {
+      unlinkSync(filePath);
+    }
+  });
+  afterAll(() => {
     if (existsSync(filePath)) {
       unlinkSync(filePath);
     }
